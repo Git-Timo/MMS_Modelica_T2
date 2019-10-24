@@ -110,7 +110,7 @@ end Seilwinde;
     Flaschenzug.M_w m_w1 annotation(
       Placement(visible = true, transformation(origin = {28, -18}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {119, 1}, extent = {{-19, -19}, {19, 19}}, rotation = 0)));
     
-    parameter Real KF = 0.05 "Motorkonstante";
+    parameter Real KF = 0.045 "Motorkonstante";
     parameter Real RA = 10 "Ankerwiderstand";
     parameter Real J = 0.0001 "Traegheit";
     parameter Real UT = 240 "Eingangsspannung";
