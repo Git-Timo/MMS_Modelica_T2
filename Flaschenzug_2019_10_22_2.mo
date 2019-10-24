@@ -71,7 +71,7 @@ equation
 
   f_s1.F=(m_w1.M-Lagerwiderstand)/(Durchmesser/2);
     
-  f_s1.s=Pi*Durchmesser*(m_w1.w*Pi/(180));
+  f_s1.s=Pi*Durchmesser*(m_w1.w/(2*Pi));
 //  (der(f_s1.s)/der((m_w1.w*Pi)/180))^2= (Durchmesser/2)^2;
 //f_s1.F*Durchmesser/2 - m_w1.M = 0;
   annotation(
@@ -122,10 +122,10 @@ end Seilwinde;
     parameter Real UT = 240 "Eingangsspannung";
     parameter Real LA = 0.01 "Induktivität";
     parameter Real Tst = 0.005 "Zeitkonstante des Stromrichters";
-    //parameter Real Kst = 2 "Verstärkungsfaktor des Stromes";
+    parameter Real Kst = 2 "Verstärkungsfaktor des Stromes";
     //parameter Boolean enable = true "On/Off Motor";
     
-    Real MA, UI, IA, Kst;
+    Real MA, UI, IA;
     
     
   equation
@@ -134,7 +134,7 @@ end Seilwinde;
     der(m_w1.w)=(1/J)*(MA-m_w1.M);
     UI=KF*m_w1.w;
     UT=RA*IA+UI+LA*der(IA);
-    Tst*der(UI)+UI=Kst*UT;
+    //Tst*der(UI)+UI=Kst*UT;
   
   annotation(
       Icon( graphics = {Rectangle(origin = {-35, -17}, fillColor = {186, 186, 186}, fillPattern = FillPattern.Horizontal, lineThickness = 1, extent = {{-65, 117}, {135, -83}}), Text(origin = {-40, 31}, extent = {{-10, 5}, {90, -65}}, textString = "Motor")},coordinateSystem(initialScale = 0.1)));end Motor;
@@ -182,19 +182,19 @@ end Seilwinde;
       Placement(visible = true, transformation(origin = {60, 64}, extent = {{-28, -28}, {28, 28}}, rotation = 0)));
   Flaschenzug.Getriebe getriebe1(Wirkungsgrad = 100)  annotation(
       Placement(visible = true, transformation(origin = {-39, -43}, extent = {{-11, -11}, {11, 11}}, rotation = 0)));
-  Flaschenzug.Motor motor1(UT = 15)  annotation(
-      Placement(visible = true, transformation(origin = {-74, -44}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Motor motor(UT = 232)  annotation(
+      Placement(visible = true, transformation(origin = {-86, -40}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   equation
-  connect(flaschenzug_Modell1.f_s1, seilwinde1.f_s1) annotation(
+    connect(flaschenzug_Modell1.f_s1, seilwinde1.f_s1) annotation(
       Line(points = {{39, -1}, {25, -1}, {25, -20}}));
-  connect(getriebe1.m_w2, seilwinde1.m_w1) annotation(
+    connect(getriebe1.m_w2, seilwinde1.m_w1) annotation(
       Line(points = {{-26, -46}, {-14, -46}}));
-  connect(motor1.m_w1, getriebe1.m_w1) annotation(
-      Line(points = {{-62, -44}, {-55.5, -44}, {-55.5, -38}, {-53, -38}}));
     connect(flaschenzug_Modell1.f_s2, decke1.f_s1) annotation(
       Line(points = {{60.18, 25.06}, {60.18, 39.06}}));
     connect(masse1.f_s1, flaschenzug_Modell1.f_s3) annotation(
       Line(points = {{59.26, -27.4}, {59.26, -24.9}, {59.26, -24.9}, {59.26, -24.4}, {61.26, -24.4}, {61.26, -19.9}, {61.26, -19.9}, {61.26, -17.4}}));
+  connect(motor.m_w1, getriebe1.m_w1) annotation(
+      Line(points = {{-74, -40}, {-54, -40}, {-54, -38}, {-52, -38}}));
     annotation(
       Diagram);end Prototyp_2;
 end Flaschenzug;
