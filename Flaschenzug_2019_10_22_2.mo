@@ -13,7 +13,7 @@ package Flaschenzug
   
     parameter Modelica.SIunits.Mass m =10 "Masse";
                //Masse
-    Modelica.SIunits.Acceleration g = Modelica.Constants.g_n;               //Erdbeschleunigung
+    Modelica.SIunits.Acceleration g = Modelica.Constants.g_n;                   //Erdbeschleunigung
     Real a,v;
   equation
   
@@ -41,6 +41,8 @@ package Flaschenzug
     parameter Modelica.SIunits.Angle Zugwinkel=45 "Zugwinkel";
     parameter Modelica.SIunits.Weight Flaschengewicht_unten=2 "[kg]";
     Modelica.SIunits.Acceleration g = Modelica.Constants.g_n;      //Erdbeschleunigung
+    
+    
   equation
 //if(f_s3.s==f_s2.s){ //Stoppen, wenn Flaschenzug ganz zusammengefahren
     f_s1.F=(f_s3.F-(Flaschengewicht_unten*g))/n;
@@ -65,11 +67,16 @@ Flaschenzug.F_s f_s1 annotation(
 parameter Modelica.SIunits.Diameter Durchmesser= 0.2 "Trommeldurchmesser";
 constant Real Pi=2*Modelica.Math.asin(1.0);
 parameter Modelica.SIunits.Momentum Lagerwiderstand= 0.0 "[Nm]";
+//parameter Modelica.SIunits.Mass m= 5 "[kg]";
+
 equation
 
   f_s1.F=(m_w1.M-Lagerwiderstand)/(Durchmesser/2);
     
-  f_s1.s=Pi*Durchmesser*(m_w1.w/(2*Pi));
+  f_s1.s=Pi*Durchmesser*(m_w1.w*Pi/(180));
+  
+//  (der(f_s1.s)/der((m_w1.w*Pi)/180))^2= (Durchmesser/2)^2;
+   
 //f_s1.F*Durchmesser/2 - m_w1.M = 0;
   annotation(
     Icon(graphics = {Rectangle(origin = {-44, 25}, fillColor = {208, 208, 208}, fillPattern = FillPattern.Solid, lineThickness = 1, extent = {{-56, 15}, {144, -65}}),     Line(origin = {42.7034, 3.51}, points = {{18, 97}, {18, -45}}, color = {255, 85, 0}, thickness = 1), Line(origin = {-17.8189, 3.16671}, points = {{-22, 39}, {18, -45}}, color = {255, 85, 0}, thickness = 1), Line(origin = {1.89746, 1.88313}, points = {{-22, 39}, {18, -45}}, color = {255, 85, 0}, thickness = 1), Line(origin = {21.9273, 3.10701}, points = {{-22, 39}, {18, -45}}, color = {255, 85, 0}, thickness = 1)}, coordinateSystem(initialScale = 0.1)));
@@ -93,6 +100,8 @@ end Seilwinde;
   
   parameter Real Uebersetzung= 3 "Übersetzung";
   parameter Modelica.SIunits.Efficiency Wirkungsgrad= 95 "Wirkungsgrad [%]";
+  parameter Modelica.SIunits.MomentOfInertia J= 0.05 "Trägheitsmoment [kgm2]";
+  
   
   equation
 
@@ -110,7 +119,8 @@ end Seilwinde;
     Flaschenzug.M_w m_w1 annotation(
       Placement(visible = true, transformation(origin = {28, -18}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {119, 1}, extent = {{-19, -19}, {19, 19}}, rotation = 0)));
     
-    parameter Real KF = 0.045 "Motorkonstante";
+  
+    parameter Real KF = 0.05 "Motorkonstante";
     parameter Real RA = 10 "Ankerwiderstand";
     parameter Real J = 0.0001 "Traegheit";
     parameter Real UT = 240 "Eingangsspannung";
@@ -128,6 +138,7 @@ end Seilwinde;
     UT=RA*IA+UI+LA*der(IA);
     //Tst*der(UI)+UI=Kst*UT;
   
+      
   annotation(
       Icon( graphics = {Rectangle(origin = {-35, -17}, fillColor = {186, 186, 186}, fillPattern = FillPattern.Horizontal, lineThickness = 1, extent = {{-65, 117}, {135, -83}}), Text(origin = {-40, 31}, extent = {{-10, 5}, {90, -65}}, textString = "Motor")},coordinateSystem(initialScale = 0.1)));end Motor;
 
@@ -167,7 +178,7 @@ end Seilwinde;
   Flaschenzug.Masse masse1(m = 10)  annotation(
       Placement(visible = true, transformation(origin = {59, -43}, extent = {{-13, -13}, {13, 13}}, rotation = 0)));
   Flaschenzug.Seilwinde seilwinde1 annotation(
-      Placement(visible = true, transformation(origin = {-8, -36}, extent = {{-22, -22}, {22, 22}}, rotation = 0)));
+      Placement(visible = true, transformation(origin = {-8, -34}, extent = {{-22, -22}, {22, 22}}, rotation = 0)));
   Flaschenzug.Flaschenzug_Modell flaschenzug_Modell1(Flaschengewicht_unten = 0)  annotation(
       Placement(visible = true, transformation(origin = {60, 4}, extent = {{-18, -18}, {18, 18}}, rotation = 0)));
   Flaschenzug.Decke decke1 annotation(
@@ -177,12 +188,12 @@ end Seilwinde;
   Flaschenzug.Motor motor1 annotation(
       Placement(visible = true, transformation(origin = {-104, -26}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   equation
+  connect(flaschenzug_Modell1.f_s1, seilwinde1.f_s1) annotation(
+      Line(points = {{39, -1}, {5, -1}, {5, -8}}));
+  connect(getriebe1.m_w2, seilwinde1.m_w1) annotation(
+      Line(points = {{-54, -34}, {-34, -34}}));
     connect(motor1.m_w1, getriebe1.m_w1) annotation(
       Line(points = {{-92, -26}, {-81, -26}}));
-    connect(getriebe1.m_w2, seilwinde1.m_w1) annotation(
-      Line(points = {{-54, -34}, {-41, -34}, {-41, -36}, {-34, -36}}));
-    connect(flaschenzug_Modell1.f_s1, seilwinde1.f_s1) annotation(
-      Line(points = {{39, -1}, {5, -1}, {5, -10}}));
     connect(flaschenzug_Modell1.f_s2, decke1.f_s1) annotation(
       Line(points = {{60.18, 25.06}, {60.18, 39.06}}));
     connect(masse1.f_s1, flaschenzug_Modell1.f_s3) annotation(
