@@ -116,6 +116,7 @@ end Seilwinde;
       Placement(visible = true, transformation(origin = {28, -18}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {119, 1}, extent = {{-19, -19}, {19, 19}}, rotation = 0)));
     
   
+    //Gleichstrommotor
     parameter Real KF = 0.05 "Motorkonstante";
     parameter Real RA = 10 "Ankerwiderstand";
     parameter Real J = 0.0001 "Traegheit";
@@ -127,9 +128,22 @@ end Seilwinde;
     
     Real MA, UI, IA;
     
-    
+    /*//https://www.elektro.net/wp-content/uploads/jahrbuecher/em12/Formeln.pdf
+    https://www.autotec.ch/technik/pdf/emo_Drehstrommotor.pdf
+    Einphasiger E-Motor http://www.energie.ch/asynchronmaschine
+    // kleine Leistungen und schlechter Wirkungsgrad (gespalteter Stator -> SPaltmotor einphasiger Asynchronmotor
+    M = m*p *(((1-O)*x)/(Ls*(1+O^2*x^2)))*(Us^2/wz^2); // Drehmoment in Funktion der Statorspannung Us
+    R = wz/p;                                         // Leerlaufdrehzahl auch synchrone Drehzahl genannt
+    s = wr/wz;                                        // Schlupf im Stillstand s=1 im Leerlauf s=0
+    Mk = m*p *((1-O)/(2*O*Ls))*(Us^2/wz^2);           // Kippmoment das maximale Drehmoment des Motors im Betrieb
+    sk = Rr/(wz*Lr*O);                                // Kippschlupf der Schlupf, bei dem das Kippmoment wirkt
+    O = 1- (Lh^2/(Ls*Lr);                             // Streuung
+    x = (wr*Lr)/(Rr);                                 // Rotorhilfswert drehzahlabhängig
+    M = (2*Mk)/((s/sk) +(sk/s));                      // Drehmoment Formel von Kloss
+    */
   equation
        
+    // Gleichstrommotor
     MA=KF*IA;
     der(m_w1.w)=(1/J)*(MA-m_w1.M);
     UI=KF*m_w1.w;
