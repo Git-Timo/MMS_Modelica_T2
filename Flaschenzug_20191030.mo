@@ -378,7 +378,7 @@ package Flaschenzug
     model Lastmoment
     Ports.M_w m_w1 annotation(
         Placement(visible = true, transformation(origin = {-58, 24}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-58, 24}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-    constant Real Ml (unit "Nm") = 100;
+    parameter Real Ml (unit "Nm") = 100;
     equation
 Ml= m_w1.M;
     annotation(
@@ -506,7 +506,7 @@ Ml= m_w1.M;
       Placement(visible = true, transformation(origin = {-30, -2}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
     Modelle.Spannung spannung1 annotation(
       Placement(visible = true, transformation(origin = {-84, -2}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-    Flaschenzug.Modelle.Lastmoment lastmoment1 annotation(
+    Flaschenzug.Modelle.Lastmoment lastmoment1(Ml = 100)  annotation(
       Placement(visible = true, transformation(origin = {14, -4}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   equation
     connect(motor1.m_w, lastmoment1.m_w1) annotation(
