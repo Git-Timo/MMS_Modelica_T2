@@ -210,9 +210,9 @@ package Flaschenzug
     model Masse
       Flaschenzug.F_s f_s1 annotation(
         Placement(visible = true, transformation(origin = {0, 6}, extent = {{-48, -48}, {48, 48}}, rotation = 0), iconTransformation(origin = {2, 120}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-      parameter Modelica.SIunits.Mass m = 100 "Masse";
+      parameter Real m = 100;
       //Masse
-      Modelica.SIunits.Acceleration g = Modelica.Constants.g_n;
+      Real g = 9.81;
       //Erdbeschleunigung
       Real a, v;
     equation
@@ -284,72 +284,38 @@ package Flaschenzug
       Flaschenzug.Ports.M_w m_w annotation(
         Placement(visible = true, transformation(origin = {100, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {106, -2}, extent = {{-24, -24}, {24, 24}}, rotation = 0)));
       constant Real Pi = Modelica.Constants.pi;
-      constant Real Ub(unit = "V") = 1.4;              // Buerstenabfallspannung
-      constant Real Ra(unit = "Ohm") = 0.2;              // Ankerwiderstand
-      constant Real La(unit = "H") = 0;              // Ankerinduktivitaet
-      constant Real Jtot(unit = "kg.m2") = 0.005;              // Massentraegheit gesamt
-      constant Real kt(unit = "N.m/A") = 0.1;              // Drehmomentkonstante
-      constant Real Rfw(unit = "Ohm") = 0;              // Feldwicklungswiderstand
-      constant Real Lfw(unit = "H") = 0;              // Feldwicklungsinduktion
-      constant Real cf(unit = "N.m.s") = 0.0025;              // Reibungsverlustkonstante
-      constant Real cv(unit = "N.m.s2") = 0.000104;              // Ventilationsverlustkonstante
-      Real n(unit = "Hz");              // Drehzahl
-      Real Mf(unit = "N.m");              // Reibungsmoment
-      Real Mv(unit = "N.m");              // Ventilationsmoment
-      Real Ua(unit = "V");              // Ankerspannung
-      Real Ia(unit = "A");              // Ankerstrom
-      Real Ufw(unit = "V");              // Felwicklungsspannung
-      Real Ifw(unit = "A");              // Felwicklungsstrom
-      Real w(unit = "rad/s");              // Winkelgeschwindigkeit
+      parameter Real Ub(unit = "V") = 1.4;                    // Buerstenabfallspannung
+      parameter Real Ra(unit = "Ohm") = 10;                    // Ankerwiderstand
+      parameter Real La(unit = "H") = 0.1;                    // Ankerinduktivitaet
+      parameter Real Jtot(unit = "kg.m2") = 0.005;                    // Massentraegheit gesamt
+      parameter Real kt(unit = "N.m/A") = 0.05;                    // Drehmomentkonstante
+      parameter Real Rfw(unit = "Ohm") = 2;                    // Feldwicklungswiderstand
+      parameter Real Lfw(unit = "H") = 0.001;                    // Feldwicklungsinduktion
+      parameter Real cf(unit = "N.m.s") = 0.0025;                    // Reibungsverlustkonstante
+      parameter Real cv(unit = "N.m.s2") = 0.000104;                    // Ventilationsverlustkonstante
+      Real n(unit = "Hz");                    // Drehzahl
+      Real Mf(unit = "N.m");                    // Reibungsmoment
+      Real Mv(unit = "N.m");                    // Ventilationsmoment
+      Real Ua(unit = "V");                    // Ankerspannung
+      Real Ia(unit = "A");                    // Ankerstrom
+      Real Ufw(unit = "V");                    // Felwicklungsspannung
+      Real Ifw(unit = "A");                    // Felwicklungsstrom
+      Real w(unit = "rad/s");                    // Winkelgeschwindigkeit
       Flaschenzug.Ports.U_i u_i annotation(
         Placement(visible = true, transformation(origin = {-100, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-107, -1}, extent = {{-25, -25}, {25, 25}}, rotation = 0)));
     equation
 //Formel Heidrich Vorlesung 2 Gleichstrommotor
-      u_i.U = Ua + Ufw;
-// Reihenschluss
-      Ifw = Ia;
-//Reihenschluss
+      u_i.U = Ua + Ufw;// Reihenschluss
+      Ifw = Ia; //Reihenschluss
       Ia = u_i.I;
-      Ua = 2 * Ub + Ra * Ia + La * der(Ia) + kt * w;
-      Ufw = Rfw * Ifw + Lfw * der(Ifw);
-      kt * Ia = Jtot * der(w) + Mf + Mv + m_w.M;
-      Mf = cf * n;
-      Mv = sign(n) * cv * n ^ 2;
+      Ua = (2 * Ub) + (Ra * Ia) + (La * der(Ia)) + (kt * w);
+      Ufw = (Rfw * Ifw) + (Lfw * der(Ifw));
+      (kt * Ia) = (Jtot * der(w)) +( Mf + Mv + m_w.M);
+      Mf = (cf * n);
+      Mv = sign(n) * cv * (n ^ 2);
       w = 2 * Pi * n;
       der(m_w.w) = w;
-/*//Gleichstrommotor
-      parameter Real KF = 0.05 "Motorkonstante";
-      parameter Real RA = 10 "Ankerwiderstand";
-      parameter Real J = 0.0001 "Traegheit";
-      parameter Real UT = 240 "Eingangsspannung";
-      parameter Real LA = 0.01 "Induktivität";
-      parameter Real Tst = 0.005 "Zeitkonstante des Stromrichters";
-      parameter Real Kst = 2 "Verstärkungsfaktor des Stromes";
-      //parameter Boolean enable = true "On/Off Motor";
-      Real MA, UI, IA;
-      //https://www.elektro.net/wp-content/uploads/jahrbuecher/em12/Formeln.pdf
-                  https://www.autotec.ch/technik/pdf/emo_Drehstrommotor.pdf
-                  Einphasiger E-Motor http://www.energie.ch/asynchronmaschine
-                  // kleine Leistungen und schlechter Wirkungsgrad (gespalteter Stator -> SPaltmotor einphasiger Asynchronmotor
-                  M = m*p *(((1-O)*x)/(Ls*(1+O^2*x^2)))*(Us^2/wz^2); // Drehmoment in Funktion der Statorspannung Us
-                  R = wz/p;                                         // Leerlaufdrehzahl auch synchrone Drehzahl genannt
-                  s = wr/wz;                                        // Schlupf im Stillstand s=1 im Leerlauf s=0
-                  Mk = m*p *((1-O)/(2*O*Ls))*(Us^2/wz^2);           // Kippmoment das maximale Drehmoment des Motors im Betrieb
-                  sk = Rr/(wz*Lr*O);                                // Kippschlupf der Schlupf, bei dem das Kippmoment wirkt
-                  O = 1- (Lh^2/(Ls*Lr);                             // Streuung
-                  x = (wr*Lr)/(Rr);                                 // Rotorhilfswert drehzahlabhängig
-                  M = (2*Mk)/((s/sk) +(sk/s));                      // Drehmoment Formel von Kloss
-                  
-    equation
-    // Gleichstrommotor
-      MA = KF * IA;
-      der(m_w1.w) = 1 / J * (MA - m_w1.M);
-      UI = KF * m_w1.w;
-      UT = RA * IA + UI + LA * der(IA);
-    //Tst*der(UI)+UI=Kst*UT;
-      annotation(
-        Icon(graphics = {Rectangle(origin = {-35, -17}, fillColor = {186, 186, 186}, fillPattern = FillPattern.Horizontal, lineThickness = 1, extent = {{-65, 117}, {135, -83}}), Text(origin = {-40, 31}, extent = {{-10, 5}, {90, -65}}, textString = "Motor")}, coordinateSystem(initialScale = 0.1)));
-    */
+      
       annotation(
         Icon(graphics = {Rectangle(origin = {-35, -17}, fillColor = {186, 186, 186}, fillPattern = FillPattern.Horizontal, lineThickness = 1, extent = {{-65, 117}, {135, -83}}), Text(origin = {-40, 31}, extent = {{-10, 5}, {90, -65}}, textString = "Motor")}, coordinateSystem(initialScale = 0.1)));
     end Motor;
@@ -473,25 +439,25 @@ Ml= m_w1.M;
         Placement(visible = true, transformation(origin = {-60, -20}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
       Flaschenzug.Modelle.Seilwinde seilwinde(Durchmesser = 1)  annotation(
         Placement(visible = true, transformation(origin = {21, -15}, extent = {{-31, -31}, {31, 31}}, rotation = 0)));
-      Modelle.Masse masse(m = 1)  annotation(
-        Placement(visible = true, transformation(origin = {40, -56}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelle.Spannung spannung(U = 48)  annotation(
         Placement(visible = true, transformation(origin = {-94, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Modelle.Masse masse annotation(
+        Placement(visible = true, transformation(origin = {42, -54}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
     equation
       connect(motor.m_w, seilwinde.m_w1) annotation(
         Line(points = {{-38, -20}, {-14, -20}, {-14, -14}, {-16, -14}}));
-      connect(seilwinde.f_s1, masse.f_s1) annotation(
-        Line(points = {{40, 22}, {40, 22}, {40, -44}, {40, -44}}));
-  connect(spannung.u_i, motor.u_i) annotation(
+      connect(spannung.u_i, motor.u_i) annotation(
         Line(points = {{-84, 12}, {-84, 12}, {-84, -20}, {-82, -20}}));
+  connect(masse.f_s1, seilwinde.f_s1) annotation(
+        Line(points = {{42, -42}, {40, -42}, {40, 22}, {40, 22}}));
     end Motor_Seilwinde;
-
+    
     model Test_motor
-  Flaschenzug.Modelle.Motor motor1 annotation(
+      Flaschenzug.Modelle.Motor motor1 annotation(
         Placement(visible = true, transformation(origin = {-30, -2}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelle.Spannung spannung1 annotation(
+      Modelle.Spannung spannung1(U = 230)  annotation(
         Placement(visible = true, transformation(origin = {-84, -2}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Flaschenzug.Modelle.Lastmoment lastmoment1 annotation(
+      Flaschenzug.Modelle.Lastmoment lastmoment1(Ml = -50)  annotation(
         Placement(visible = true, transformation(origin = {14, -4}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
     equation
       connect(motor1.m_w, lastmoment1.m_w1) annotation(
@@ -500,18 +466,4 @@ Ml= m_w1.M;
         Line(points = {{-74, -2}, {-41, -2}}));
     end Test_motor;
   end Prototyp;
-
-  model Test_motor
-    Flaschenzug.Modelle.Motor motor1 annotation(
-      Placement(visible = true, transformation(origin = {-30, -2}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-    Modelle.Spannung spannung1 annotation(
-      Placement(visible = true, transformation(origin = {-84, -2}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-    Flaschenzug.Modelle.Lastmoment lastmoment1(Ml = 100)  annotation(
-      Placement(visible = true, transformation(origin = {14, -4}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  equation
-    connect(motor1.m_w, lastmoment1.m_w1) annotation(
-      Line(points = {{-20, -2}, {8, -2}, {8, -2}, {8, -2}}));
-    connect(spannung1.u_i, motor1.u_i) annotation(
-      Line(points = {{-74, -2}, {-41, -2}}));
-  end Test_motor;
 end Flaschenzug;
