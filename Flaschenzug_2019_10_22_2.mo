@@ -90,7 +90,7 @@ package Flaschenzug
   model Motor
     Flaschenzug.M_w m_w1 annotation(
       Placement(visible = true, transformation(origin = {28, -18}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {119, 1}, extent = {{-19, -19}, {19, 19}}, rotation = 0)));
-    /*//Gleichstrommotor
+    //Gleichstrommotor
         parameter Real KF = 0.05 "Motorkonstante";
         parameter Real RA = 10 "Ankerwiderstand";
         parameter Real J = 0.0001 "Traegheit";
@@ -101,17 +101,17 @@ package Flaschenzug
         //parameter Boolean enable = true "On/Off Motor";
         Real MA, UI, IA;
         //https://www.elektro.net/wp-content/uploads/jahrbuecher/em12/Formeln.pdf
-                    https://www.autotec.ch/technik/pdf/emo_Drehstrommotor.pdf
-                    Einphasiger E-Motor http://www.energie.ch/asynchronmaschine
+                    //https://www.autotec.ch/technik/pdf/emo_Drehstrommotor.pdf
+                    //Einphasiger E-Motor http://www.energie.ch/asynchronmaschine
                     // kleine Leistungen und schlechter Wirkungsgrad (gespalteter Stator -> SPaltmotor einphasiger Asynchronmotor
-                    M = m*p *(((1-O)*x)/(Ls*(1+O^2*x^2)))*(Us^2/wz^2); // Drehmoment in Funktion der Statorspannung Us
-                    R = wz/p;                                         // Leerlaufdrehzahl auch synchrone Drehzahl genannt
-                    s = wr/wz;                                        // Schlupf im Stillstand s=1 im Leerlauf s=0
-                    Mk = m*p *((1-O)/(2*O*Ls))*(Us^2/wz^2);           // Kippmoment das maximale Drehmoment des Motors im Betrieb
-                    sk = Rr/(wz*Lr*O);                                // Kippschlupf der Schlupf, bei dem das Kippmoment wirkt
-                    O = 1- (Lh^2/(Ls*Lr);                             // Streuung
-                    x = (wr*Lr)/(Rr);                                 // Rotorhilfswert drehzahlabhängig
-                    M = (2*Mk)/((s/sk) +(sk/s));                      // Drehmoment Formel von Kloss
+             //       M = m*p *(((1-O)*x)/(Ls*(1+O^2*x^2)))*(Us^2/wz^2); // Drehmoment in Funktion der Statorspannung Us
+              //      R = wz/p;                                         // Leerlaufdrehzahl auch synchrone Drehzahl genannt
+               //     s = wr/wz;                                        // Schlupf im Stillstand s=1 im Leerlauf s=0
+                //    Mk = m*p *((1-O)/(2*O*Ls))*(Us^2/wz^2);           // Kippmoment das maximale Drehmoment des Motors im Betrieb
+                 //   sk = Rr/(wz*Lr*O);                                // Kippschlupf der Schlupf, bei dem das Kippmoment wirkt
+                 //   O = 1- (Lh^2/(Ls*Lr);                             // Streuung
+                  //  x = (wr*Lr)/(Rr);                                 // Rotorhilfswert drehzahlabhängig
+                  //  M = (2*Mk)/((s/sk) +(sk/s));                      // Drehmoment Formel von Kloss
                     
       equation
     // Gleichstrommotor
@@ -122,7 +122,7 @@ package Flaschenzug
     //Tst*der(UI)+UI=Kst*UT;
         annotation(
           Icon(graphics = {Rectangle(origin = {-35, -17}, fillColor = {186, 186, 186}, fillPattern = FillPattern.Horizontal, lineThickness = 1, extent = {{-65, 117}, {135, -83}}), Text(origin = {-40, 31}, extent = {{-10, 5}, {90, -65}}, textString = "Motor")}, coordinateSystem(initialScale = 0.1)));
-      */
+      
   end Motor;
 
   model Decke
@@ -283,30 +283,31 @@ package Flaschenzug
       Flaschenzug.Ports.M_w m_w annotation(
         Placement(visible = true, transformation(origin = {100, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {106, -2}, extent = {{-24, -24}, {24, 24}}, rotation = 0)));
       constant Real Pi = Modelica.Constants.pi;
-      constant Real Ub(unit = "V") = 1.4;  // Buerstenabfallspannung
-      constant Real Ra(unit = "Ohm") = 0.2;  // Ankerwiderstand
-      constant Real La(unit = "H") = 0;  // Ankerinduktivitaet
-      constant Real Jtot(unit = "kg.m2") = 0.005;  // Massentraegheit gesamt
-      constant Real kt(unit = "N.m/A") = 0.1;  // Drehmomentkonstante
-      constant Real Rfw(unit = "Ohm") = 0;  // Feldwicklungswiderstand
-      constant Real Lfw(unit = "H") = 0;  // Feldwicklungsinduktion
-      constant Real cf(unit = "N.m.s") = 0.0025;  // Reibungsverlustkonstante
-      constant Real cv(unit = "N.m.s2") = 0.000104;  // Ventilationsverlustkonstante
-      
-      Real n(unit = "Hz");  // Drehzahl
-      Real Mf(unit = "N.m");  // Reibungsmoment
-      Real Mv(unit = "N.m");  // Ventilationsmoment
-      Real Ua(unit = "V");  // Ankerspannung
-      Real Ia(unit = "A");  // Ankerstrom
-      Real Ufw(unit = "V");  // Felwicklungsspannung
-      Real Ifw(unit = "A");  // Felwicklungsstrom
-      Real w(unit = "rad/s");  // Winkelgeschwindigkeit
+      constant Real Ub(unit = "V") = 1.4;        // Buerstenabfallspannung
+      constant Real Ra(unit = "Ohm") = 0.2;        // Ankerwiderstand
+      constant Real La(unit = "H") = 0;        // Ankerinduktivitaet
+      constant Real Jtot(unit = "kg.m2") = 0.005;        // Massentraegheit gesamt
+      constant Real kt(unit = "N.m/A") = 0.1;        // Drehmomentkonstante
+      constant Real Rfw(unit = "Ohm") = 0;        // Feldwicklungswiderstand
+      constant Real Lfw(unit = "H") = 0;        // Feldwicklungsinduktion
+      constant Real cf(unit = "N.m.s") = 0.0025;        // Reibungsverlustkonstante
+      constant Real cv(unit = "N.m.s2") = 0.000104;        // Ventilationsverlustkonstante
+      Real n(unit = "Hz");        // Drehzahl
+      Real Mf(unit = "N.m");        // Reibungsmoment
+      Real Mv(unit = "N.m");        // Ventilationsmoment
+      Real Ua(unit = "V");        // Ankerspannung
+      Real Ia(unit = "A");        // Ankerstrom
+      Real Ufw(unit = "V");        // Felwicklungsspannung
+      Real Ifw(unit = "A");        // Felwicklungsstrom
+      Real w(unit = "rad/s");        // Winkelgeschwindigkeit
       Flaschenzug.Ports.U_i u_i annotation(
         Placement(visible = true, transformation(origin = {-100, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-107, -1}, extent = {{-25, -25}, {25, 25}}, rotation = 0)));
     equation
 //Formel Heidrich Vorlesung 2 Gleichstrommotor
-      u_i.U = Ua + Ufw;// Reihenschluss
-      Ifw = Ia; //Reihenschluss
+      u_i.U = Ua + Ufw;
+// Reihenschluss
+      Ifw = Ia;
+//Reihenschluss
       Ia = u_i.I;
       Ua = 2 * Ub + Ra * Ia + La * der(Ia) + kt * w;
       Ufw = Rfw * Ifw + Lfw * der(Ifw);
@@ -422,17 +423,17 @@ package Flaschenzug
     end Prototyp_2;
 
     model Final_Prototyp
-      Flaschenzug.Modelle.Getriebe getriebe(Uebersetzung = 1 / 3, Wirkungsgrad = 100) annotation(
+      Flaschenzug.Modelle.Getriebe getriebe(Uebersetzung = 3, Wirkungsgrad = 100) annotation(
         Placement(visible = true, transformation(origin = {-23, -65}, extent = {{-15, -15}, {15, 15}}, rotation = 0)));
       Flaschenzug.Modelle.Seilwinde seilwinde(Durchmesser = 1) annotation(
         Placement(visible = true, transformation(origin = {30, -68}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-      Flaschenzug.Modelle.Flaschenzug_Modell flaschenzug_Modell annotation(
+      Flaschenzug.Modelle.Flaschenzug_Modell flaschenzug_Modell(Zugwinkel(displayUnit = "rad"))  annotation(
         Placement(visible = true, transformation(origin = {66, 2}, extent = {{-30, -30}, {30, 30}}, rotation = 0)));
-      Flaschenzug.Modelle.Masse masse(m = 3) annotation(
+      Flaschenzug.Modelle.Masse masse(m = 9) annotation(
         Placement(visible = true, transformation(origin = {66, -64}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
       Flaschenzug.Modelle.Decke decke annotation(
         Placement(visible = true, transformation(origin = {66, 66}, extent = {{-32, -32}, {32, 32}}, rotation = 0)));
-      Flaschenzug.Modelle.Spannung spannung annotation(
+      Flaschenzug.Modelle.Spannung spannung(U = 48)  annotation(
         Placement(visible = true, transformation(origin = {-90, -60}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
       Flaschenzug.Modelle.Motor motor annotation(
         Placement(visible = true, transformation(origin = {-60, -68}, extent = {{-12, -12}, {12, 12}}, rotation = 0)));
