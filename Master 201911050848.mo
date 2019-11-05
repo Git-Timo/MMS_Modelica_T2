@@ -183,53 +183,6 @@ package Flaschenzug
       Icon(graphics = {Rectangle(origin = {0, -74}, fillPattern = FillPattern.Solid, extent = {{-100, 2}, {100, -2}}), Line(origin = {-29.3731, -69.4329}, points = {{-5, -4}, {5, 4}}), Line(origin = {41.0299, -69.5523}, points = {{-5, -4}, {5, 4}}), Line(origin = {-80.7164, -69.6866}, points = {{-5, -4}, {5, 4}}), Line(origin = {55.4179, -69.2687}, points = {{-5, -4}, {5, 4}}), Line(origin = {-60.0597, -70.0299}, points = {{-5, -4}, {5, 4}}), Line(origin = {-3.38808, -69.7762}, points = {{-5, -4}, {5, 4}}), Line(origin = {-91.9701, -69.9702}, points = {{-5, -4}, {5, 4}}), Line(origin = {-91.9701, -69.9702}, points = {{-5, -4}, {5, 4}}), Line(origin = {-49.7462, -69.7463}, points = {{-5, -4}, {5, 4}}), Line(origin = {-80.7164, -69.6866}, points = {{-5, -4}, {5, 4}}), Line(origin = {80.7463, -70.2687}, points = {{-5, -4}, {5, 4}}), Line(origin = {26.6418, -69.5225}, points = {{-5, -4}, {5, 4}}), Line(origin = {-91.9701, -69.9702}, points = {{-5, -4}, {5, 4}}), Line(origin = {11.6269, -69.4926}, points = {{-5, -4}, {5, 4}}), Line(origin = {-17.3283, -69.9254}, points = {{-5, -4}, {5, 4}}), Line(origin = {67.2985, -69.9254}, points = {{-5, -4}, {5, 4}}), Line(origin = {-39.9701, -69.3732}, points = {{-5, -4}, {5, 4}}), Line(origin = {-72.3432, -69.4627}, points = {{-5, -4}, {5, 4}}), Polygon(origin = {0, 12}, fillColor = {211, 60, 14}, fillPattern = FillPattern.CrossDiag, points = {{-100, -84}, {0, 88}, {100, -84}, {34, -84}, {-100, -84}}), Ellipse(origin = {60, 84}, fillColor = {30, 30, 238}, fillPattern = FillPattern.Solid, extent = {{-38, 12}, {38, -12}}, endAngle = 360), Ellipse(origin = {77, 69}, fillColor = {48, 141, 255}, fillPattern = FillPattern.Solid, extent = {{-25, 9}, {25, -9}}, endAngle = 360), Ellipse(origin = {52, 71}, fillColor = {103, 117, 244}, fillPattern = FillPattern.Solid, extent = {{14, 9}, {-14, -9}}, endAngle = 360), Ellipse(origin = {-124, 128}, fillColor = {255, 255, 0}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-8, 8}, {56, -62}}, startAngle = 270, endAngle = 360), Line(origin = {-95.597, 86.1045}, points = {{-4, 13}, {22, -109}}, color = {255, 255, 0}, thickness = 0.5), Line(origin = {-95, 86.7015}, points = {{-4, 13}, {38, -85}}, color = {255, 255, 0}, thickness = 0.5), Line(origin = {-95.0299, 86.0448}, points = {{-4, 13}, {62, -41}}, color = {255, 255, 0}, thickness = 0.5), Line(origin = {-94.7462, 87.2687}, points = {{-4, 13}, {50, -63}}, color = {255, 255, 0}, thickness = 0.5), Line(origin = {-94.1492, 87.2386}, points = {{-4, 13}, {72, -19}}, color = {255, 255, 0}, thickness = 0.5), Polygon(origin = {-52, 36}, fillColor = {81, 75, 74}, fillPattern = FillPattern.Solid, points = {{-12, -46}, {12, -6}, {12, 46}, {-12, 46}, {-12, 40}, {-12, -46}})}, coordinateSystem(initialScale = 0.1)));
   end Decke;
 
-  model Prototyp_1
-    Flaschenzug.Masse masse1(m = 40) annotation(
-      Placement(visible = true, transformation(origin = {0, -46}, extent = {{-8, -8}, {8, 8}}, rotation = 0)));
-    Flaschenzug.Flaschenzug_Modell flaschenzug_Modell1(n = 4, s = 4) annotation(
-      Placement(visible = true, transformation(origin = {15, -7}, extent = {{-13, -13}, {13, 13}}, rotation = 0)));
-    Flaschenzug.Decke decke1 annotation(
-      Placement(visible = true, transformation(origin = {17, 39}, extent = {{-25, -25}, {25, 25}}, rotation = 0)));
-    Flaschenzug.Masse masse2(m = 10) annotation(
-      Placement(visible = true, transformation(origin = {18, -46}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
-  equation
-    connect(masse2.f_s1, flaschenzug_Modell1.f_s3) annotation(
-      Line(points = {{18.12, -38.8}, {16.62, -38.8}, {16.62, -40.8}, {15.12, -40.8}, {15.12, -21.8}}));
-    connect(flaschenzug_Modell1.f_s2, decke1.f_s1) annotation(
-      Line(points = {{16, 8}, {16, 13}, {17, 13}, {17, 17}}));
-    connect(masse1.f_s1, flaschenzug_Modell1.f_s1) annotation(
-      Line(points = {{0.16, -36.4}, {0.16, -10.4}}));
-  end Prototyp_1;
-
-  model Prototyp_2
-    Flaschenzug.Masse masse1(m = 10) annotation(
-      Placement(visible = true, transformation(origin = {59, -41}, extent = {{-13, -13}, {13, 13}}, rotation = 0)));
-    Flaschenzug.Seilwinde seilwinde1 annotation(
-      Placement(visible = true, transformation(origin = {12, -46}, extent = {{-22, -22}, {22, 22}}, rotation = 0)));
-    Flaschenzug.Flaschenzug_Modell flaschenzug_Modell1(Flaschengewicht_unten = 0) annotation(
-      Placement(visible = true, transformation(origin = {60, 4}, extent = {{-18, -18}, {18, 18}}, rotation = 0)));
-    Flaschenzug.Decke decke1 annotation(
-      Placement(visible = true, transformation(origin = {60, 64}, extent = {{-28, -28}, {28, 28}}, rotation = 0)));
-    Flaschenzug.Getriebe getriebe1(Wirkungsgrad = 100) annotation(
-      Placement(visible = true, transformation(origin = {-39, -45}, extent = {{-11, -11}, {11, 11}}, rotation = 0)));
-    Flaschenzug.Motor motor(UT = 232) annotation(
-      Placement(visible = true, transformation(origin = {-86, -46}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  equation
-    connect(flaschenzug_Modell1.f_s1, seilwinde1.f_s1) annotation(
-      Line(points = {{39, -1}, {25, -1}, {25, -20}}));
-    connect(getriebe1.m_w2, seilwinde1.m_w1) annotation(
-      Line(points = {{-26, -48}, {-20, -48}, {-20, -46}, {-14, -46}}));
-    connect(flaschenzug_Modell1.f_s2, decke1.f_s1) annotation(
-      Line(points = {{60.18, 25.06}, {60.18, 39.06}}));
-    connect(masse1.f_s1, flaschenzug_Modell1.f_s3) annotation(
-      Line(points = {{59, -25}, {59, -24.4}, {61.26, -24.4}, {61.26, -17.4}}));
-    connect(motor.m_w1, getriebe1.m_w1) annotation(
-      Line(points = {{-74, -46}, {-54, -46}, {-54, -40}, {-53, -40}}));
-    annotation(
-      Diagram(coordinateSystem(initialScale = 0.1), graphics = {Rectangle(origin = {0, 17}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-100, 83}, {100, -117}}), Rectangle(origin = {0, -59}, fillPattern = FillPattern.Solid, extent = {{-100, 3}, {100, -3}})}),
-      Icon);
-  end Prototyp_2;
-
   package Ports
     connector M_w
       flow Modelica.SIunits.Momentum M;
@@ -288,12 +241,18 @@ package Flaschenzug
       parameter Modelica.SIunits.Weight Flaschengewicht_unten = 2 "[kg]";
       Modelica.SIunits.Acceleration g = Modelica.Constants.g_n; //Erdbeschleunigung
       Real v;  //Geschwindigkeit der unteren Flasche
+      Real Fges; //Flaschengewicht und Beschleunigungskraft
+      Real Zwinkel; //Umrechnung Zugwinkel von Grad in Rad/s
+      constant Real Pi=2*Modelica.Math.asin(1.0);
     equation
     //if(f_s3.s==f_s2.s){ //Stoppen, wenn Flaschenzug ganz zusammengefahren
-      f_s1.F=(f_s3.F-(Flaschengewicht_unten*g)-(Flaschengewicht_unten*der(v)))/n;
+    
+      Fges=(f_s3.F-(Flaschengewicht_unten*g)-(Flaschengewicht_unten*der(v)));
+      f_s1.F=Fges/n;
       v=der(f_s3.s);
-      f_s3.s = f_s2.s - s - (f_s1.s / n);
-      f_s2.F = f_s3.F + cos(Zugwinkel) * f_s1.F - Flaschengewicht_unten * g;
+      Zwinkel=Zugwinkel*(180/Pi);
+      f_s3.s = f_s1.s / n;
+      f_s2.F = f_s3.F + (cos(Zwinkel) * f_s1.F) - (Flaschengewicht_unten * g);
       annotation(
         Icon(graphics = {Rectangle(origin = {-3, -65}, fillPattern = FillPattern.Solid, extent = {{-1, 3}, {9, -35}}), Rectangle(origin = {-3, 69}, fillPattern = FillPattern.Solid, extent = {{-1, 31}, {9, -47}}), Line(origin = {-69.18, 25}, points = {{53, 58}, {-31, -56}}, color = {255, 0, 0}, thickness = 1), Line(origin = {-20.75, -33.27}, points = {{11, 57}, {9, -51}}, color = {255, 85, 0}, thickness = 1), Line(origin = {22.42, 44.31}, points = {{0, 27}, {-8, -127}}, color = {255, 85, 0}, thickness = 1), Line(origin = {43.12, -11.31}, points = {{-31, 32}, {-41, -50}}, color = {255, 85, 0}, thickness = 1), Ellipse(origin = {4, 71}, fillColor = {144, 144, 144}, fillPattern = FillPattern.Solid, lineThickness = 0.5, extent = {{-24, 23}, {20, -21}}, endAngle = 360), Ellipse(origin = {4, -84}, fillColor = {144, 144, 144}, fillPattern = FillPattern.Solid, lineThickness = 0.5, extent = {{-18, 16}, {12, -14}}, endAngle = 360), Ellipse(origin = {1, 21}, fillColor = {144, 144, 144}, fillPattern = FillPattern.Solid, lineThickness = 0.5, extent = {{-13, 15}, {13, -11}}, endAngle = 360)}, coordinateSystem(initialScale = 0.1)));
     end Flaschenzug_Modell;
@@ -449,51 +408,6 @@ Ml= m_w1.M;
   end Modelle;
 
   package Prototyp
-    model Prototyp_1
-      Flaschenzug.Masse masse1(m = 40) annotation(
-        Placement(visible = true, transformation(origin = {0, -46}, extent = {{-8, -8}, {8, 8}}, rotation = 0)));
-      Flaschenzug.Flaschenzug_Modell flaschenzug_Modell1(n = 4, s = 4) annotation(
-        Placement(visible = true, transformation(origin = {15, -7}, extent = {{-13, -13}, {13, 13}}, rotation = 0)));
-      Flaschenzug.Decke decke1 annotation(
-        Placement(visible = true, transformation(origin = {17, 39}, extent = {{-25, -25}, {25, 25}}, rotation = 0)));
-      Flaschenzug.Masse masse2(m = 10) annotation(
-        Placement(visible = true, transformation(origin = {18, -46}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
-    equation
-      connect(masse2.f_s1, flaschenzug_Modell1.f_s3) annotation(
-        Line(points = {{18.12, -38.8}, {16.62, -38.8}, {16.62, -40.8}, {15.12, -40.8}, {15.12, -21.8}}));
-      connect(flaschenzug_Modell1.f_s2, decke1.f_s1) annotation(
-        Line(points = {{16, 8}, {16, 13}, {17, 13}, {17, 17}}));
-      connect(masse1.f_s1, flaschenzug_Modell1.f_s1) annotation(
-        Line(points = {{0.16, -36.4}, {0.16, -10.4}}));
-    end Prototyp_1;
-
-    model Prototyp_2
-      Flaschenzug.Masse masse1(m = 10) annotation(
-        Placement(visible = true, transformation(origin = {59, -41}, extent = {{-13, -13}, {13, 13}}, rotation = 0)));
-      Flaschenzug.Seilwinde seilwinde1 annotation(
-        Placement(visible = true, transformation(origin = {12, -46}, extent = {{-22, -22}, {22, 22}}, rotation = 0)));
-      Flaschenzug.Flaschenzug_Modell flaschenzug_Modell1(Flaschengewicht_unten = 0) annotation(
-        Placement(visible = true, transformation(origin = {60, 4}, extent = {{-18, -18}, {18, 18}}, rotation = 0)));
-      Flaschenzug.Decke decke1 annotation(
-        Placement(visible = true, transformation(origin = {60, 64}, extent = {{-28, -28}, {28, 28}}, rotation = 0)));
-      Flaschenzug.Getriebe getriebe1(Wirkungsgrad = 100) annotation(
-        Placement(visible = true, transformation(origin = {-39, -45}, extent = {{-11, -11}, {11, 11}}, rotation = 0)));
-      Flaschenzug.Motor motor(UT = 232) annotation(
-        Placement(visible = true, transformation(origin = {-86, -46}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-    equation
-      connect(flaschenzug_Modell1.f_s1, seilwinde1.f_s1) annotation(
-        Line(points = {{39, -1}, {25, -1}, {25, -20}}));
-      connect(getriebe1.m_w2, seilwinde1.m_w1) annotation(
-        Line(points = {{-26, -48}, {-20, -48}, {-20, -46}, {-14, -46}}));
-      connect(flaschenzug_Modell1.f_s2, decke1.f_s1) annotation(
-        Line(points = {{60.18, 25.06}, {60.18, 39.06}}));
-      connect(masse1.f_s1, flaschenzug_Modell1.f_s3) annotation(
-        Line(points = {{59, -25}, {59, -24.4}, {61.26, -24.4}, {61.26, -17.4}}));
-      connect(motor.m_w1, getriebe1.m_w1) annotation(
-        Line(points = {{-74, -46}, {-54, -46}, {-54, -40}, {-53, -40}}));
-      annotation(
-        Diagram(coordinateSystem(initialScale = 0.1), graphics = {Rectangle(origin = {0, 17}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-100, 83}, {100, -117}}), Rectangle(origin = {0, -59}, fillPattern = FillPattern.Solid, extent = {{-100, 3}, {100, -3}})}));
-    end Prototyp_2;
     
     model Test_motor
       Flaschenzug.Modelle.Motor motor1 annotation(
@@ -562,5 +476,23 @@ Ml= m_w1.M;
       annotation(
         Diagram(graphics = {Rectangle(origin = {0, -81}, fillPattern = FillPattern.Solid, extent = {{-100, 3}, {100, -3}}), Rectangle(origin = {0, 17}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-100, 83}, {100, -117}}), Rectangle(origin = {0, -83}, fillPattern = FillPattern.Solid, extent = {{-100, 3}, {100, -3}})}));
     end Final_Prototyp;
+
+    model Flaschenzug_Massen
+    Flaschenzug.Modelle.Flaschenzug_Modell flaschenzug_Modell1 annotation(
+        Placement(visible = true, transformation(origin = {10, 4}, extent = {{-36, -36}, {36, 36}}, rotation = 0)));
+  Flaschenzug.Modelle.Masse masse1 annotation(
+        Placement(visible = true, transformation(origin = {-33, -61}, extent = {{-17, -17}, {17, 17}}, rotation = 0)));
+  Flaschenzug.Modelle.Masse masse2 annotation(
+        Placement(visible = true, transformation(origin = {13, -107}, extent = {{-21, -21}, {21, 21}}, rotation = 0)));
+  Flaschenzug.Modelle.Decke decke1 annotation(
+        Placement(visible = true, transformation(origin = {11, 113}, extent = {{-31, -31}, {31, 31}}, rotation = 0)));
+    equation
+      connect(decke1.f_s1, flaschenzug_Modell1.f_s2) annotation(
+        Line(points = {{10, 86}, {10, 86}, {10, 46}, {10, 46}}));
+      connect(flaschenzug_Modell1.f_s3, masse2.f_s1) annotation(
+        Line(points = {{12, -38}, {12, -38}, {12, -82}, {14, -82}}));
+      connect(flaschenzug_Modell1.f_s1, masse1.f_s1) annotation(
+        Line(points = {{-32, -6}, {-32, -6}, {-32, -40}, {-32, -40}}));
+    end Flaschenzug_Massen;
   end Prototyp;
 end Flaschenzug;
