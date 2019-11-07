@@ -28,7 +28,7 @@ package Flaschenzug
   package Modelle
 
     model Spannung
-      parameter Real U(unit "V") = 230;
+      parameter Real U(unit "V") = 36;
       Real I (unit"A");
       Flaschenzug.Ports.U_i u_i annotation(
         Placement(visible = true, transformation(origin = {100, -2}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {104, 0}, extent = {{-24, -24}, {24, 24}}, rotation = 0)));
@@ -46,22 +46,23 @@ package Flaschenzug
       constant Real Pi = Modelica.Constants.pi;
       parameter Real Ub(unit = "V") = 1.4;
       // Buerstenabfallspannung
-      parameter Real Ra(unit = "Ohm") = 10;
+      parameter Real Ra(unit = "Ohm") = 20;
       // Ankerwiderstand
-      parameter Real La(unit = "H") = 0.1;
+      parameter Real La(unit = "H") = 1;
       // Ankerinduktivitaet
-      parameter Real Jtot(unit = "kg.m2") = 0.005;
+      parameter Real Jtot(unit = "kg.m2") = 0.1236;
       // Massentraegheit gesamt
-      parameter Real kt(unit = "N.m/A") = 0.05;
+      parameter Real kt(unit = "N.m/A") = 0.15;
       // Drehmomentkonstante
       parameter Real Rfw(unit = "Ohm") = 2;
       // Feldwicklungswiderstand
       parameter Real Lfw(unit = "H") = 0.001;
       // Feldwicklungsinduktion
-      parameter Real cf(unit = "N.m.s") = 0.0025;
+      parameter Real cf(unit = "N.m.s") = 0.025;
       // Reibungsverlustkonstante
-      parameter Real cv(unit = "N.m.s2") = 0.000104;
-      // Ventilationsverlustkonstante
+      parameter Real cv(unit = "N.m.s2") = 0.0104;
+        // Ventilationsverlustkonstante
+      
       Real n(unit = "Hz");
       // Drehzahl
       Real Mf(unit = "N.m");
@@ -78,14 +79,15 @@ package Flaschenzug
       // Felwicklungsstrom
       Real w(unit = "rad/s");
       // Winkelgeschwindigkeit
+      Real P (unit= "W");
       Flaschenzug.Ports.U_i u_i annotation(
         Placement(visible = true, transformation(origin = {-100, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-107, -1}, extent = {{-25, -25}, {25, 25}}, rotation = 0)));
     equation
-//Formel Heidrich Vorlesung 2 Gleichstrommotor
+    //Formel Heidrich Vorlesung 2 Gleichstrommotor
       u_i.U = Ua + Ufw;
-// Reihenschluss
+    // Reihenschluss
       Ifw = Ia;
-//Reihenschluss
+    //Reihenschluss
       Ia = u_i.I;
       Ua = 2 * Ub + Ra * Ia + La * der(Ia) + kt * w;
       Ufw = Rfw * Ifw + Lfw * der(Ifw);
@@ -94,6 +96,8 @@ package Flaschenzug
       Mv = sign(n) * cv * n ^ 2;
       w = 2 * Pi * n;
       der(m_w.w) = w;
+      P= u_i.U * Ia;
+      
       annotation(
         Icon(graphics = {Rectangle(origin = {-35, -17}, fillColor = {186, 186, 186}, fillPattern = FillPattern.Horizontal, lineThickness = 1, extent = {{-65, 117}, {135, -83}}), Text(origin = {-40, 31}, extent = {{-10, 5}, {90, -65}}, textString = "Motor")}, coordinateSystem(initialScale = 0.1)));
     end Motor;
@@ -237,9 +241,9 @@ package Flaschenzug
     model Test_motor
       Flaschenzug.Modelle.Motor motor1 annotation(
         Placement(visible = true, transformation(origin = {-30, -2}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelle.Spannung spannung1(U = 230) annotation(
+      Modelle.Spannung spannung1(U = 36) annotation(
         Placement(visible = true, transformation(origin = {-84, -2}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Flaschenzug.Modelle.Lastmoment lastmoment1(Ml = -50) annotation(
+      Flaschenzug.Modelle.Lastmoment lastmoment1(Ml = 50) annotation(
         Placement(visible = true, transformation(origin = {24, -2}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
     equation
       connect(motor1.m_w, lastmoment1.m_w1) annotation(
