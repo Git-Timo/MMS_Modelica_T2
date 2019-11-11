@@ -44,25 +44,20 @@ package Flaschenzug
       Flaschenzug.Ports.M_w m_w annotation(
         Placement(visible = true, transformation(origin = {100, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {106, -2}, extent = {{-24, -24}, {24, 24}}, rotation = 0)));
       constant Real Pi = Modelica.Constants.pi;
-      parameter Real Ub(unit = "V") = 1.4;
+      parameter Real Ub(unit = "V") = 0.8;
       // Buerstenabfallspannung
-      parameter Real Ra(unit = "Ohm") = 20;
+      parameter Real Ra(unit = "Ohm") = 0.608;
       // Ankerwiderstand
-      parameter Real La(unit = "H") = 1;
+      parameter Real La(unit = "H") = 0.000423;
       // Ankerinduktivitaet
-      parameter Real Jtot(unit = "kg.m2") = 0.1236;
+      parameter Real Jtot(unit = "kg.m2") = 0.018;
       // Massentraegheit gesamt
-      parameter Real kt(unit = "N.m/A") = 0.15;
+      parameter Real kt(unit = "N.m/A") = 0.091534;
       // Drehmomentkonstante
-      parameter Real Rfw(unit = "Ohm") = 2;
-      // Feldwicklungswiderstand
-      parameter Real Lfw(unit = "H") = 0.001;
-      // Feldwicklungsinduktion
-      parameter Real cf(unit = "N.m.s") = 0.025;
+      parameter Real cf(unit = "N.m.s") = 0.000000;
       // Reibungsverlustkonstante
-      parameter Real cv(unit = "N.m.s2") = 0.0104;
+      parameter Real cv(unit = "N.m.s2") = 0.000005;
         // Ventilationsverlustkonstante
-      
       Real n(unit = "Hz");
       // Drehzahl
       Real Mf(unit = "N.m");
@@ -73,27 +68,32 @@ package Flaschenzug
       // Ankerspannung
       Real Ia(unit = "A");
       // Ankerstrom
-      Real Ufw(unit = "V");
-      // Felwicklungsspannung
-      Real Ifw(unit = "A");
-      // Felwicklungsstrom
       Real w(unit = "rad/s");
       // Winkelgeschwindigkeit
+      Real ke (unit ="N.m/A ");
+      //Spannungskonstante
+      Real Me(unit="N.m");
+      //Luftspaltdrehmoment
       Real P (unit= "W");
+      
+      Real test(unit="N.m");
+     
       Flaschenzug.Ports.U_i u_i annotation(
         Placement(visible = true, transformation(origin = {-100, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-107, -1}, extent = {{-25, -25}, {25, 25}}, rotation = 0)));
     equation
-    //Formel Heidrich Vorlesung 2 Gleichstrommotor
-      u_i.U = Ua + Ufw;
-    // Reihenschluss
-      Ifw = Ia;
-    //Reihenschluss
+//Formel Heidrich Vorlesung 2 Gleichstrommotor
+      u_i.U = Ua;
+//Reihenschluss
       Ia = u_i.I;
-      Ua = 2 * Ub + Ra * Ia + La * der(Ia) + kt * w;
-      Ufw = Rfw * Ifw + Lfw * der(Ifw);
-      kt * Ia = Jtot * der(w) + Mf + Mv + m_w.M;
+      Ua = 2 * Ub + Ra * Ia + La * der(Ia) + ke * n;
+      Jtot * der(w) = Me- Mf - Mv - m_w.M;
+      Me=kt*Ia;
+      kt=ke/(2*Pi);
       Mf = cf * n;
       Mv = sign(n) * cv * n ^ 2;
+      
+      test=m_w.M;
+      
       w = 2 * Pi * n;
       der(m_w.w) = w;
       P= u_i.U * Ia;
@@ -239,17 +239,17 @@ package Flaschenzug
 
   package Prototyp
     model Test_motor
-      Flaschenzug.Modelle.Motor motor1 annotation(
+      Flaschenzug.Modelle.Motor motor1(Jtot = 0.018,cf = 0.000000, cv = 0.000005)  annotation(
         Placement(visible = true, transformation(origin = {-30, -2}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelle.Spannung spannung1(U = 36) annotation(
-        Placement(visible = true, transformation(origin = {-84, -2}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Flaschenzug.Modelle.Lastmoment lastmoment1(Ml = 50) annotation(
+      Flaschenzug.Modelle.Spannung spannung1(U = 48) annotation(
+        Placement(visible = true, transformation(origin = {-84, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Flaschenzug.Modelle.Lastmoment lastmoment1(Ml = -6) annotation(
         Placement(visible = true, transformation(origin = {24, -2}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
     equation
+      connect(spannung1.u_i, motor1.u_i) annotation(
+        Line(points = {{-74, 0}, {-57.5, 0}, {-57.5, -2}, {-41, -2}}));
       connect(motor1.m_w, lastmoment1.m_w1) annotation(
         Line(points = {{-20, -2}, {13, -2}}));
-      connect(spannung1.u_i, motor1.u_i) annotation(
-        Line(points = {{-74, -2}, {-41, -2}}));
     annotation(
         Icon(graphics = {Polygon(origin = {30, 80}, lineColor = {63, 188, 44}, fillColor = {88, 195, 64}, fillPattern = FillPattern.Solid, points = {{70, -82}, {-30, 20}, {-30, -20}, {-30, -178}, {70, -82}}), Rectangle(origin = {-70, 41}, lineColor = {53, 202, 46}, fillColor = {55, 173, 65}, fillPattern = FillPattern.Solid, extent = {{-30, 9}, {70, -89}})}));end Test_motor;
 
