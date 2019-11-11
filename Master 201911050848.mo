@@ -104,7 +104,7 @@ package Flaschenzug
 
     model Getriebe
       parameter Real Uebersetzung = 3 "Übersetzung";
-      parameter Modelica.SIunits.Efficiency Wirkungsgrad = 95 "Wirkungsgrad [%]";
+      parameter Modelica.SIunits.Efficiency Wirkungsgrad = 95 "Wirkungsgrad";
       parameter Modelica.SIunits.MomentOfInertia J_Eingangswelle = 0.05 "Trägheitsmoment Eingngswellegwelle [kgm2]";
       parameter Modelica.SIunits.MomentOfInertia J_Ausgangsewelle = 0.05 "Trägheitsmoment Ausgangswelle [kgm2]";
       Real v_w_ein;
@@ -114,10 +114,10 @@ package Flaschenzug
   Flaschenzug.Ports.M_w m_w1 annotation(
         Placement(visible = true, transformation(origin = {-124, 38}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-120, 40}, extent = {{-18, -18}, {18, 18}}, rotation = 0)));
     equation
-      m_w.M = m_w1.M * Uebersetzung * (Wirkungsgrad / 100) - v_w_ein * J_Eingangswelle - v_w_aus * J_Ausgangsewelle;
-      m_w.w = m_w1.w / Uebersetzung;
-      v_w_ein = der(m_w1.w);
-      v_w_aus = der(m_w.w);
+      m_w.M =( m_w1.M * Uebersetzung * Wirkungsgrad) - ((v_w_aus*J_Ausgangsewelle) - (v_w_ein*J_Eingangswelle));
+      -m_w.w = m_w1.w / Uebersetzung;
+      v_w_ein = der(m_w1.w);    //Geschwindigkeit der Eingangswelle
+      v_w_aus = der(m_w.w);     //Geschwindigkeit der Ausgangswelle
       annotation(
         Icon(graphics = {Rectangle(origin = {-77, 61}, lineColor = {70, 70, 70}, lineThickness = 4, extent = {{-23, 39}, {177, -159}}), Rectangle(origin = {91, -32}, fillColor = {52, 52, 52}, fillPattern = FillPattern.Solid, extent = {{-161, 10}, {11, -8}}), Rectangle(origin = {-75, 38}, fillColor = {52, 52, 52}, fillPattern = FillPattern.Solid, extent = {{-27, 6}, {119, -4}}), Rectangle(origin = {-9, 68}, fillColor = {159, 159, 159}, fillPattern = FillPattern.Forward, extent = {{-10, 7}, {20, -65}}), Rectangle(origin = {-19, -4}, fillColor = {106, 106, 106}, fillPattern = FillPattern.Forward, extent = {{-4, 7}, {34, -81}}), Rectangle(origin = {32, 59}, fillPattern = FillPattern.Solid, lineThickness = 0.5, extent = {{-10, 7}, {12, -15}}), Rectangle(origin = {72, 58}, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-54, 0}, {-26, -6}}), Ellipse(origin = {32, 56}, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-6, 6}, {8, -8}}, endAngle = 360), Rectangle(origin = {-82, 27}, fillPattern = FillPattern.Solid, lineThickness = 0.5, extent = {{-10, 7}, {12, -15}}), Ellipse(origin = {-82, 24}, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-6, 6}, {8, -8}}, endAngle = 360), Rectangle(origin = {-42, 26}, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-54, 0}, {-26, -6}}), Rectangle(origin = {-82, 59}, fillPattern = FillPattern.Solid, lineThickness = 0.5, extent = {{-10, 7}, {12, -15}}), Ellipse(origin = {-82, 56}, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-6, 6}, {8, -8}}, endAngle = 360), Rectangle(origin = {-42, 58}, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-54, 0}, {-24, -6}}), Rectangle(origin = {-56, -7}, fillPattern = FillPattern.Solid, lineThickness = 0.5, extent = {{-10, 7}, {12, -15}}), Ellipse(origin = {-56, -10}, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-6, 6}, {8, -8}}, endAngle = 360), Rectangle(origin = {-16, -8}, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-54, 0}, {-24, -6}}), Rectangle(origin = {-56, -47}, fillPattern = FillPattern.Solid, lineThickness = 0.5, extent = {{-10, 7}, {12, -15}}), Ellipse(origin = {-56, -50}, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-6, 6}, {8, -8}}, endAngle = 360), Rectangle(origin = {-16, -48}, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-54, 0}, {-26, -6}}), Rectangle(origin = {82, -47}, fillPattern = FillPattern.Solid, lineThickness = 0.5, extent = {{-10, 7}, {12, -15}}), Ellipse(origin = {82, -50}, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-6, 6}, {8, -8}}, endAngle = 360), Rectangle(origin = {122, -48}, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-54, 0}, {-26, -6}}), Rectangle(origin = {82, -7}, fillPattern = FillPattern.Solid, lineThickness = 0.5, extent = {{-10, 7}, {12, -15}}), Ellipse(origin = {82, -10}, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-6, 6}, {8, -8}}, endAngle = 360), Rectangle(origin = {122, -8}, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-54, 0}, {-26, -6}}), Rectangle(origin = {32, 27}, fillPattern = FillPattern.Solid, lineThickness = 0.5, extent = {{-10, 7}, {12, -15}}), Ellipse(origin = {32, 24}, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-6, 6}, {8, -8}}, endAngle = 360), Rectangle(origin = {72, 26}, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-54, 0}, {-26, -6}}), Text(origin = {-83, 84}, extent = {{-13, 10}, {13, -10}}, textString = "IN"), Text(origin = {79, -84}, extent = {{-13, 10}, {13, -10}}, textString = "OUT")}, coordinateSystem(initialScale = 0.1)));
     end Getriebe;
@@ -171,7 +171,7 @@ package Flaschenzug
       parameter Integer n = 3 "Anzahl der Rollen";
       parameter Modelica.SIunits.Length s = 1 "Anfangslänge";
       parameter Modelica.SIunits.Angle Zugwinkel = 45 "Zugwinkel";
-      parameter Modelica.SIunits.Weight Flaschengewicht_unten = 2 "[kg]";
+      parameter Modelica.SIunits.Mass Flaschengewicht_unten = 2 "[kg]";
       Modelica.SIunits.Acceleration g = Modelica.Constants.g_n;
       //Erdbeschleunigung
       Real v;
@@ -193,7 +193,7 @@ package Flaschenzug
       f_s2.F = Fges / n;
       v = der(f_s.s);
       Zwinkel = Zugwinkel * (180 / Pi);
-      f_s.s = f_s2.s / n;
+      -f_s.s = f_s2.s / n;
       f_s1.F = f_s.F + cos(Zwinkel) * f_s2.F - Flaschengewicht_unten * g;
       annotation(
         Icon(graphics = {Rectangle(origin = {-3, -65}, fillPattern = FillPattern.Solid, extent = {{-1, 3}, {9, -35}}), Rectangle(origin = {-3, 69}, fillPattern = FillPattern.Solid, extent = {{-1, 31}, {9, -47}}), Line(origin = {-69.18, 25}, points = {{53, 58}, {-31, -56}}, color = {255, 0, 0}, thickness = 1), Line(origin = {-20.75, -33.27}, points = {{11, 57}, {9, -51}}, color = {255, 85, 0}, thickness = 1), Line(origin = {22.42, 44.31}, points = {{0, 27}, {-8, -127}}, color = {255, 85, 0}, thickness = 1), Line(origin = {43.12, -11.31}, points = {{-31, 32}, {-41, -50}}, color = {255, 85, 0}, thickness = 1), Ellipse(origin = {4, 71}, fillColor = {144, 144, 144}, fillPattern = FillPattern.Solid, lineThickness = 0.5, extent = {{-24, 23}, {20, -21}}, endAngle = 360), Ellipse(origin = {4, -84}, fillColor = {144, 144, 144}, fillPattern = FillPattern.Solid, lineThickness = 0.5, extent = {{-18, 16}, {12, -14}}, endAngle = 360), Ellipse(origin = {1, 21}, fillColor = {144, 144, 144}, fillPattern = FillPattern.Solid, lineThickness = 0.5, extent = {{-13, 15}, {13, -11}}, endAngle = 360)}, coordinateSystem(initialScale = 0.1)));
@@ -254,22 +254,22 @@ package Flaschenzug
         Icon(graphics = {Polygon(origin = {30, 80}, lineColor = {63, 188, 44}, fillColor = {88, 195, 64}, fillPattern = FillPattern.Solid, points = {{70, -82}, {-30, 20}, {-30, -20}, {-30, -178}, {70, -82}}), Rectangle(origin = {-70, 41}, lineColor = {53, 202, 46}, fillColor = {55, 173, 65}, fillPattern = FillPattern.Solid, extent = {{-30, 9}, {70, -89}})}));end Test_motor;
 
     model Test_Flaschenzug
-    Flaschenzug.Modelle.Flaschenzug_Modell flaschenzug_Modell annotation(
-        Placement(visible = true, transformation(origin = {14, 30}, extent = {{-36, -36}, {36, 36}}, rotation = 0)));
   Flaschenzug.Modelle.Masse masse annotation(
         Placement(visible = true, transformation(origin = {-58, -34}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Flaschenzug.Modelle.Masse masse1 annotation(
+  Flaschenzug.Modelle.Masse masse1(m = 200)  annotation(
         Placement(visible = true, transformation(origin = {17, -57}, extent = {{-23, -23}, {23, 23}}, rotation = 0)));
   Flaschenzug.Modelle.Decke decke annotation(
         Placement(visible = true, transformation(origin = {14, 88}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Flaschenzug.Modelle.Flaschenzug_Modell flaschenzug_Modell1(Flaschengewicht_unten = 100, Zugwinkel = 0)  annotation(
+        Placement(visible = true, transformation(origin = {12, 32}, extent = {{-28, -28}, {28, 28}}, rotation = 0)));
     equation
-      connect(masse.f_s, flaschenzug_Modell.f_s2) annotation(
-        Line(points = {{-58, -24}, {-28, -24}, {-28, 20}}));
-  connect(masse1.f_s, flaschenzug_Modell.f_s) annotation(
-        Line(points = {{18, -34}, {16, -34}, {16, -12}, {14, -12}}));
-  connect(decke.f_s1, flaschenzug_Modell.f_s1) annotation(
-        Line(points = {{14, 78}, {14, 78}, {14, 70}, {14, 70}}));
-    annotation(
+      connect(flaschenzug_Modell1.f_s1, decke.f_s1) annotation(
+        Line(points = {{12, 64}, {14, 64}, {14, 78}, {14, 78}}));
+      connect(masse.f_s, flaschenzug_Modell1.f_s2) annotation(
+        Line(points = {{-58, -24}, {-20, -24}, {-20, 24}, {-20, 24}}));
+      connect(flaschenzug_Modell1.f_s, masse1.f_s) annotation(
+        Line(points = {{12, 0}, {18, 0}, {18, -34}, {18, -34}}));
+      annotation(
         Icon(graphics = {Polygon(origin = {30, 80}, lineColor = {63, 188, 44}, fillColor = {88, 195, 64}, fillPattern = FillPattern.Solid, points = {{70, -82}, {-30, 20}, {-30, -20}, {-30, -178}, {70, -82}}), Rectangle(origin = {-70, 41}, lineColor = {53, 202, 46}, fillColor = {55, 173, 65}, fillPattern = FillPattern.Solid, extent = {{-30, 9}, {70, -89}})}));end Test_Flaschenzug;
 
     model Test_ohne_Motor
@@ -330,6 +330,26 @@ package Flaschenzug
     annotation(
         Diagram(graphics = {Rectangle(fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Rectangle(origin = {0, -56}, fillPattern = FillPattern.Solid, extent = {{-100, -44}, {100, -4}})}, coordinateSystem(initialScale = 0.1)),
         Icon(graphics = {Polygon(origin = {30, 80}, lineColor = {63, 188, 44}, fillColor = {88, 195, 64}, fillPattern = FillPattern.Solid, points = {{70, -82}, {-30, 20}, {-30, -20}, {-30, -178}, {70, -82}}), Rectangle(origin = {-70, 41}, lineColor = {53, 202, 46}, fillColor = {55, 173, 65}, fillPattern = FillPattern.Solid, extent = {{-30, 9}, {70, -89}})}));end Gesamt_Modell;
+
+    model Test_Getriebe
+      Flaschenzug.Modelle.Motor motor1(Jtot = 0.018, cf = 0.000000, cv = 0.000005) annotation(
+        Placement(visible = true, transformation(origin = {-52, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Flaschenzug.Modelle.Spannung spannung1(U = 48) annotation(
+        Placement(visible = true, transformation(origin = {-84, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Flaschenzug.Modelle.Lastmoment lastmoment1(Ml = 18) annotation(
+        Placement(visible = true, transformation(origin = {71, -11}, extent = {{-25, -25}, {25, 25}}, rotation = 0)));
+  Flaschenzug.Modelle.Getriebe getriebe1(J_Ausgangsewelle = 0, J_Eingangswelle = 0.001, Uebersetzung = 3, Wirkungsgrad = 1)  annotation(
+        Placement(visible = true, transformation(origin = {5, -5}, extent = {{-19, -19}, {19, 19}}, rotation = 0)));
+    equation
+      connect(getriebe1.m_w, lastmoment1.m_w1) annotation(
+        Line(points = {{28, -10}, {38.5, -10}, {38.5, -10.5}, {43.5, -10.5}}));
+      connect(motor1.m_w, getriebe1.m_w1) annotation(
+        Line(points = {{-42, 0}, {-18, 0}, {-18, 2}, {-18, 2}}));
+      connect(spannung1.u_i, motor1.u_i) annotation(
+        Line(points = {{-74, 0}, {-63, 0}}));
+      annotation(
+        Icon(graphics = {Polygon(origin = {30, 80}, lineColor = {63, 188, 44}, fillColor = {88, 195, 64}, fillPattern = FillPattern.Solid, points = {{70, -82}, {-30, 20}, {-30, -20}, {-30, -178}, {70, -82}}), Rectangle(origin = {-70, 41}, lineColor = {53, 202, 46}, fillColor = {55, 173, 65}, fillPattern = FillPattern.Solid, extent = {{-30, 9}, {70, -89}})}));
+    end Test_Getriebe;
   annotation(
       Icon(coordinateSystem(initialScale = 0.1), graphics = {Rectangle(origin = {-70, 41}, lineColor = {53, 202, 46}, fillColor = {55, 173, 65}, fillPattern = FillPattern.Solid, extent = {{-30, 9}, {70, -89}}), Polygon(origin = {30, 80}, lineColor = {63, 188, 44}, fillColor = {88, 195, 64}, fillPattern = FillPattern.Solid, points = {{70, -82}, {-30, 20}, {-30, -20}, {-30, -178}, {70, -82}})}));
   end Prototyp;
