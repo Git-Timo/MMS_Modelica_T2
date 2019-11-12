@@ -129,6 +129,7 @@ package Flaschenzug
       parameter Modelica.SIunits.Diameter d = 0.05 "Seildurchmesser [m]";
       parameter Modelica.SIunits.Length b = 0.4 "Windenbreite [m]";
       parameter Modelica.SIunits.Mass m = 10 "Masse der Seilwinde excl. Seil";
+      parameter Boolean Durchmesserkommulation=false annotation(choices(checkBox=false));
       //um Massenträgheit der Rolle zu Berechnen
       Real d_Winde;
       Integer v;
@@ -140,8 +141,9 @@ package Flaschenzug
         Placement(visible = true, transformation(origin = {58, 126}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {59, 119}, extent = {{-19, -19}, {19, 19}}, rotation = 0)));
   Flaschenzug.Ports.M_w m_w annotation(
         Placement(visible = true, transformation(origin = {-134, 14}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-119, 1}, extent = {{-19, -19}, {19, 19}}, rotation = 0)));
+    
     equation
-  if v - 1 >= 1 then
+  if v - 1 >= 1 and Durchmesserkommulation == true then
 ///Berechnung des Windendurchmessers nicht als Step Funktion, sondern bisher als lineare Funktion
         d_Winde = Durchmesser + s * d;
         dmax = Durchmesser + (o - 1) * d * 2;
@@ -151,18 +153,19 @@ package Flaschenzug
         dmax = Durchmesser;
         s = 0;
       end if;
+      
+      
       v_Rolle = der(f_s.s);
 //Drehgeschwindigkeit der Rolle
       J_Rolle = 0.5 * m * (Durchmesser / 2) ^ 2;
 //Berechneung des Massenträgheits der Rolle unter Annahme eines massiven Zylinders.
-//d_Zusatz-(Durchmesser*Winkel)=sum((((i/i)*((b/d)*2))/100)*(Winkel-((b/d)*2*Pi*i-1)) for i in 1:(v-1));
-//Winkel= (m_w1.w/(2*Pi));
       -v = floor(m_w.w / (2 * Pi) / (b / d));
-//berechnet die Anzahl der Schichten +1
       v = o;
       f_s.F = (m_w.M - Lagerwiderstand) / (d_Winde / 2) - J_Rolle * der(v_Rolle);
-//Kraftberechnung am Port, inklusive Massenträgheitsbetrachtung
-      f_s.s = Pi * d_Winde * (m_w.w / (2 * Pi));
+//berechnet die Anzahl der Schichten +1
+      f_s.s = Pi * d_Winde * (m_w.w / (2 * Pi)); //Kraftberechnung am Port, inklusive Massenträgheitsbetrachtung
+//d_Zusatz-(Durchmesser*Winkel)=sum((((i/i)*((b/d)*2))/100)*(Winkel-((b/d)*2*Pi*i-1)) for i in 1:(v-1));
+//Winkel= (m_w1.w/(2*Pi));
       annotation(
         Icon(graphics = {Rectangle(origin = {-44, 25}, fillColor = {208, 208, 208}, fillPattern = FillPattern.Solid, lineThickness = 1, extent = {{-56, 15}, {144, -65}}), Line(origin = {42.7034, 3.51}, points = {{18, 97}, {18, -45}}, color = {255, 85, 0}, thickness = 1), Line(origin = {-17.8189, 3.16671}, points = {{-22, 39}, {18, -45}}, color = {255, 85, 0}, thickness = 1), Line(origin = {1.89746, 1.88313}, points = {{-22, 39}, {18, -45}}, color = {255, 85, 0}, thickness = 1), Line(origin = {21.9273, 3.10701}, points = {{-22, 39}, {18, -45}}, color = {255, 85, 0}, thickness = 1)}, coordinateSystem(initialScale = 0.1)));
     end Seilwinde;
@@ -207,7 +210,7 @@ package Flaschenzug
       Ports.F_s f_s annotation(
         Placement(visible = true, transformation(origin = {0, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {0, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
     equation
-      f_s.F = m * g + m * a;
+      f_s.F = m * g + m * a;    //Positive Kraft nach unten
       der(v) = a;
       der(f_s.s) = v;
       annotation(
@@ -256,11 +259,11 @@ package Flaschenzug
     model Test_Flaschenzug
   Flaschenzug.Modelle.Masse masse annotation(
         Placement(visible = true, transformation(origin = {-58, -34}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Flaschenzug.Modelle.Masse masse1(m = 200)  annotation(
+  Flaschenzug.Modelle.Masse masse1(m = 100)  annotation(
         Placement(visible = true, transformation(origin = {17, -57}, extent = {{-23, -23}, {23, 23}}, rotation = 0)));
   Flaschenzug.Modelle.Decke decke annotation(
         Placement(visible = true, transformation(origin = {14, 88}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Flaschenzug.Modelle.Flaschenzug_Modell flaschenzug_Modell1(Flaschengewicht_unten = 100, Zugwinkel = 0)  annotation(
+  Flaschenzug.Modelle.Flaschenzug_Modell flaschenzug_Modell1(Flaschengewicht_unten = 0, Zugwinkel = 0)  annotation(
         Placement(visible = true, transformation(origin = {12, 32}, extent = {{-28, -28}, {28, 28}}, rotation = 0)));
     equation
       connect(flaschenzug_Modell1.f_s1, decke.f_s1) annotation(
@@ -300,33 +303,33 @@ package Flaschenzug
         Icon(graphics = {Polygon(origin = {30, 80}, lineColor = {63, 188, 44}, fillColor = {88, 195, 64}, fillPattern = FillPattern.Solid, points = {{70, -82}, {-30, 20}, {-30, -20}, {-30, -178}, {70, -82}}), Rectangle(origin = {-70, 41}, lineColor = {53, 202, 46}, fillColor = {55, 173, 65}, fillPattern = FillPattern.Solid, extent = {{-30, 9}, {70, -89}})}));end Test_ohne_Motor;
 
     model Gesamt_Modell
-    Flaschenzug.Modelle.Motor motor annotation(
+    Flaschenzug.Modelle.Motor motor(cf = 0, cv = 0.000005)  annotation(
         Placement(visible = true, transformation(origin = {-67, -49}, extent = {{-11, -11}, {11, 11}}, rotation = 0)));
   Flaschenzug.Modelle.Spannung spannung annotation(
         Placement(visible = true, transformation(origin = {-90, -22}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Flaschenzug.Modelle.Getriebe getriebe annotation(
+  Flaschenzug.Modelle.Getriebe getriebe(Wirkungsgrad = 1)  annotation(
         Placement(visible = true, transformation(origin = {-34, -48}, extent = {{-12, -12}, {12, 12}}, rotation = 0)));
-  Flaschenzug.Modelle.Seilwinde seilwinde annotation(
+  Flaschenzug.Modelle.Seilwinde seilwinde(Durchmesserkommulation = false, m = 0)  annotation(
         Placement(visible = true, transformation(origin = {5, -51}, extent = {{-13, -13}, {13, 13}}, rotation = 0)));
-  Flaschenzug.Modelle.Flaschenzug_Modell flaschenzug_Modell annotation(
+  Flaschenzug.Modelle.Flaschenzug_Modell flaschenzug_Modell(Flaschengewicht_unten = 0, Zugwinkel = 0)  annotation(
         Placement(visible = true, transformation(origin = {48, 14}, extent = {{-32, -32}, {32, 32}}, rotation = 0)));
-  Flaschenzug.Modelle.Masse masse annotation(
+  Flaschenzug.Modelle.Masse masse(m = 40)  annotation(
         Placement(visible = true, transformation(origin = {48, -50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Flaschenzug.Modelle.Decke decke annotation(
         Placement(visible = true, transformation(origin = {47, 73}, extent = {{-25, -25}, {25, 25}}, rotation = 0)));
     equation
+  connect(seilwinde.f_s, flaschenzug_Modell.f_s2) annotation(
+        Line(points = {{12, -36}, {14, -36}, {14, 4}, {12, 4}}));
+  connect(decke.f_s1, flaschenzug_Modell.f_s1) annotation(
+        Line(points = {{48, 50}, {48, 50}}));
+  connect(masse.f_s, flaschenzug_Modell.f_s) annotation(
+        Line(points = {{48, -40}, {48, -23}}));
       connect(spannung.u_i, motor.u_i) annotation(
         Line(points = {{-80, -22}, {-80, -22}, {-80, -50}, {-78, -50}}));
   connect(motor.m_w, getriebe.m_w1) annotation(
         Line(points = {{-56, -50}, {-48, -50}, {-48, -44}, {-48, -44}}));
   connect(getriebe.m_w, seilwinde.m_w) annotation(
         Line(points = {{-20, -52}, {-10, -52}, {-10, -50}, {-10, -50}}));
-  connect(masse.f_s, flaschenzug_Modell.f_s) annotation(
-        Line(points = {{48, -40}, {48, -23}}));
-  connect(decke.f_s1, flaschenzug_Modell.f_s1) annotation(
-        Line(points = {{48, 50}, {48, 50}}));
-  connect(seilwinde.f_s, flaschenzug_Modell.f_s2) annotation(
-        Line(points = {{12, -36}, {14, -36}, {14, 4}, {12, 4}}));
     annotation(
         Diagram(graphics = {Rectangle(fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Rectangle(origin = {0, -56}, fillPattern = FillPattern.Solid, extent = {{-100, -44}, {100, -4}})}, coordinateSystem(initialScale = 0.1)),
         Icon(graphics = {Polygon(origin = {30, 80}, lineColor = {63, 188, 44}, fillColor = {88, 195, 64}, fillPattern = FillPattern.Solid, points = {{70, -82}, {-30, 20}, {-30, -20}, {-30, -178}, {70, -82}}), Rectangle(origin = {-70, 41}, lineColor = {53, 202, 46}, fillColor = {55, 173, 65}, fillPattern = FillPattern.Solid, extent = {{-30, 9}, {70, -89}})}));end Gesamt_Modell;
@@ -350,6 +353,31 @@ package Flaschenzug
       annotation(
         Icon(graphics = {Polygon(origin = {30, 80}, lineColor = {63, 188, 44}, fillColor = {88, 195, 64}, fillPattern = FillPattern.Solid, points = {{70, -82}, {-30, 20}, {-30, -20}, {-30, -178}, {70, -82}}), Rectangle(origin = {-70, 41}, lineColor = {53, 202, 46}, fillColor = {55, 173, 65}, fillPattern = FillPattern.Solid, extent = {{-30, 9}, {70, -89}})}));
     end Test_Getriebe;
+
+    model Test_Seilwinde
+      Flaschenzug.Modelle.Motor motor1(Jtot = 0.018, cf = 0.000000, cv = 0.000005) annotation(
+        Placement(visible = true, transformation(origin = {-52, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Flaschenzug.Modelle.Spannung spannung1(U = 48) annotation(
+        Placement(visible = true, transformation(origin = {-84, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Flaschenzug.Modelle.Getriebe getriebe1(J_Ausgangsewelle = 0, J_Eingangswelle = 0.001, Uebersetzung = 3, Wirkungsgrad = 1) annotation(
+        Placement(visible = true, transformation(origin = {-21,-3}, extent = {{-11, -11}, {11, 11}}, rotation = 0)));
+  Flaschenzug.Modelle.Seilwinde seilwinde1(Durchmesser = 0.2, Durchmesserkommulation = false)  annotation(
+        Placement(visible = true, transformation(origin = {51, -13}, extent = {{-33, -33}, {33, 33}}, rotation = 0)));
+  Modelle.Masse masse1(m = 1)  annotation(
+        Placement(visible = true, transformation(origin = {40, -78}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    equation
+      connect(masse1.f_s, seilwinde1.f_s) annotation(
+        Line(points = {{40, -68}, {58, -68}, {58, 26}, {70, 26}}));
+      connect(seilwinde1.m_w, getriebe1.m_w) annotation(
+        Line(points = {{12, -13}, {-8, -13}, {-8, -6}}));
+      connect(motor1.m_w, getriebe1.m_w1) annotation(
+        Line(points = {{-42, 0}, {-34, 0}, {-34, 1}}));
+      connect(spannung1.u_i, motor1.u_i) annotation(
+        Line(points = {{-74, 0}, {-63, 0}}));
+      annotation(
+        Icon(graphics = {Polygon(origin = {30, 80}, lineColor = {63, 188, 44}, fillColor = {88, 195, 64}, fillPattern = FillPattern.Solid, points = {{70, -82}, {-30, 20}, {-30, -20}, {-30, -178}, {70, -82}}), Rectangle(origin = {-70, 41}, lineColor = {53, 202, 46}, fillColor = {55, 173, 65}, fillPattern = FillPattern.Solid, extent = {{-30, 9}, {70, -89}})}),
+        Diagram(graphics = {Text(origin = {-76, 75}, extent = {{-10, 5}, {140, -7}}, textString = "kann nicht funktionieren, würde negative Masse benötigen")}));
+    end Test_Seilwinde;
   annotation(
       Icon(coordinateSystem(initialScale = 0.1), graphics = {Rectangle(origin = {-70, 41}, lineColor = {53, 202, 46}, fillColor = {55, 173, 65}, fillPattern = FillPattern.Solid, extent = {{-30, 9}, {70, -89}}), Polygon(origin = {30, 80}, lineColor = {63, 188, 44}, fillColor = {88, 195, 64}, fillPattern = FillPattern.Solid, points = {{70, -82}, {-30, 20}, {-30, -20}, {-30, -178}, {70, -82}})}));
   end Prototyp;
