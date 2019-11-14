@@ -32,26 +32,43 @@ package Flaschenzug
       Real I (unit"A");
       parameter Real t (unit "s")=1;
       Real t1;
-      
+      parameter Boolean Zeit_Spannung=false annotation(choices(checkBox=false));
       
       Flaschenzug.Ports.U_i u_i annotation(
         Placement(visible = true, transformation(origin = {100, -2}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {104, 0}, extent = {{-24, -24}, {24, 24}}, rotation = 0)));
     
     equation
+        
+        
+    
+      if Zeit_Spannung == false then
       t1 = time*t;
-      if t1 <= 3 then
       U = u_i.U;
       I = u_i.I;
-      elseif t1 > 3 and t1 <=6 then
-      u_i.U = 0;
-      I = u_i.I; 
-      elseif t1 > 9 and t1 <=10 then
-      u_i.U = 0;
-      I = u_i.I;
-      else 
-      U = -u_i.U;
-      I = u_i.I;
+      
+      else
+      t1 = time*t;
+        
+        if t1 <= 3 then
+        U = u_i.U;
+        I = u_i.I;
+        
+        elseif t1 > 3 and t1 <=6 then
+        u_i.U = 0;
+        I = u_i.I; 
+        elseif t1 > 9 and t1 <=10 then
+        u_i.U = 0;
+        I = u_i.I;
+        
+        else 
+        U = -u_i.U;
+        I = u_i.I;
+        
+        end if;
+      
       end if;
+      
+      
       
       
       annotation(
@@ -96,6 +113,7 @@ package Flaschenzug
       Real P (unit= "W");
       
       Real test(unit="N.m");
+      Real nn;
      
       Flaschenzug.Ports.U_i u_i annotation(
         Placement(visible = true, transformation(origin = {-100, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-107, -1}, extent = {{-25, -25}, {25, 25}}, rotation = 0)));
@@ -103,6 +121,7 @@ package Flaschenzug
 //Formel Heidrich Vorlesung 2 Gleichstrommotor
       u_i.U = Ua;
 //Reihenschluss
+      
       Ia = u_i.I;
       Ua = 2 * Ub + Ra * Ia + La * der(Ia) + ke * n;
       Jtot * der(w) = Me- Mf - Mv - m_w.M;
@@ -116,6 +135,11 @@ package Flaschenzug
       w = 2 * Pi * n;
       der(m_w.w) = w;
       P= u_i.U * Ia;
+      if n>=-84 or n <= 84 then
+      n = nn;
+      else 
+      n= 84;
+      end if;
       
       annotation(
         Icon(graphics = {Rectangle(origin = {-35, -17}, fillColor = {186, 186, 186}, fillPattern = FillPattern.Horizontal, lineThickness = 1, extent = {{-65, 117}, {135, -83}}), Text(origin = {-40, 31}, extent = {{-10, 5}, {90, -65}}, textString = "Motor")}, coordinateSystem(initialScale = 0.1)));
@@ -263,9 +287,9 @@ package Flaschenzug
     model Test_motor
       Flaschenzug.Modelle.Motor motor1(Jtot = 0.018,cf = 0.000000, cv = 0.000005)  annotation(
         Placement(visible = true, transformation(origin = {-30, -2}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Flaschenzug.Modelle.Spannung spannung1(U = 48) annotation(
+      Flaschenzug.Modelle.Spannung spannung1(U = 48, Zeit_Spannung = false) annotation(
         Placement(visible = true, transformation(origin = {-84, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Flaschenzug.Modelle.Lastmoment lastmoment1(Ml = -6) annotation(
+      Flaschenzug.Modelle.Lastmoment lastmoment1(Ml = -16) annotation(
         Placement(visible = true, transformation(origin = {24, -2}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
     equation
       connect(spannung1.u_i, motor1.u_i) annotation(
