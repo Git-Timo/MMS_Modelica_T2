@@ -304,14 +304,16 @@ model Bremse
   equation
 //a_aus=der(m_w2.w);
 //if a_aus>=0  then
-      if (not boolIn1) then
-    -m_w1.M = m_w2.M;
-    m_w1.w = m_w2.w;
-//der(m_w2.w)=0;
-//-m_w1.M=0;
+  if (not boolIn1) then
+    //-m_w1.M = m_w2.M;
+    //m_w1.w = m_w2.w;
+    der(m_w2.w)=0;
+    -m_w1.M=0;
   else
-      der(m_w2.w)=0;
-      m_w1.M=0;
+      //der(m_w2.w)=0;
+      //m_w1.M=0;
+      -m_w1.M = m_w2.M;
+      m_w1.w = m_w2.w;
   end if;
 
   annotation(
