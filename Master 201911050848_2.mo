@@ -34,7 +34,8 @@ package Flaschenzug
     model Spannung
       parameter Real U(unit "V") = 36;
       Real I(unit "A");
-    //  parameter Real t(unit "s") = 1;
+     //parameter Real t(unit "s") = 1;
+     //Real t1;
     
       parameter Boolean KonstanteSpannung = false;
       Flaschenzug.Ports.U_i u_i annotation(
@@ -44,9 +45,7 @@ package Flaschenzug
       Flaschenzug.Ports.BoolOut boolOut1 annotation(
         Placement(visible = true, transformation(origin = {-148, 66}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-130, 64}, extent = {{-30, 30}, {30, -30}}, rotation = 0)));
     equation
-    
-    
-      
+     
       
       if U == 0 then
         0 = u_i.U;
@@ -55,13 +54,15 @@ package Flaschenzug
       elseif  boolIn1==true then
         0 = u_i.U;
         I = u_i.I;
-        boolOut1=false;
+        boolOut1=true;
       else
         U = u_i.U;
         I = u_i.I;
         boolOut1=false;
-    
-        /*if KonstanteSpannung == true then
+      
+      end if;
+      
+       /*if KonstanteSpannung == true then
           t1 = time * t;
           U = u_i.U;
           I = u_i.I;
@@ -81,7 +82,8 @@ package Flaschenzug
             I = u_i.I;
           end if;
         end if;*/
-      end if;
+      
+      
       annotation(
         Diagram,
         Icon(graphics = {Ellipse(origin = {4, 26}, fillPattern = FillPattern.Solid, extent = {{-20, -2}, {-52, -34}}, endAngle = 360), Ellipse(origin = {-56, 61}, lineThickness = 1, extent = {{-22, 19}, {128, -127}}, endAngle = 360), Ellipse(origin = {66, 26}, fillPattern = FillPattern.Solid, extent = {{-20, -2}, {-52, -34}}, endAngle = 360), Rectangle(origin = {-10, 10}, lineThickness = 1, extent = {{-90, 90}, {110, -110}})}, coordinateSystem(initialScale = 0.1)));
@@ -307,22 +309,28 @@ model Bremse
     Placement(visible = true, transformation(origin = {112, -12}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {121, -9}, extent = {{-21, -21}, {21, 21}}, rotation = 0)));
   Flaschenzug.Ports.BoolIn boolIn1 annotation(
     Placement(visible = true, transformation(origin = {-56, 66}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-68, 54}, extent = {{-28, -28}, {28, 28}}, rotation = 0)));
-//  parameter Real Bremsmoment= 100 "[Nm]";
+  //parameter Real Bremsmoment= 0.001 "[Nm]";
+  Real t =1;
+  Real t1;
   
 
   equation
-
-  if boolIn1==true then
-
-    der(m_w2.w)=0;
-    -m_w1.M=0;
-    //-m_w1.M = m_w2.M;
-     //  m_w1.w = m_w2.w;
+  t1 = time * t;
+  
+  if boolIn1==true  and time >= 1.86 then
+   
+  
+      
+   -m_w2.M= m_w1.M *((1/time)* (time^2+1) + 1);
+   m_w1.w = m_w2.w;  
+     
+    
+   
   else
-
-
-      -m_w1.M = m_w2.M;
-       m_w1.w = m_w2.w;
+     
+     -m_w2.M= m_w1.M;
+   m_w1.w = m_w2.w;  
+      
      
   end if;
 
