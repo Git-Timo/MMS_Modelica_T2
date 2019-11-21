@@ -35,7 +35,6 @@ package Flaschenzug
       parameter Real U(unit "V") = 36;
       Real I(unit "A");
     //  parameter Real t(unit "s") = 1;
-    
       parameter Boolean KonstanteSpannung = false;
       Flaschenzug.Ports.U_i u_i annotation(
         Placement(visible = true, transformation(origin = {100, -2}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {124, -2}, extent = {{-24, -24}, {24, 24}}, rotation = 0)));
@@ -51,15 +50,15 @@ package Flaschenzug
       if U == 0 then
         0 = u_i.U;
         I = u_i.I;
-        boolOut1=true;
+        boolOut1=false;
       elseif  boolIn1==true then
         0 = u_i.U;
         I = u_i.I;
-        boolOut1=false;
+        boolOut1=true;
       else
         U = u_i.U;
         I = u_i.I;
-        boolOut1=false;
+        boolOut1=true;
     
         /*if KonstanteSpannung == true then
           t1 = time * t;
@@ -216,15 +215,15 @@ package Flaschenzug
 //d_Zusatz-(Durchmesser*Winkel)=sum((((i/i)*((b/d)*2))/100)*(Winkel-((b/d)*2*Pi*i-1)) for i in 1:(v-1));
 //Winkel= (m_w1.w/(2*Pi));
       annotation(
-        Icon(graphics = {Rectangle(origin = {-44, 25}, fillColor = {208, 208, 208}, fillPattern = FillPattern.Solid, lineThickness = 1, extent = {{-56, 15}, {144, -65}}), Line(origin = {42.7034, 3.51}, points = {{18, 97}, {18, -45}}, color = {255, 85, 0}, thickness = 1), Line(origin = {-17.8189, 3.16671}, points = {{-22, 39}, {18, -45}}, color = {255, 85, 0}, thickness = 1), Line(origin = {1.89746, 1.88313}, points = {{-22, 39}, {18, -45}}, color = {255, 85, 0}, thickness = 1), Line(origin = {21.9273, 3.10701}, points = {{-22, 39}, {18, -45}}, color = {255, 85, 0}, thickness = 1)}, coordinateSystem(initialScale = 0.1)));
-      annotation(
         choices(choice(redeclare lib2.Resistor Load(a = {2}) "..."), choice(redeclare Capacitor Load(L = 3) "...")));
+      annotation(
+        Icon(graphics = {Rectangle(origin = {-44, 25}, fillColor = {208, 208, 208}, fillPattern = FillPattern.Solid, lineThickness = 1, extent = {{-56, 15}, {144, -65}}), Line(origin = {42.7034, 3.51}, points = {{18, 97}, {18, -45}}, color = {255, 85, 0}, thickness = 1), Line(origin = {-17.8189, 3.16671}, points = {{-22, 39}, {18, -45}}, color = {255, 85, 0}, thickness = 1), Line(origin = {1.89746, 1.88313}, points = {{-22, 39}, {18, -45}}, color = {255, 85, 0}, thickness = 1), Line(origin = {21.9273, 3.10701}, points = {{-22, 39}, {18, -45}}, color = {255, 85, 0}, thickness = 1)}, coordinateSystem(initialScale = 0.1)));
     end Seilwinde;
 
     model Flaschenzug_Modell
       parameter Integer n = 3 "Anzahl der Rollen";
       parameter Modelica.SIunits.Length s = 1 "Anfangslänge";
-      parameter Modelica.SIunits.Length Sa = 0.5 "Sensorabstand";
+      parameter Modelica.SIunits.Length Sa = 0.2 "Sensorabstand";
       parameter Modelica.SIunits.Angle Zugwinkel = 45 "Zugwinkel";
       parameter Modelica.SIunits.Mass Flaschengewicht_unten = 2 "[kg]";
       Modelica.SIunits.Acceleration g = Modelica.Constants.g_n;
@@ -234,6 +233,7 @@ package Flaschenzug
       Real Fges;
       //Flaschengewicht und Beschleunigungskraft
       Real Zwinkel;
+      Real Sensorhoehe;
       //Umrechnung Zugwinkel von Grad in Rad/s
       constant Real Pi = 2 * Modelica.Math.asin(1.0);
       Flaschenzug.Ports.F_s f_s annotation(
@@ -245,7 +245,8 @@ package Flaschenzug
       Flaschenzug.Ports.BoolOut boolOut1 annotation(
         Placement(visible = true, transformation(origin = {-32, 86}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-14, 86}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
     equation
- if f_s.s+Sa >= f_s1.s then
+    Sensorhoehe=f_s.s + Sa;
+ if Sensorhoehe >= f_s1.s then
 //Stoppen, wenn Flaschenzug ganz zusammengefahren
         boolOut1 = true;
       else
@@ -307,23 +308,21 @@ model Bremse
     Placement(visible = true, transformation(origin = {112, -12}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {121, -9}, extent = {{-21, -21}, {21, 21}}, rotation = 0)));
   Flaschenzug.Ports.BoolIn boolIn1 annotation(
     Placement(visible = true, transformation(origin = {-56, 66}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-68, 54}, extent = {{-28, -28}, {28, 28}}, rotation = 0)));
-//  parameter Real Bremsmoment= 100 "[Nm]";
-  
-
+  //  parameter Real Bremsmoment= 100 "[Nm]";
   equation
 
   if boolIn1==true then
 
-    der(m_w2.w)=0;
-    -m_w1.M=0;
-    //-m_w1.M = m_w2.M;
-     //  m_w1.w = m_w2.w;
+   -m_w1.M = m_w2.M;
+   m_w1.w = m_w2.w;
+      
+//-m_w1.M = m_w2.M;
+//  m_w1.w = m_w2.w;
   else
-
-
-      -m_w1.M = m_w2.M;
-       m_w1.w = m_w2.w;
-     
+//-m_w1.M = m_w2.M;
+// m_w1.w = m_w2.w;
+        der(m_w2.w)=0;
+      -m_w1.M =0;
   end if;
 
   annotation(
@@ -438,12 +437,12 @@ end Bremse;
       Flaschenzug.Modelle.Motor motor(cf = 0, cv = 0.000005) annotation(
         Placement(visible = true, transformation(origin = {-89, -11}, extent = {{-11, -11}, {11, 11}}, rotation = 0)));
       Flaschenzug.Modelle.Spannung spannung(KonstanteSpannung = true, U = 48) annotation(
-        Placement(visible = true, transformation(origin = {-136, -12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Placement(visible = true, transformation(origin = {-136, -10}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
       Flaschenzug.Modelle.Getriebe getriebe(Wirkungsgrad = 1) annotation(
         Placement(visible = true, transformation(origin = {-34, -48}, extent = {{-12, -12}, {12, 12}}, rotation = 0)));
       Flaschenzug.Modelle.Seilwinde seilwinde(Durchmesserkommulation = false, Zugrichtug_aufwaerts = false, m = 0) annotation(
         Placement(visible = true, transformation(origin = {5, -51}, extent = {{-13, -13}, {13, 13}}, rotation = 0)));
-      Flaschenzug.Modelle.Flaschenzug_Modell flaschenzug_Modell(Flaschengewicht_unten = 0, Sa = 0, Zugwinkel = 0, s = 1) annotation(
+      Flaschenzug.Modelle.Flaschenzug_Modell flaschenzug_Modell(Flaschengewicht_unten = 0, Sa = 0.2, Zugwinkel = 0, s = 1) annotation(
         Placement(visible = true, transformation(origin = {48, 14}, extent = {{-32, -32}, {32, 32}}, rotation = 0)));
       Flaschenzug.Modelle.Masse masse(m = 40) annotation(
         Placement(visible = true, transformation(origin = {48, -50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -452,18 +451,18 @@ end Bremse;
  Modelle.Bremse bremse1 annotation(
         Placement(visible = true, transformation(origin = {-42, -8}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
     equation
+      connect(spannung.u_i, motor.u_i) annotation(
+        Line(points = {{-124, -10}, {-124, -30}, {-101, -30}, {-101, -11}}));
+      connect(spannung.boolIn1, flaschenzug_Modell.boolOut1) annotation(
+        Line(points = {{-149, -10}, {-172, -10}, {-172, 44}, {44, 44}, {44, 42}}));
+      connect(bremse1.boolIn1, spannung.boolOut1) annotation(
+        Line(points = {{-48, -2}, {-58, -2}, {-58, 4}, {-149, 4}, {-149, -4}}));
       connect(decke.f_s1, flaschenzug_Modell.f_s1) annotation(
         Line(points = {{48, 62}, {47, 62}, {47, 50}, {48, 50}}));
-      connect(bremse1.boolIn1, spannung.boolOut1) annotation(
-        Line(points = {{-48, -2}, {-58, -2}, {-58, 4}, {-148, 4}, {-148, -6}, {-148, -6}}));
       connect(bremse1.m_w2, getriebe.m_w1) annotation(
         Line(points = {{-30, -8}, {-24, -8}, {-24, -30}, {-50, -30}, {-50, -44}, {-48, -44}}));
       connect(motor.m_w, bremse1.m_w1) annotation(
         Line(points = {{-78, -12}, {-54, -12}, {-54, -8}, {-54, -8}}));
-      connect(spannung.boolIn1, flaschenzug_Modell.boolOut1) annotation(
-        Line(points = {{-148, -12}, {-172, -12}, {-172, 44}, {44, 44}, {44, 42}}));
-      connect(spannung.u_i, motor.u_i) annotation(
-        Line(points = {{-126, -12}, {-126, -30}, {-101, -30}, {-101, -11}}));
       connect(seilwinde.f_s, flaschenzug_Modell.f_s2) annotation(
         Line(points = {{12, -36}, {14, -36}, {14, 4}, {12, 4}}));
       connect(masse.f_s, flaschenzug_Modell.f_s) annotation(
