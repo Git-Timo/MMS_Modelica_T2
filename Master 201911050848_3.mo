@@ -31,12 +31,70 @@ package Flaschenzug
   end Ports;
 
   package Modelle
+
+    model Spannungzeit
+    parameter Real U(unit "V") = 36;
+      Real I(unit "A");
+      parameter Real t(unit "s") = 1;
+      Real t1;
+      parameter Boolean KonstanteSpannung = false;
+      Flaschenzug.Ports.U_i u_i annotation(
+        Placement(visible = true, transformation(origin = {100, -2}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {124, -2}, extent = {{-24, -24}, {24, 24}}, rotation = 0)));
+      Flaschenzug.Ports.BoolIn boolIn1 annotation(
+        Placement(visible = true, transformation(origin = {148, 66}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-130, 0}, extent = {{-30, -30}, {30, 30}}, rotation = 0)));
+      Flaschenzug.Ports.BoolOut boolOut1 annotation(
+        Placement(visible = true, transformation(origin = {-148, 66}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-130, 64}, extent = {{-30, 30}, {30, -30}}, rotation = 0)));
+    equation
+    /*if U == 0 then
+            0 = u_i.U;
+            I = u_i.I;    
+            boolOut1=true;
+          elseif  boolIn1==true then
+            0 = u_i.U;
+            I = u_i.I;
+            boolOut1=true;
+        
+          else
+            U = u_i.U;
+            I = u_i.I;
+            boolOut1=false;
+          
+          end if;*/
+      if KonstanteSpannung == true then
+        t1 = time * t;
+        U = u_i.U;
+        I = u_i.I;
+        boolOut1 = false;
+      else
+        t1 = time * t;
+        if t1 <= 3 then
+          U = u_i.U;
+          I = u_i.I;
+          boolOut1 = false;
+        elseif t1 > 3 and t1 <= 6 then
+          u_i.U = 0;
+          I = u_i.I;
+          boolOut1 = true;
+        elseif t1 > 6 and t1 <= 7.5 then
+          U = -u_i.U;
+          I = u_i.I;
+          boolOut1 = false;
+        else
+          u_i.U = 0;
+          I = u_i.I;
+          boolOut1 = true;
+        end if;
+      end if;
+      annotation(
+        Diagram,
+        Icon(graphics = {Ellipse(origin = {4, 26}, fillPattern = FillPattern.Solid, extent = {{-20, -2}, {-52, -34}}, endAngle = 360), Ellipse(origin = {-56, 61}, lineThickness = 1, extent = {{-22, 19}, {128, -127}}, endAngle = 360), Ellipse(origin = {66, 26}, fillPattern = FillPattern.Solid, extent = {{-20, -2}, {-52, -34}}, endAngle = 360), Rectangle(origin = {-10, 10}, lineThickness = 1, extent = {{-90, 90}, {110, -110}})}, coordinateSystem(initialScale = 0.1)));
+    end Spannungzeit;
     model Spannung
       parameter Real U(unit "V") = 36;
       Real I(unit "A");
      //parameter Real t(unit "s") = 1;
       //Real t1;
-      parameter Boolean KonstanteSpannung = false;
+      //parameter Boolean KonstanteSpannung = false;
       Flaschenzug.Ports.U_i u_i annotation(
         Placement(visible = true, transformation(origin = {100, -2}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {124, -2}, extent = {{-24, -24}, {24, 24}}, rotation = 0)));
       Flaschenzug.Ports.BoolIn boolIn1 annotation(
@@ -48,12 +106,13 @@ package Flaschenzug
       
       if U == 0 then
         0 = u_i.U;
-        I = u_i.I;
+        I = u_i.I;    
         boolOut1=true;
       elseif  boolIn1==true then
         0 = u_i.U;
         I = u_i.I;
         boolOut1=true;
+    
       else
         U = u_i.U;
         I = u_i.I;
@@ -76,10 +135,10 @@ package Flaschenzug
             u_i.U = 0;
             I = u_i.I;
             boolOut1=true;
-          elseif t1 > 6 and t1 <= 10 then
+          elseif t1 > 6 and t1 <= 7.5 then
             U = -u_i.U;
             I = u_i.I;
-            boolOut1=true;
+            boolOut1=false;
             else
             u_i.U = 0;
             I = u_i.I;
@@ -172,9 +231,9 @@ package Flaschenzug
       annotation(
         Icon(graphics = {Rectangle(origin = {-77, 61}, lineColor = {70, 70, 70}, lineThickness = 4, extent = {{-23, 39}, {177, -159}}), Rectangle(origin = {91, -32}, fillColor = {52, 52, 52}, fillPattern = FillPattern.Solid, extent = {{-161, 10}, {11, -8}}), Rectangle(origin = {-75, 38}, fillColor = {52, 52, 52}, fillPattern = FillPattern.Solid, extent = {{-27, 6}, {119, -4}}), Rectangle(origin = {-9, 68}, fillColor = {159, 159, 159}, fillPattern = FillPattern.Forward, extent = {{-10, 7}, {20, -65}}), Rectangle(origin = {-19, -4}, fillColor = {106, 106, 106}, fillPattern = FillPattern.Forward, extent = {{-4, 7}, {34, -81}}), Rectangle(origin = {32, 59}, fillPattern = FillPattern.Solid, lineThickness = 0.5, extent = {{-10, 7}, {12, -15}}), Rectangle(origin = {72, 58}, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-54, 0}, {-26, -6}}), Ellipse(origin = {32, 56}, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-6, 6}, {8, -8}}, endAngle = 360), Rectangle(origin = {-82, 27}, fillPattern = FillPattern.Solid, lineThickness = 0.5, extent = {{-10, 7}, {12, -15}}), Ellipse(origin = {-82, 24}, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-6, 6}, {8, -8}}, endAngle = 360), Rectangle(origin = {-42, 26}, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-54, 0}, {-26, -6}}), Rectangle(origin = {-82, 59}, fillPattern = FillPattern.Solid, lineThickness = 0.5, extent = {{-10, 7}, {12, -15}}), Ellipse(origin = {-82, 56}, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-6, 6}, {8, -8}}, endAngle = 360), Rectangle(origin = {-42, 58}, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-54, 0}, {-24, -6}}), Rectangle(origin = {-56, -7}, fillPattern = FillPattern.Solid, lineThickness = 0.5, extent = {{-10, 7}, {12, -15}}), Ellipse(origin = {-56, -10}, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-6, 6}, {8, -8}}, endAngle = 360), Rectangle(origin = {-16, -8}, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-54, 0}, {-24, -6}}), Rectangle(origin = {-56, -47}, fillPattern = FillPattern.Solid, lineThickness = 0.5, extent = {{-10, 7}, {12, -15}}), Ellipse(origin = {-56, -50}, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-6, 6}, {8, -8}}, endAngle = 360), Rectangle(origin = {-16, -48}, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-54, 0}, {-26, -6}}), Rectangle(origin = {82, -47}, fillPattern = FillPattern.Solid, lineThickness = 0.5, extent = {{-10, 7}, {12, -15}}), Ellipse(origin = {82, -50}, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-6, 6}, {8, -8}}, endAngle = 360), Rectangle(origin = {122, -48}, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-54, 0}, {-26, -6}}), Rectangle(origin = {82, -7}, fillPattern = FillPattern.Solid, lineThickness = 0.5, extent = {{-10, 7}, {12, -15}}), Ellipse(origin = {82, -10}, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-6, 6}, {8, -8}}, endAngle = 360), Rectangle(origin = {122, -8}, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-54, 0}, {-26, -6}}), Rectangle(origin = {32, 27}, fillPattern = FillPattern.Solid, lineThickness = 0.5, extent = {{-10, 7}, {12, -15}}), Ellipse(origin = {32, 24}, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-6, 6}, {8, -8}}, endAngle = 360), Rectangle(origin = {72, 26}, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-54, 0}, {-26, -6}}), Text(origin = {-83, 84}, extent = {{-13, 10}, {13, -10}}, textString = "IN"), Text(origin = {79, -84}, extent = {{-13, 10}, {13, -10}}, textString = "OUT")}, coordinateSystem(initialScale = 0.1)));
     end Getriebe;
-
+    
     model Seilwinde
-      parameter Modelica.SIunits.Diameter Durchmesser = 0.2 "Trommeldurchmesser";
+    parameter Modelica.SIunits.Diameter Durchmesser = 0.2 "Trommeldurchmesser";
       constant Real Pi = 2 * Modelica.Math.asin(1.0);
       parameter Modelica.SIunits.Momentum Lagerwiderstand = 0.0 "[Nm]";
       parameter Modelica.SIunits.Diameter d = 0.05 "Seildurchmesser [m]";
@@ -195,7 +254,7 @@ package Flaschenzug
       Flaschenzug.Ports.M_w m_w annotation(
         Placement(visible = true, transformation(origin = {-134, 14}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-119, 1}, extent = {{-19, -19}, {19, 19}}, rotation = 0)));
     equation
- if v - 1 >= 1 and Durchmesserkommulation == true then
+      if v - 1 >= 1 and Durchmesserkommulation == true then
 ///Berechnung des Windendurchmessers nicht als Step Funktion, sondern bisher als lineare Funktion
         d_Winde = Durchmesser + s * d;
         dmax = Durchmesser + (o - 1) * d * 2;
@@ -223,9 +282,9 @@ package Flaschenzug
 //d_Zusatz-(Durchmesser*Winkel)=sum((((i/i)*((b/d)*2))/100)*(Winkel-((b/d)*2*Pi*i-1)) for i in 1:(v-1));
 //Winkel= (m_w1.w/(2*Pi));
       annotation(
-        choices(choice(redeclare lib2.Resistor Load(a = {2}) "..."), choice(redeclare Capacitor Load(L = 3) "...")));
-      annotation(
         Icon(graphics = {Rectangle(origin = {-44, 25}, fillColor = {208, 208, 208}, fillPattern = FillPattern.Solid, lineThickness = 1, extent = {{-56, 15}, {144, -65}}), Line(origin = {42.7034, 3.51}, points = {{18, 97}, {18, -45}}, color = {255, 85, 0}, thickness = 1), Line(origin = {-17.8189, 3.16671}, points = {{-22, 39}, {18, -45}}, color = {255, 85, 0}, thickness = 1), Line(origin = {1.89746, 1.88313}, points = {{-22, 39}, {18, -45}}, color = {255, 85, 0}, thickness = 1), Line(origin = {21.9273, 3.10701}, points = {{-22, 39}, {18, -45}}, color = {255, 85, 0}, thickness = 1)}, coordinateSystem(initialScale = 0.1)));
+      annotation(
+        choices(choice(redeclare lib2.Resistor Load(a = {2}) "..."), choice(redeclare Capacitor Load(L = 3) "...")));
     end Seilwinde;
 
     model Flaschenzug_Modell
@@ -252,7 +311,7 @@ package Flaschenzug
       Flaschenzug.Ports.BoolOut boolOut1 annotation(
         Placement(visible = true, transformation(origin = {-32, 86}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-14, 86}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
     equation
- if f_s.s + Sa >= f_s1.s then
+  if f_s.s + Sa >= f_s1.s then
 //Stoppen, wenn Flaschenzug ganz zusammengefahren
         boolOut1 = true;
       else
@@ -348,42 +407,6 @@ model Bremse
   annotation(
     Icon(graphics = {Rectangle(origin = {0, -8}, fillColor = {208, 208, 208}, fillPattern = FillPattern.Solid, extent = {{-100, 20}, {100, -22}}), Rectangle(origin = {-15, 154}, fillColor = {85, 85, 85}, fillPattern = FillPattern.Vertical, extent = {{-5, -54}, {35, -254}}), Polygon(origin = {32, 70}, fillColor = {200, 0, 0}, fillPattern = FillPattern.Solid, points = {{-10, 30}, {-10, -50}, {8, -50}, {8, 18}, {-10, 30}}), Polygon(origin = {-32, 70}, fillColor = {200, 0, 0}, fillPattern = FillPattern.Solid, points = {{10, 30}, {10, -50}, {-8, -50}, {-8, 18}, {10, 30}})}));
 end Bremse;
-
-    model Spannung_ohneBool
-      parameter Real U(unit "V") = 36;
-      Real I(unit "A");
-      parameter Real t(unit "s") = 1;
-      Real t1;
-      parameter Boolean KonstanteSpannung = false;
-      Flaschenzug.Ports.U_i u_i annotation(
-        Placement(visible = true, transformation(origin = {100, -2}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {124, -2}, extent = {{-24, -24}, {24, 24}}, rotation = 0)));
-    equation
-    
-        if KonstanteSpannung == true then
-          t1 = time * t;
-          U = u_i.U;
-          I = u_i.I;
-        else
-          t1 = time * t;
-          if t1 <= 3 then
-            U = u_i.U;
-            I = u_i.I;
-          elseif t1 > 3 and t1 <= 6 then
-            u_i.U = 0;
-            I = u_i.I;
-          elseif t1 > 9 and t1 <= 10 then
-            u_i.U = 0;
-            I = u_i.I;
-          else
-            U = -u_i.U;
-            I = u_i.I;
-          end if;
-        end if;
-     
-      annotation(
-        Diagram,
-        Icon(graphics = {Ellipse(origin = {4, 26}, fillPattern = FillPattern.Solid, extent = {{-20, -2}, {-52, -34}}, endAngle = 360), Ellipse(origin = {-56, 61}, lineThickness = 1, extent = {{-22, 19}, {128, -127}}, endAngle = 360), Ellipse(origin = {66, 26}, fillPattern = FillPattern.Solid, extent = {{-20, -2}, {-52, -34}}, endAngle = 360), Rectangle(origin = {-10, 10}, lineThickness = 1, extent = {{-90, 90}, {110, -110}})}, coordinateSystem(initialScale = 0.1)));
-    end Spannung_ohneBool;
     annotation(
       Icon(graphics = {Rectangle(origin = {-50, 50}, fillPattern = FillPattern.Solid, extent = {{-30, 30}, {30, -30}}), Rectangle(origin = {48, 50}, fillPattern = FillPattern.Solid, extent = {{-30, 30}, {30, -30}}), Rectangle(origin = {-48, -50}, fillPattern = FillPattern.Solid, extent = {{-30, 30}, {30, -30}}), Rectangle(origin = {50, -50}, fillPattern = FillPattern.Solid, extent = {{-30, 30}, {30, -30}}), Rectangle(origin = {9, -8}, lineThickness = 2, extent = {{-109, 108}, {91, -92}})}));
   end Modelle;
@@ -452,47 +475,6 @@ end Bremse;
       annotation(
         Icon(graphics = {Polygon(origin = {30, 80}, lineColor = {63, 188, 44}, fillColor = {88, 195, 64}, fillPattern = FillPattern.Solid, points = {{70, -82}, {-30, 20}, {-30, -20}, {-30, -178}, {70, -82}}), Rectangle(origin = {-70, 41}, lineColor = {53, 202, 46}, fillColor = {55, 173, 65}, fillPattern = FillPattern.Solid, extent = {{-30, 9}, {70, -89}})}));
     end Test_ohne_Motor;
-
-    model Gesamt_Modell
-      Flaschenzug.Modelle.Motor motor(cf = 0, cv = 0.000005) annotation(
-        Placement(visible = true, transformation(origin = {-75, -49}, extent = {{-11, -11}, {11, 11}}, rotation = 0)));
-      Flaschenzug.Modelle.Spannung spannung(KonstanteSpannung = true, U = 36) annotation(
-        Placement(visible = true, transformation(origin = {-82, -18}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Flaschenzug.Modelle.Getriebe getriebe(J_Ausgangsewelle = 0.05, J_Eingangswelle = 0.05, Wirkungsgrad = 1) annotation(
-        Placement(visible = true, transformation(origin = {-12, -48}, extent = {{-12, -12}, {12, 12}}, rotation = 0)));
-      Flaschenzug.Modelle.Seilwinde seilwinde(Durchmesserkommulation = false, Zugrichtug_aufwaerts = false, m = 0) annotation(
-        Placement(visible = true, transformation(origin = {25, -49}, extent = {{-13, -13}, {13, 13}}, rotation = 0)));
-      Flaschenzug.Modelle.Flaschenzug_Modell flaschenzug_Modell(Flaschengewicht_unten = 0, Sa = 0, Zugwinkel = 0, s = 1) annotation(
-        Placement(visible = true, transformation(origin = {68, 12}, extent = {{-32, -32}, {32, 32}}, rotation = 0)));
-      Flaschenzug.Modelle.Masse masse(m = 40) annotation(
-        Placement(visible = true, transformation(origin = {68, -46}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Flaschenzug.Modelle.Decke decke(Hoehe = 5) annotation(
-        Placement(visible = true, transformation(origin = {67, 71}, extent = {{-25, -25}, {25, 25}}, rotation = 0)));
- Flaschenzug.Modelle.Bremse bremse1 annotation(
-        Placement(visible = true, transformation(origin = {-42, -48}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-    equation
- connect(decke.f_s1, flaschenzug_Modell.f_s1) annotation(
-        Line(points = {{68, 48}, {68, 48}}));
- connect(bremse1.boolIn1, spannung.boolOut1) annotation(
-        Line(points = {{-49, -43}, {-49, 0}, {-95, 0}, {-95, -12}}));
- connect(bremse1.m_w2, getriebe.m_w1) annotation(
-        Line(points = {{-30, -49}, {-48, -49}, {-48, -40}, {-26, -40}, {-26, -43}}));
- connect(motor.m_w, bremse1.m_w1) annotation(
-        Line(points = {{-63, -49}, {-54, -49}}));
- connect(spannung.boolIn1, flaschenzug_Modell.boolOut1) annotation(
-        Line(points = {{-95, -18}, {-98, -18}, {-98, 30}, {64, 30}, {64, 40}}));
- connect(spannung.u_i, motor.u_i) annotation(
-        Line(points = {{-70, -18}, {-70, -30}, {-87, -30}, {-87, -49}}));
- connect(seilwinde.f_s, flaschenzug_Modell.f_s2) annotation(
-        Line(points = {{33, -34}, {32, -34}, {32, 2}}));
- connect(masse.f_s, flaschenzug_Modell.f_s) annotation(
-        Line(points = {{68, -36}, {68, -25}}));
- connect(getriebe.m_w, seilwinde.m_w) annotation(
-        Line(points = {{2, -51}, {2, -50}, {6, -50}, {6, -48.5}, {10, -48.5}, {10, -49}}));
-      annotation(
-        Diagram(graphics = {Rectangle(fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Rectangle(origin = {0, -56}, fillPattern = FillPattern.Solid, extent = {{-100, -44}, {100, -4}})}, coordinateSystem(initialScale = 0.1)),
-        Icon(graphics = {Polygon(origin = {30, 80}, lineColor = {63, 188, 44}, fillColor = {88, 195, 64}, fillPattern = FillPattern.Solid, points = {{70, -82}, {-30, 20}, {-30, -20}, {-30, -178}, {70, -82}}), Rectangle(origin = {-70, 41}, lineColor = {53, 202, 46}, fillColor = {55, 173, 65}, fillPattern = FillPattern.Solid, extent = {{-30, 9}, {70, -89}})}, coordinateSystem(initialScale = 0.1)));
-    end Gesamt_Modell;
 
     model Test_Getriebe
       Flaschenzug.Modelle.Motor motor1(Jtot = 0.018, cf = 0.000000, cv = 0.000005) annotation(
@@ -568,6 +550,88 @@ end Bremse;
       annotation(
         Icon(graphics = {Polygon(origin = {30, 80}, lineColor = {63, 188, 44}, fillColor = {88, 195, 64}, fillPattern = FillPattern.Solid, points = {{70, -82}, {-30, 20}, {-30, -20}, {-30, -178}, {70, -82}}), Rectangle(origin = {-70, 41}, lineColor = {53, 202, 46}, fillColor = {55, 173, 65}, fillPattern = FillPattern.Solid, extent = {{-30, 9}, {70, -89}})}));
     end Bremstest;
+
+    model Gesamt_Modell
+      Flaschenzug.Modelle.Motor motor(cf = 0, cv = 0.000005) annotation(
+        Placement(visible = true, transformation(origin = {-75, -49}, extent = {{-11, -11}, {11, 11}}, rotation = 0)));
+      Flaschenzug.Modelle.Getriebe getriebe(J_Ausgangsewelle = 0.05, J_Eingangswelle = 0.05, Wirkungsgrad = 1) annotation(
+        Placement(visible = true, transformation(origin = {-12, -48}, extent = {{-12, -12}, {12, 12}}, rotation = 0)));
+      Flaschenzug.Modelle.Seilwinde seilwinde(Durchmesserkommulation = false, Zugrichtug_aufwaerts = false, m = 0) annotation(
+        Placement(visible = true, transformation(origin = {25, -49}, extent = {{-13, -13}, {13, 13}}, rotation = 0)));
+      Flaschenzug.Modelle.Flaschenzug_Modell flaschenzug_Modell(Flaschengewicht_unten = 0, Sa = 0, Zugwinkel = 0, s = 1) annotation(
+        Placement(visible = true, transformation(origin = {68, 12}, extent = {{-32, -32}, {32, 32}}, rotation = 0)));
+      Flaschenzug.Modelle.Masse masse(m = 40) annotation(
+        Placement(visible = true, transformation(origin = {68, -46}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Flaschenzug.Modelle.Decke decke(Hoehe = 5) annotation(
+        Placement(visible = true, transformation(origin = {67, 71}, extent = {{-25, -25}, {25, 25}}, rotation = 0)));
+ Flaschenzug.Modelle.Bremse bremse1 annotation(
+        Placement(visible = true, transformation(origin = {-42, -48}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+ Flaschenzug.Modelle.Spannung spannung annotation(
+        Placement(visible = true, transformation(origin = {-72, -22}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    equation
+      connect(decke.f_s1, flaschenzug_Modell.f_s1) annotation(
+        Line(points = {{68, 48}, {68, 48}}));
+      connect(bremse1.m_w2, getriebe.m_w1) annotation(
+        Line(points = {{-30, -49}, {-48, -49}, {-48, -40}, {-26, -40}, {-26, -43}}));
+      connect(motor.m_w, bremse1.m_w1) annotation(
+        Line(points = {{-63, -49}, {-54, -49}}));
+      connect(seilwinde.f_s, flaschenzug_Modell.f_s2) annotation(
+        Line(points = {{33, -34}, {32, -34}, {32, 2}}));
+      connect(masse.f_s, flaschenzug_Modell.f_s) annotation(
+        Line(points = {{68, -36}, {68, -25}}));
+      connect(getriebe.m_w, seilwinde.m_w) annotation(
+        Line(points = {{2, -51}, {2, -50}, {6, -50}, {6, -48.5}, {10, -48.5}, {10, -49}}));
+ connect(spannung.u_i, motor.u_i) annotation(
+        Line(points = {{-60, -22}, {-60, -34}, {-84, -34}, {-84, -40}, {-86, -40}, {-86, -50}}));
+ connect(spannung.boolOut1, bremse1.boolIn1) annotation(
+        Line(points = {{-85, -16}, {-84.25, -16}, {-84.25, 0}, {-50, 0}, {-50, -27}, {-48, -27}, {-48, -42}}));
+ connect(spannung.boolIn1, flaschenzug_Modell.boolOut1) annotation(
+        Line(points = {{-85, -22}, {-96.125, -22}, {-96.125, -4}, {-95.25, -4}, {-95.25, 22}, {-95.5, 22}, {-95.5, 40}, {64, 40}}));
+      annotation(
+        Diagram(graphics = {Rectangle(fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Rectangle(origin = {0, -56}, fillPattern = FillPattern.Solid, extent = {{-100, -44}, {100, -4}})}, coordinateSystem(initialScale = 0.1)),
+        Icon(graphics = {Polygon(origin = {30, 80}, lineColor = {63, 188, 44}, fillColor = {88, 195, 64}, fillPattern = FillPattern.Solid, points = {{70, -82}, {-30, 20}, {-30, -20}, {-30, -178}, {70, -82}}), Rectangle(origin = {-70, 41}, lineColor = {53, 202, 46}, fillColor = {55, 173, 65}, fillPattern = FillPattern.Solid, extent = {{-30, 9}, {70, -89}})}, coordinateSystem(initialScale = 0.1)));
+    end Gesamt_Modell;
+    
+    model Gesamt_Modell_Zeit_Beispiel
+      Flaschenzug.Modelle.Motor motor(cf = 0, cv = 0.000005) annotation(
+        Placement(visible = true, transformation(origin = {-75, -49}, extent = {{-11, -11}, {11, 11}}, rotation = 0)));
+      Flaschenzug.Modelle.Getriebe getriebe(J_Ausgangsewelle = 0.05, J_Eingangswelle = 0.05, Wirkungsgrad = 1) annotation(
+        Placement(visible = true, transformation(origin = {-12, -48}, extent = {{-12, -12}, {12, 12}}, rotation = 0)));
+      Flaschenzug.Modelle.Seilwinde seilwinde(Durchmesserkommulation = false, Zugrichtug_aufwaerts = false, m = 0) annotation(
+        Placement(visible = true, transformation(origin = {25, -49}, extent = {{-13, -13}, {13, 13}}, rotation = 0)));
+      Flaschenzug.Modelle.Flaschenzug_Modell flaschenzug_Modell(Flaschengewicht_unten = 0, Sa = 0, Zugwinkel = 0, s = 1) annotation(
+        Placement(visible = true, transformation(origin = {68, 12}, extent = {{-32, -32}, {32, 32}}, rotation = 0)));
+      Flaschenzug.Modelle.Masse masse(m = 40) annotation(
+        Placement(visible = true, transformation(origin = {68, -46}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Flaschenzug.Modelle.Decke decke(Hoehe = 5) annotation(
+        Placement(visible = true, transformation(origin = {67, 71}, extent = {{-25, -25}, {25, 25}}, rotation = 0)));
+    Flaschenzug.Modelle.Bremse bremse1 annotation(
+        Placement(visible = true, transformation(origin = {-42, -48}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Flaschenzug.Modelle.Spannungzeit spannungzeit(KonstanteSpannung = false)  annotation(
+        Placement(visible = true, transformation(origin = {-78, -14}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    equation
+      connect(decke.f_s1, flaschenzug_Modell.f_s1) annotation(
+        Line(points = {{68, 48}, {68, 48}}));
+      connect(bremse1.m_w2, getriebe.m_w1) annotation(
+        Line(points = {{-30, -49}, {-48, -49}, {-48, -40}, {-26, -40}, {-26, -43}}));
+      connect(motor.m_w, bremse1.m_w1) annotation(
+        Line(points = {{-63, -49}, {-54, -49}}));
+      connect(seilwinde.f_s, flaschenzug_Modell.f_s2) annotation(
+        Line(points = {{33, -34}, {32, -34}, {32, 2}}));
+      connect(masse.f_s, flaschenzug_Modell.f_s) annotation(
+        Line(points = {{68, -36}, {68, -25}}));
+      connect(getriebe.m_w, seilwinde.m_w) annotation(
+        Line(points = {{2, -51}, {2, -50}, {6, -50}, {6, -48.5}, {10, -48.5}, {10, -49}}));
+  connect(spannungzeit.u_i, motor.u_i) annotation(
+        Line(points = {{-66, -14}, {-86, -14}, {-86, -50}, {-86, -50}}));
+  connect(spannungzeit.boolOut1, bremse1.boolIn1) annotation(
+        Line(points = {{-92, -8}, {-48, -8}, {-48, -42}, {-48, -42}}));
+  connect(spannungzeit.boolIn1, flaschenzug_Modell.boolOut1) annotation(
+        Line(points = {{-92, -14}, {64, -14}, {64, 40}, {64, 40}}));
+      annotation(
+        Diagram(graphics = {Rectangle(fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Rectangle(origin = {0, -56}, fillPattern = FillPattern.Solid, extent = {{-100, -44}, {100, -4}})}, coordinateSystem(initialScale = 0.1)),
+        Icon(graphics = {Polygon(origin = {30, 80}, lineColor = {63, 188, 44}, fillColor = {88, 195, 64}, fillPattern = FillPattern.Solid, points = {{70, -82}, {-30, 20}, {-30, -20}, {-30, -178}, {70, -82}}), Rectangle(origin = {-70, 41}, lineColor = {53, 202, 46}, fillColor = {55, 173, 65}, fillPattern = FillPattern.Solid, extent = {{-30, 9}, {70, -89}})}, coordinateSystem(initialScale = 0.1)));
+    end Gesamt_Modell_Zeit_Beispiel;
     annotation(
       Icon(coordinateSystem(initialScale = 0.1), graphics = {Rectangle(origin = {-70, 41}, lineColor = {53, 202, 46}, fillColor = {55, 173, 65}, fillPattern = FillPattern.Solid, extent = {{-30, 9}, {70, -89}}), Polygon(origin = {30, 80}, lineColor = {63, 188, 44}, fillColor = {88, 195, 64}, fillPattern = FillPattern.Solid, points = {{70, -82}, {-30, 20}, {-30, -20}, {-30, -178}, {70, -82}})}));
   end Prototyp;
