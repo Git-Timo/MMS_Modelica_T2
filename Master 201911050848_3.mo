@@ -155,51 +155,52 @@ package Flaschenzug
     Flaschenzug.Ports.M_w m_w annotation(
         Placement(visible = true, transformation(origin = {100, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {106, 15}, extent = {{-24, -24}, {24, 24}}, rotation = 0)));
       constant Real Pi = Modelica.Constants.pi;
+      // Bürstenspannungsabfall
       parameter Real Ub(unit = "V") = 0.8 annotation(
         Dialog(group = "Motorparameter"));
-      // Buerstenabfallspannung
+      // Ankerwiderstand
       parameter Real Ra(unit = "Ohm") = 0.608 annotation(
         Dialog(group = "Motorparameter"));
-      // Ankerwiderstand
+      // Ankerinduktivität
       parameter Real La(unit = "H") = 0.000423 annotation(
         Dialog(group = "Motorparameter"));
-      // Ankerinduktivitaet
+      // Gesamtes Massenträgheitsmoment
       parameter Real Jtot(unit = "kg.m2") = 0.018 annotation(
         Dialog(group = "Motorparameter"));
-      // Massentraegheit gesamt
+      // Drehmomentkonstante
       parameter Real kt(unit = "N.m/A") = 0.091534 annotation(
         Dialog(group = "Motorparameter"));
-      // Drehmomentkonstante
+      // Reibungskonstante
       parameter Real cf(unit = "N.m.s") = 0.000000 annotation(
         Dialog(group = "Motorparameter"));
-      // Reibungsverlustkonstante
+      // Ventilationskonstante
       parameter Real cv(unit = "N.m.s2") = 0.000005 annotation(
         Dialog(group = "Motorparameter"));
-      // Ventilationsverlustkonstante
-      Real n(unit = "Hz");
       // Drehzahl
-      Real Mf(unit = "N.m");
+      Real n(unit = "Hz");
       // Reibungsmoment
-      Real Mv(unit = "N.m");
+      Real Mf(unit = "N.m");
       // Ventilationsmoment
-      Real Ua(unit = "V");
+      Real Mv(unit = "N.m");
       // Ankerspannung
-      Real Ia(unit = "A");
+      Real Ua(unit = "V");
       // Ankerstrom
-      Real w(unit = "rad/s");
+      Real Ia(unit = "A");
       // Winkelgeschwindigkeit
-      Real ke(unit = "N.m/A ");
+      Real w(unit = "rad/s");
       //Spannungskonstante
-      Real Me(unit = "N.m");
+      Real ke(unit = "N.m/A ");
       //Luftspaltdrehmoment
+      Real Me(unit = "N.m");
+      //Leistung
       Real P(unit = "W");
-      Real test(unit = "N.m");
+      
       Flaschenzug.Ports.U_i u_i annotation(
         Placement(visible = true, transformation(origin = {-100, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-107, 11}, extent = {{-25, -25}, {25, 25}}, rotation = 0)));
     equation
-//Formel Heidrich Vorlesung 2 Gleichstrommotor
+    
       u_i.U = Ua;
-//Reihenschluss
+// Formeln Gleichstrommaschine mit Permanentmagneten
       Ia = u_i.I;
       Ua = 2 * Ub + Ra * Ia + La * der(Ia) + ke * n;
       Jtot * der(w) = Me - Mf - Mv - m_w.M;
@@ -212,7 +213,9 @@ package Flaschenzug
       der(m_w.w) = w;
       P = u_i.U * Ia;
       annotation(
-        Icon(graphics = {Rectangle(origin = {-35, -17}, fillColor = {186, 186, 186}, fillPattern = FillPattern.Horizontal, lineThickness = 1, extent = {{-65, 117}, {135, -61}}), Text(origin = {-40, 31}, extent = {{-10, 5}, {90, -65}}, textString = "Motor"), Polygon(origin = {0, -89}, fillPattern = FillPattern.Solid, points = {{-92, -11}, {92, -11}, {64, 11}, {-64, 11}, {-62, 11}, {-92, -11}}), Rectangle(origin = {-17, 53}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-22, 18}, {22, -18}}), Text(origin = {-17, 54}, lineColor = {255, 30, 33}, extent = {{-13, -6}, {13, 6}}, textString = "ABB")}, coordinateSystem(initialScale = 0.1)));
+        Icon(graphics = {Rectangle(origin = {-35, -17}, fillColor = {186, 186, 186}, fillPattern = FillPattern.Horizontal, lineThickness = 1, extent = {{-65, 117}, {135, -61}}), Text(origin = {-40, 31}, extent = {{-10, 5}, {90, -65}}, textString = "Motor"), Polygon(origin = {0, -89}, fillPattern = FillPattern.Solid, points = {{-92, -11}, {92, -11}, {64, 11}, {-64, 11}, {-62, 11}, {-92, -11}}), Rectangle(origin = {-17, 53}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-22, 18}, {22, -18}}), Text(origin = {-17, 54}, lineColor = {255, 30, 33}, extent = {{-13, -6}, {13, 6}}, textString = "ABB")}, coordinateSystem(initialScale = 0.1)),
+  Documentation(info = "<html><head></head><body><font size=\"4\">Der Motor ist eine Gleichstrommaschine mit Permanentmagneten und Grafitbürsten.</font><div><font size=\"4\">Die Bemessungsspannung beträgt U<sub>a rat&nbsp;</sub>= 48V<br></font><div><font size=\"4\"><br></font></div><div><font size=\"4\"><b>Auslegung des Motors:</b></font></div><div><span style=\"font-size: large;\">Moment an der Welle: M</span><sub>sh&nbsp;</sub><span style=\"font-size: large;\">= 0-8 Nm</span></div><div><font size=\"4\">Umdrehung pro min: n = 0-5000 min<sup>-1</sup></font></div><div><font size=\"4\"><br></font></div><div><font size=\"4\"><b>Parametrierbare Parameter in der Visualisierung</b></font></div><div><font size=\"4\">Bürstenspannungsabfall: 2<sub>Ub&nbsp;</sub>= 0.8&nbsp;V</font></div><div><font size=\"4\">Ankerwiderstand: R<sub>a </sub>=&nbsp;0.608&nbsp;Ohm</font></div><div><font size=\"4\">Ankerinduktivität: L<sub>a </sub>=&nbsp;423 µ</font><span style=\"font-size: large;\">H</span></div><div><font size=\"4\">Gesamtes Massenträgheitsmoment: J<sub>tot </sub>= 0.018&nbsp;kgm<sup>2</sup></font></div><div><font size=\"4\">Drehmomentkonstante: k<sub>t</sub>&nbsp;= 0.091534&nbsp;</font><span style=\"font-size: large;\">Nm/A</span></div>
+<div><font size=\"4\">Reibungskonstante: C<sub>f</sub>&nbsp;= 0 Nms</font></div><div><font size=\"4\">Ventilationskonstante: C<sub>v</sub>&nbsp;= 0.000005 Nms<sup>2</sup></font></div></div></body></html>"));
     end Motor;
 
     model Getriebe
@@ -271,7 +274,7 @@ package Flaschenzug
       Flaschenzug.Ports.M_w m_w annotation(
         Placement(visible = true, transformation(origin = {-134, 14}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-119, 1}, extent = {{-19, -19}, {19, 19}}, rotation = 0)));
     equation
-      if v - 1 >= 1 and Durchmesserkommulation == true then
+  if v - 1 >= 1 and Durchmesserkommulation == true then
 ///Berechnung des Windendurchmessers nicht als Step Funktion, sondern bisher als lineare Funktion
         d_Winde = Durchmesser + s * d;
         dmax = Durchmesser + (o - 1) * d * 2;
@@ -370,7 +373,7 @@ package Flaschenzug
       Flaschenzug.Ports.BoolOut boolOut1 annotation(
         Placement(visible = true, transformation(origin = {-32, 86}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-14, 86}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
     equation
-      if f_s.s + Sa >= f_s1.s then
+  if f_s.s + Sa >= f_s1.s then
 //Stoppen, wenn Flaschenzug ganz zusammengefahren
         boolOut1 = true;
       else
@@ -417,7 +420,7 @@ package Flaschenzug
       Flaschenzug.Ports.BoolOut boolOut1 annotation(
         Placement(visible = true, transformation(origin = {-32, 86}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-14, 86}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
     equation
-      if f_s.s + Sa >= f_s1.s then
+  if f_s.s + Sa >= f_s1.s then
 //Stoppen, wenn Flaschenzug ganz zusammengefahren
         boolOut1 = true;
       else
