@@ -41,7 +41,7 @@ package Flaschenzug
         Flaschenzug.Ports.U_i u_i annotation(
           Placement(visible = true, transformation(origin = {100, -2}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {124, -2}, extent = {{-24, -24}, {24, 24}}, rotation = 0)));
         Flaschenzug.Ports.BoolIn boolIn1 annotation(
-          Placement(visible = true, transformation(origin = {148, 66}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-130, 0}, extent = {{-30, -30}, {30, 30}}, rotation = 0)));
+          Placement(visible = true, transformation(origin = {148, 66}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-130, -2}, extent = {{30, -30}, {-30, 30}}, rotation = 0)));
         Flaschenzug.Ports.BoolOut boolOut1 annotation(
           Placement(visible = true, transformation(origin = {-148, 66}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-130, 64}, extent = {{-30, 30}, {30, -30}}, rotation = 0)));
       equation
@@ -73,7 +73,7 @@ package Flaschenzug
         Flaschenzug.Ports.U_i u_i annotation(
           Placement(visible = true, transformation(origin = {100, -2}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {124, -2}, extent = {{-24, -24}, {24, 24}}, rotation = 0)));
         Flaschenzug.Ports.BoolIn boolIn1 annotation(
-          Placement(visible = true, transformation(origin = {148, 66}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-130, 0}, extent = {{-30, -30}, {30, 30}}, rotation = 0)));
+          Placement(visible = true, transformation(origin = {148, 66}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-130, 0}, extent = {{30, -30}, {-30, 30}}, rotation = 0)));
         Flaschenzug.Ports.BoolOut boolOut1 annotation(
           Placement(visible = true, transformation(origin = {-148, 66}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-130, 64}, extent = {{-30, 30}, {30, -30}}, rotation = 0)));
       equation
@@ -510,7 +510,7 @@ package Flaschenzug
         Flaschenzug.Ports.M_w m_w2 annotation(
           Placement(visible = true, transformation(origin = {112, -12}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {121, -9}, extent = {{-21, -21}, {21, 21}}, rotation = 0)));
         Flaschenzug.Ports.BoolIn boolIn1 annotation(
-          Placement(visible = true, transformation(origin = {-56, 66}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-68, 54}, extent = {{-28, -28}, {28, 28}}, rotation = 0)));
+          Placement(visible = true, transformation(origin = {-56, 66}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-68, 56}, extent = {{28, -28}, {-28, 28}}, rotation = 0)));
         Real t = 1;
         Real t1;
         Real test;
