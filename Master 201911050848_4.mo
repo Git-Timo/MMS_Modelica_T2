@@ -41,7 +41,7 @@ package Flaschenzug
         Flaschenzug.Ports.U_i u_i annotation(
           Placement(visible = true, transformation(origin = {100, -2}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {124, -2}, extent = {{-24, -24}, {24, 24}}, rotation = 0)));
         Flaschenzug.Ports.BoolIn boolIn1 annotation(
-          Placement(visible = true, transformation(origin = {148, 66}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-130, -2}, extent = {{30, -30}, {-30, 30}}, rotation = 0)));
+          Placement(visible = true, transformation(origin = {148, 66}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-130, -2.55351e-15}, extent = {{30, -30}, {-30, 30}}, rotation = 0)));
         Flaschenzug.Ports.BoolOut boolOut1 annotation(
           Placement(visible = true, transformation(origin = {-148, 66}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-130, 64}, extent = {{-30, 30}, {30, -30}}, rotation = 0)));
       equation
@@ -73,7 +73,7 @@ package Flaschenzug
         Flaschenzug.Ports.U_i u_i annotation(
           Placement(visible = true, transformation(origin = {100, -2}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {124, -2}, extent = {{-24, -24}, {24, 24}}, rotation = 0)));
         Flaschenzug.Ports.BoolIn boolIn1 annotation(
-          Placement(visible = true, transformation(origin = {148, 66}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-130, 0}, extent = {{30, -30}, {-30, 30}}, rotation = 0)));
+          Placement(visible = true, transformation(origin = {148, 66}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-130, 6}, extent = {{30, -30}, {-30, 30}}, rotation = 0)));
         Flaschenzug.Ports.BoolOut boolOut1 annotation(
           Placement(visible = true, transformation(origin = {-148, 66}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-130, 64}, extent = {{-30, 30}, {30, -30}}, rotation = 0)));
       equation
@@ -348,7 +348,7 @@ package Flaschenzug
         Flaschenzug.Ports.F_s f_s2 annotation(
           Placement(visible = true, transformation(origin = {-114, -26}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-114, 56}, extent = {{-14, -14}, {14, 14}}, rotation = 0)));
         Flaschenzug.Ports.BoolOut boolOut1 annotation(
-          Placement(visible = true, transformation(origin = {-32, 86}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-14, 86}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+          Placement(visible = true, transformation(origin = {-32, 86}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {16, 86}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
       equation
   if f_s.s + Sa >= f_s1.s then
 //Stoppen, wenn Flaschenzug ganz zusammengefahren
@@ -510,7 +510,7 @@ package Flaschenzug
         Flaschenzug.Ports.M_w m_w2 annotation(
           Placement(visible = true, transformation(origin = {112, -12}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {121, -9}, extent = {{-21, -21}, {21, 21}}, rotation = 0)));
         Flaschenzug.Ports.BoolIn boolIn1 annotation(
-          Placement(visible = true, transformation(origin = {-56, 66}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-68, 56}, extent = {{28, -28}, {-28, 28}}, rotation = 0)));
+          Placement(visible = true, transformation(origin = {-56, 66}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-67, 57}, extent = {{27, -27}, {-27, 27}}, rotation = 0)));
         Real t = 1;
         Real t1;
         Real test;
@@ -561,6 +561,47 @@ package Flaschenzug
      annotation(
         Icon(coordinateSystem(initialScale = 0.1), graphics = {Polygon(origin = {-1, 80}, fillColor = {208, 41, 18}, fillPattern = FillPattern.CrossDiag, lineThickness = 2.75, points = {{1, 20}, {-99, -20}, {99, -20}, {1, 20}}), Rectangle(origin = {-1, -20}, lineThickness = 2.75, extent = {{-99, 80}, {99, -80}}), Rectangle(origin = {-1, -80}, fillPattern = FillPattern.Solid, extent = {{-99, 20}, {99, -20}})}));
     end Gebaeude;
+
+    package Sonderkomponenten
+      model Boolsche_Senke
+        Flaschenzug.Ports.BoolIn boolIn1 annotation(
+          Placement(visible = true, transformation(origin = {-114, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-120, -8.88178e-16}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+      equation
+
+        annotation(
+          Icon(graphics = {Rectangle(fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, lineThickness = 0.5, extent = {{-100, 100}, {100, -100}}), Rectangle(origin = {-108, 54}, lineThickness = 0.5, extent = {{38, 16}, {178, -48}})}),
+          Documentation(info = "<html><head></head><body>Die Boolsche_Senke ist eine Senke für boolschen Werte. Sollte im Gesamtmodell ein offener Boolscher Output offen sein, dann die Senke dazu benutzt werden, den wer aufzunehmen.</body></html>"));
+      end Boolsche_Senke;
+
+      model Boolsche_Quelle
+      Flaschenzug.Ports.BoolOut boolOut1 annotation(
+          Placement(visible = true, transformation(origin = {130, 6}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {120, 3.55271e-15}, extent = {{20, -20}, {-20, 20}}, rotation = 0)));
+      
+      //Startparameter
+      parameter Boolean Eingabe = false annotation(
+          Dialog(group = "Ausgabe"));
+          
+      //Aenderung nach einem bestimmten Zeitpunkt
+      parameter Boolean Aenderung = false annotation(
+          Dialog(group = "Zeitgesteuert ändern auf"));
+      parameter Real nach (unit "s") = 1 annotation(
+          Dialog(group = "Zeitgesteuert ändern auf"));
+      
+      equation
+      
+      
+      if time<= nach then
+        boolOut1=Aenderung;
+      else
+        boolOut1=Eingabe;
+      end if;
+
+      annotation(
+          Icon(graphics = {Rectangle(fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, lineThickness = 1, extent = {{-100, 100}, {100, -100}}), Line(origin = {15.48, 9.93}, points = {{-73.1063, -71.1063}, {-15.1063, -71.1063}, {-15.1063, 62.8937}, {40.8937, 62.8937}}, thickness = 1)}),
+          Documentation(info = "<html><head></head><body>Die Boolsche Quelle ermögtlicht bie Modellierungen ein boolsches Signal konstant zu halten, oder zeitgesteuert zu ändern. Das erzeugte Signal wird aus dem boolschen Output-Port ausgegeben.<div><br></div><div><b>Folgende Parameter </b>stehen zur Verfügung:</div><div>\"Eingabe\": Dieser Wert nimmt der boolsche Ausgangsport von Beginn an der Simulatiin an</div><div>\"nach\": soll eine Änderung des boolschen Wertes bei einem bestimmten Zeitpunkt erfolgen, so kann unter der Angabe \"nach\" der Zeitpunkt eingegeben werden.</div><div>\"Aenderung\": Diesen Wert nimmt der boolsche Ausgangsport ab dem Zeitpunkt \"nach\" an.</div><div><br></div><div><b>Hinweiß:</b></div><div>Soll keine Änderung des boolschen Wertes simuliert werden, kann entweder der Parameter \"nach\" auf einen Zeitpunktnach dem Simulationsende, oder \"Anderung\"=\"Eingabe\" &nbsp;gesetzt werden.</div></body></html>"));end Boolsche_Quelle;
+  annotation(
+        Icon(graphics = {Polygon(origin = {-40, 0}, fillColor = {0, 255, 0}, fillPattern = FillPattern.Solid, points = {{-60, 0}, {60, 100}, {60, -100}, {-60, 0}}), Polygon(origin = {40, 0}, fillColor = {0, 255, 255}, fillPattern = FillPattern.Solid, points = {{-60, -2}, {60, 100}, {60, -100}, {-60, -2}})}));
+    end Sonderkomponenten;
     annotation(
       Icon(graphics = {Rectangle(origin = {-50, 50}, fillPattern = FillPattern.Solid, extent = {{-30, 30}, {30, -30}}), Rectangle(origin = {48, 50}, fillPattern = FillPattern.Solid, extent = {{-30, 30}, {30, -30}}), Rectangle(origin = {-48, -50}, fillPattern = FillPattern.Solid, extent = {{-30, 30}, {30, -30}}), Rectangle(origin = {50, -50}, fillPattern = FillPattern.Solid, extent = {{-30, 30}, {30, -30}}), Rectangle(origin = {9, -8}, lineThickness = 2, extent = {{-109, 108}, {91, -92}})}));
   end Modelle;
@@ -627,10 +668,10 @@ package Flaschenzug
       Modelle.Massen.Bierkasten bierkasten1 annotation(
         Placement(visible = true, transformation(origin = {76, -40}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
     equation
+      connect(spannung1.boolIn1, flaschenzug_Modell_b1.boolOut1) annotation(
+        Line(points = {{-76, -34}, {-90, -34}, {-90, -54}, {94, -54}, {94, 28}, {78, 28}, {78, 28}}));
       connect(spannung1.boolOut1, bremse1.boolIn1) annotation(
         Line(points = {{-78, -28}, {-92, -28}, {-92, 64}, {-38, 64}, {-38, 50}, {-30, 50}, {-30, 50}}));
-      connect(spannung1.boolIn1, flaschenzug_Modell_b1.boolOut1) annotation(
-        Line(points = {{-78, -34}, {-92, -34}, {-92, -54}, {90, -54}, {90, 42}, {62, 42}, {62, 28}, {72, 28}, {72, 28}}));
       connect(spannung1.u_i, motor1.u_i) annotation(
         Line(points = {{-52, -34}, {-52, 22}, {-84, 22}, {-84, 44}, {-76, 44}, {-76, 46}}));
       connect(motor1.m_w, bremse1.m_w1) annotation(
