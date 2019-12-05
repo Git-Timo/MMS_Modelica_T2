@@ -60,14 +60,18 @@ package Flaschenzug
         end if;
         annotation(
           Diagram,
-          Icon(graphics = {Ellipse(origin = {4, 26}, fillPattern = FillPattern.Solid, extent = {{-20, -2}, {-52, -34}}, endAngle = 360), Ellipse(origin = {-56, 61}, lineThickness = 1, extent = {{-22, 19}, {128, -127}}, endAngle = 360), Ellipse(origin = {66, 26}, fillPattern = FillPattern.Solid, extent = {{-20, -2}, {-52, -34}}, endAngle = 360), Rectangle(origin = {-10, 10}, lineThickness = 1, extent = {{-90, 90}, {110, -110}})}, coordinateSystem(initialScale = 0.1)));
+          Icon(graphics = {Ellipse(origin = {4, 26}, fillPattern = FillPattern.Solid, extent = {{-20, -2}, {-52, -34}}, endAngle = 360), Ellipse(origin = {-56, 61}, lineThickness = 1, extent = {{-22, 19}, {128, -127}}, endAngle = 360), Ellipse(origin = {66, 26}, fillPattern = FillPattern.Solid, extent = {{-20, -2}, {-52, -34}}, endAngle = 360), Rectangle(origin = {-10, 10}, lineThickness = 1, extent = {{-90, 90}, {110, -110}})}, coordinateSystem(initialScale = 0.1)),
+  Documentation(info = "<html><head></head><body><b>Spannungsquelle:</b><div><b><br></b></div><div>Spannungsquelle gesteuert durch Sensorsignal.</div><div><br></div><div>Drei IF-Fälle:</div><div><br></div><div>1. Ist die Spannung 0 wird keine Spannung ausgegeben. boolOut1 = 1 und betätigt damit Bremse.</div><div>2. Ist boolIn1 = 1 bedeutet das, dass der Flaschenzug auf Block und damit an der Decke angekommen ist.</div><div>&nbsp; &nbsp; Damit Schaltet boolOut1 auf 1 und die Bremse wird betätigt.</div><div>3. Tritt Fall eins und zwei nicht ein so gibt die Spannungsquelle eine Spannung an den Motor weiter.</div><div><br><div><br></div><div><br></div></div></body></html>"));
       end Spannung;
 
       model Spannung_Zeitverlauf
         parameter Real U(unit "V") = 36;
         Real I(unit "A");
         parameter Real t(unit "s") = 1;
-        Real t1;
+        parameter Real t1=3 "Zeit Masse anheben" ;
+        parameter Real t2=6 "Zeit Masse halten" ;
+        parameter Real t3=7.5 "Zeit Masse senken" ;  
+        Real t10;
         parameter Boolean KonstanteSpannung = false annotation(
           Dialog(group = "Betriebsarten"));
         Flaschenzug.Ports.U_i u_i annotation(
@@ -78,21 +82,21 @@ package Flaschenzug
           Placement(visible = true, transformation(origin = {-148, 66}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-130, 64}, extent = {{-30, 30}, {30, -30}}, rotation = 0)));
       equation
         if KonstanteSpannung == true then
-          t1 = time * t;
+          t10 = time * t;
           U = u_i.U;
           I = u_i.I;
           boolOut1 = false;
         else
-          t1 = time * t;
-          if t1 <= 3 then
+          t10 = time * t;
+          if t10 <= t1 then
             U = u_i.U;
             I = u_i.I;
             boolOut1 = false;
-          elseif t1 > 3 and t1 <= 6 then
+          elseif t10 > t1 and t10 <= t2 then
             u_i.U = 0;
             I = u_i.I;
             boolOut1 = true;
-          elseif t1 > 6 and t1 <= 7.5 then
+          elseif t10 > t2 and t10 <= t3 then
             12 = -u_i.U;
             I = u_i.I;
             boolOut1 = false;
@@ -104,7 +108,8 @@ package Flaschenzug
         end if;
         annotation(
           Diagram,
-          Icon(graphics = {Ellipse(origin = {4, 26}, fillPattern = FillPattern.Solid, extent = {{-20, -2}, {-52, -34}}, endAngle = 360), Ellipse(origin = {-56, 61}, lineThickness = 1, extent = {{-22, 19}, {128, -127}}, endAngle = 360), Ellipse(origin = {66, 26}, fillPattern = FillPattern.Solid, extent = {{-20, -2}, {-52, -34}}, endAngle = 360), Rectangle(origin = {-10, 10}, lineThickness = 1, extent = {{-90, 90}, {110, -110}})}, coordinateSystem(initialScale = 0.1)));
+          Icon(graphics = {Ellipse(origin = {4, 26}, fillPattern = FillPattern.Solid, extent = {{-20, -2}, {-52, -34}}, endAngle = 360), Ellipse(origin = {-56, 61}, lineThickness = 1, extent = {{-22, 19}, {128, -127}}, endAngle = 360), Ellipse(origin = {66, 26}, fillPattern = FillPattern.Solid, extent = {{-20, -2}, {-52, -34}}, endAngle = 360), Rectangle(origin = {-10, 10}, lineThickness = 1, extent = {{-90, 90}, {110, -110}})}, coordinateSystem(initialScale = 0.1)),
+  Documentation(info = "<html><head></head><body><b>Spannungsquelle Zeitverlauf:</b><div><br></div><div>Mit diesem Spannungsmodell kann die Spannung über die Zeit verändert werden.&nbsp;</div><div>Damit lassen sich Hebezyklen realisieren (Heben, Halten Senken, Halten)</div></body></html>"));
       end Spannung_Zeitverlauf;
 
       model Spannung_ohneBool
@@ -384,11 +389,11 @@ package Flaschenzug
         Ports.F_s f_s annotation(
           Placement(visible = true, transformation(origin = {0, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {0, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
       equation
-        //Kraft am Kraft-Weg-Prot, unter berücksichtigung der Trägheit
+//Kraft am Kraft-Weg-Prot, unter berücksichtigung der Trägheit
         f_s.F = m * g + m * a;
-      //Berechnung der Beschleunigungs-Variable
+//Berechnung der Beschleunigungs-Variable
         der(v) = a;
-        //Berechnung der Geschwindigkeits-Variable
+//Berechnung der Geschwindigkeits-Variable
         der(f_s.s) = v;
         annotation(
           Icon(graphics = {Polygon(fillColor = {102, 102, 102}, fillPattern = FillPattern.Solid, points = {{-100, 60}, {-60, 100}, {60, 100}, {100, 60}, {100, -100}, {-100, -100}, {-100, -84}, {-100, 60}}), Text(origin = {-35, 33}, lineColor = {221, 221, 221}, fillColor = {235, 235, 235}, fillPattern = FillPattern.Solid, extent = {{-27, 23}, {97, -77}}, textString = "Masse")}, coordinateSystem(initialScale = 0.1)),
@@ -406,11 +411,11 @@ package Flaschenzug
         Ports.F_s f_s annotation(
           Placement(visible = true, transformation(origin = {0, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {0, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
       equation
-      //Kraft am Kraft-Weg-Prot, unter Berücksichtigung der Trägheit
+//Kraft am Kraft-Weg-Prot, unter Berücksichtigung der Trägheit
         f_s.F = m * g + m * a;
 //Berechnung der Beschleunigungs-Variable
         der(v) = a;
-        //Berechnung der Geschwindigkeits-Variable
+//Berechnung der Geschwindigkeits-Variable
         der(f_s.s) = v;
         annotation(
           Icon(graphics = {Rectangle(fillColor = {85, 170, 255}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Rectangle(origin = {3, 41}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-77, 19}, {77, -19}}), Text(origin = {6, -22}, lineColor = {255, 255, 255}, extent = {{-74, 18}, {74, -18}}, textString = "Chiemseer"), Rectangle(origin = {6, -38}, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-70, 2}, {70, -2}}), Text(origin = {-20, -41}, lineColor = {255, 255, 255}, extent = {{-6, 5}, {54, -19}}, textString = "Rosenheimer"), Text(origin = {2, -63}, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, extent = {{-60, 7}, {60, -7}}, textString = "Spezialbrauerei")}),
@@ -585,12 +590,10 @@ package Flaschenzug
       model Boolsche_Quelle
       Flaschenzug.Ports.BoolOut boolOut1 annotation(
           Placement(visible = true, transformation(origin = {130, 6}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {120, 3.55271e-15}, extent = {{20, -20}, {-20, 20}}, rotation = 0)));
-      
       //Startparameter
       parameter Boolean Eingabe = false annotation(
           Dialog(group = "Ausgabe"));
-          
-      //Aenderung nach einem bestimmten Zeitpunkt
+          //Aenderung nach einem bestimmten Zeitpunkt
       parameter Boolean Aenderung = false annotation(
           Dialog(group = "Zeitgesteuert ändern auf"));
       parameter Real nach (unit "s") = 1 annotation(
