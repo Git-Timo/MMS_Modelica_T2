@@ -374,42 +374,51 @@ package Flaschenzug
 
     package Massen
       model Masse
+        //Masse
         parameter Modelica.SIunits.Mass m = 100 annotation(
           Dialog(group = "Masse"));
-        //Masse
-        Modelica.SIunits.Acceleration g = Modelica.Constants.g_n;
         //Erdbeschleunigung
+        Modelica.SIunits.Acceleration g = Modelica.Constants.g_n;
+        //Variable Beschleunigung, Geschwindigkeit
         Real a, v;
         Ports.F_s f_s annotation(
           Placement(visible = true, transformation(origin = {0, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {0, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
       equation
+        //Kraft am Kraft-Weg-Prot, unter berücksichtigung der Trägheit
         f_s.F = m * g + m * a;
-//Positive Kraft nach unten
+      //Berechnung der Beschleunigungs-Variable
         der(v) = a;
+        //Berechnung der Geschwindigkeits-Variable
         der(f_s.s) = v;
         annotation(
-          Icon(graphics = {Polygon(fillColor = {102, 102, 102}, fillPattern = FillPattern.Solid, points = {{-100, 60}, {-60, 100}, {60, 100}, {100, 60}, {100, -100}, {-100, -100}, {-100, -84}, {-100, 60}}), Text(origin = {-35, 33}, lineColor = {221, 221, 221}, fillColor = {235, 235, 235}, fillPattern = FillPattern.Solid, extent = {{-27, 23}, {97, -77}}, textString = "Masse")}, coordinateSystem(initialScale = 0.1)));
+          Icon(graphics = {Polygon(fillColor = {102, 102, 102}, fillPattern = FillPattern.Solid, points = {{-100, 60}, {-60, 100}, {60, 100}, {100, 60}, {100, -100}, {-100, -100}, {-100, -84}, {-100, 60}}), Text(origin = {-35, 33}, lineColor = {221, 221, 221}, fillColor = {235, 235, 235}, fillPattern = FillPattern.Solid, extent = {{-27, 23}, {97, -77}}, textString = "Masse")}, coordinateSystem(initialScale = 0.1)),
+          Documentation(info = "<html><head></head><body>Die<b> Masse </b>dient im Modell meist als Objekt, das bewegt werden soll. In der Simulation wird die Trägheit mit berücksichtigt.&nbsp;<div><b>Parametrierba</b>r ist hierbei allein die Masse in Kiogramm.&nbsp;</div><div><br></div><div>Am <b>Kraft-Weg-Port</b> können Kräfte und positionen bideirektional übergeben werden.</div></body></html>"));
       end Masse;
 
       model Bierkasten
+       //Masse
         parameter Modelica.SIunits.Mass m = 100 annotation(
           Dialog(group = "Masse"));
-        //Masse
+       //Erdbeschleunigung
         Modelica.SIunits.Acceleration g = Modelica.Constants.g_n;
-        //Erdbeschleunigung
+        //Variable Beschleunigung, Geschwindigkeit
         Real a, v;
         Ports.F_s f_s annotation(
           Placement(visible = true, transformation(origin = {0, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {0, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
       equation
+      //Kraft am Kraft-Weg-Prot, unter Berücksichtigung der Trägheit
         f_s.F = m * g + m * a;
-//Positive Kraft nach unten
+//Berechnung der Beschleunigungs-Variable
         der(v) = a;
+        //Berechnung der Geschwindigkeits-Variable
         der(f_s.s) = v;
         annotation(
-          Icon(graphics = {Rectangle(fillColor = {85, 170, 255}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Rectangle(origin = {3, 41}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-77, 19}, {77, -19}}), Text(origin = {6, -22}, lineColor = {255, 255, 255}, extent = {{-74, 18}, {74, -18}}, textString = "Chiemseer"), Rectangle(origin = {6, -38}, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-70, 2}, {70, -2}}), Text(origin = {-20, -41}, lineColor = {255, 255, 255}, extent = {{-6, 5}, {54, -19}}, textString = "Rosenheimer"), Text(origin = {2, -63}, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, extent = {{-60, 7}, {60, -7}}, textString = "Spezialbrauerei")}));
+          Icon(graphics = {Rectangle(fillColor = {85, 170, 255}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Rectangle(origin = {3, 41}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-77, 19}, {77, -19}}), Text(origin = {6, -22}, lineColor = {255, 255, 255}, extent = {{-74, 18}, {74, -18}}, textString = "Chiemseer"), Rectangle(origin = {6, -38}, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-70, 2}, {70, -2}}), Text(origin = {-20, -41}, lineColor = {255, 255, 255}, extent = {{-6, 5}, {54, -19}}, textString = "Rosenheimer"), Text(origin = {2, -63}, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, extent = {{-60, 7}, {60, -7}}, textString = "Spezialbrauerei")}),
+          Documentation(info = "<html><head></head><body>Die<b>&nbsp;Masse&nbsp;</b>dient im Modell meist als Objekt, das bewegt werden soll. In der Simulation wird die Trägheit mit berücksichtigt.&nbsp;<div><b>Parametrierba</b>r ist hierbei allein die Masse in Kiogramm.&nbsp;</div><div><br></div><div>Am&nbsp;<b>Kraft-Weg-Port</b>&nbsp;können Kräfte und positionen bideirektional übergeben werden.</div></body></html>"));
       end Bierkasten;
     annotation(
-        Icon(graphics = {Polygon(fillColor = {102, 102, 102}, fillPattern = FillPattern.Solid, points = {{-100, 60}, {-60, 100}, {60, 100}, {100, 60}, {100, -100}, {-100, -100}, {-100, -84}, {-100, 60}}), Text(origin = {-35, 33}, lineColor = {221, 221, 221}, fillColor = {235, 235, 235}, fillPattern = FillPattern.Solid, extent = {{-27, 23}, {97, -77}}, textString = "Masse")}, coordinateSystem(initialScale = 0.1)));
+        Icon(graphics = {Polygon(fillColor = {102, 102, 102}, fillPattern = FillPattern.Solid, points = {{-100, 60}, {-60, 100}, {60, 100}, {100, 60}, {100, -100}, {-100, -100}, {-100, -84}, {-100, 60}}), Text(origin = {-35, 33}, lineColor = {221, 221, 221}, fillColor = {235, 235, 235}, fillPattern = FillPattern.Solid, extent = {{-27, 23}, {97, -77}}, textString = "Masse")}, coordinateSystem(initialScale = 0.1)),
+        Documentation(info = "<html><head></head><body>Die Massenbibliothek beinhaltet Massenmodelle, die sich ausschließlich <b>optisch</b> voneinander unterscheiden.</body></html>"));
     end Massen;
 
     package Antriebskomponenten
