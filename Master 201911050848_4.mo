@@ -68,9 +68,9 @@ package Flaschenzug
         parameter Real U(unit "V") = 36;
         Real I(unit "A");
         parameter Real t(unit "s") = 1;
-        parameter Real t1=3 "Zeit Masse anheben" ;
-        parameter Real t2=6 "Zeit Masse halten" ;
-        parameter Real t3=7.5 "Zeit Masse senken" ;  
+        parameter Real t1=3 "Dauer Anheben" ;
+        parameter Real t2=6 "Dauer Halten" ;
+        parameter Real t3=7.5 "Dauer Senken" ;  
         Real t10;
         parameter Boolean KonstanteSpannung = false annotation(
           Dialog(group = "Betriebsarten"));
