@@ -1,7 +1,7 @@
 package Flaschenzug
   package Ports
     connector M_w
-      flow Modelica.SIunits.Momentum M;
+      flow Modelica.SIunits.Torque M;
       Modelica.SIunits.Angle w;
       annotation(
         Icon(graphics = {Rectangle(origin = {-67, 86}, fillColor = {255, 85, 127}, fillPattern = FillPattern.Solid, extent = {{-33, 14}, {167, -186}}), Text(origin = {-49, 49}, extent = {{-9, 7}, {107, -97}}, textString = "M_w")}, coordinateSystem(initialScale = 0.1)));
@@ -32,87 +32,55 @@ package Flaschenzug
 
   package Modelle
     package Spannungsquellen
-      model Spannung
-        parameter Real U(unit "V") = 36 annotation(
-          Dialog(group = "Elektrisch"));
-        Real I(unit "A");
-        //parameter Real t(unit "s") = 1;
-        //Real t1;
-        Flaschenzug.Ports.U_i u_i annotation(
-          Placement(visible = true, transformation(origin = {100, -2}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {124, -2}, extent = {{-24, -24}, {24, 24}}, rotation = 0)));
-        Flaschenzug.Ports.BoolIn boolIn1 annotation(
-          Placement(visible = true, transformation(origin = {148, 66}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-130, -2.55351e-15}, extent = {{30, -30}, {-30, 30}}, rotation = 0)));
-        Flaschenzug.Ports.BoolOut boolOut1 annotation(
-          Placement(visible = true, transformation(origin = {-148, 66}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-130, 64}, extent = {{-30, 30}, {30, -30}}, rotation = 0)));
-      equation
-        if U == 0 then
-          0 = u_i.U;
-          I = u_i.I;
-          boolOut1 = true;
-        elseif boolIn1 == true then
-          0 = u_i.U;
-          I = u_i.I;
-          boolOut1 = true;
-        else
-          U = u_i.U;
-          I = u_i.I;
-          boolOut1 = false;
-        end if;
-        annotation(
-          Diagram,
-          Icon(graphics = {Ellipse(origin = {4, 26}, fillPattern = FillPattern.Solid, extent = {{-20, -2}, {-52, -34}}, endAngle = 360), Ellipse(origin = {-56, 61}, lineThickness = 1, extent = {{-22, 19}, {128, -127}}, endAngle = 360), Ellipse(origin = {66, 26}, fillPattern = FillPattern.Solid, extent = {{-20, -2}, {-52, -34}}, endAngle = 360), Rectangle(origin = {-10, 10}, lineThickness = 1, extent = {{-90, 90}, {110, -110}})}, coordinateSystem(initialScale = 0.1)),
-  Documentation(info = "<html><head></head><body><b>Spannungsquelle:</b><div><b><br></b></div><div>Spannungsquelle gesteuert durch Sensorsignal.</div><div><br></div><div>Drei IF-Fälle:</div><div><br></div><div>1. Ist die Spannung 0 wird keine Spannung ausgegeben. boolOut1 = 1 und betätigt damit Bremse.</div><div>2. Ist boolIn1 = 1 bedeutet das, dass der Flaschenzug auf Block und damit an der Decke angekommen ist.</div><div>&nbsp; &nbsp; Damit Schaltet boolOut1 auf 1 und die Bremse wird betätigt.</div><div>3. Tritt Fall eins und zwei nicht ein so gibt die Spannungsquelle eine Spannung an den Motor weiter.</div><div><br><div><br></div><div><br></div></div></body></html>"));
-      end Spannung;
 
-      model Spannung_Zeitverlauf
-        parameter Real U(unit "V") = 36;
-        Real I(unit "A");
-        parameter Real t(unit "s") = 1;
-        parameter Real t1=3 "Dauer Anheben" ;
-        parameter Real t2=6 "Dauer Halten" ;
-        parameter Real t3=7.5 "Dauer Senken" ;  
-        Real t10;
-        parameter Boolean KonstanteSpannung = false annotation(
-          Dialog(group = "Betriebsarten"));
-        Flaschenzug.Ports.U_i u_i annotation(
-          Placement(visible = true, transformation(origin = {100, -2}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {124, -2}, extent = {{-24, -24}, {24, 24}}, rotation = 0)));
-        Flaschenzug.Ports.BoolIn boolIn1 annotation(
-          Placement(visible = true, transformation(origin = {148, 66}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-130, 6}, extent = {{30, -30}, {-30, 30}}, rotation = 0)));
-        Flaschenzug.Ports.BoolOut boolOut1 annotation(
-          Placement(visible = true, transformation(origin = {-148, 66}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-130, 64}, extent = {{-30, 30}, {30, -30}}, rotation = 0)));
-      equation
-        if KonstanteSpannung == true then
-          t10 = time * t;
-          U = u_i.U;
-          I = u_i.I;
-          boolOut1 = false;
-        else
-          t10 = time * t;
-          if t10 <= t1 then
-            U = u_i.U;
-            I = u_i.I;
-            boolOut1 = false;
-          elseif t10 > t1 and t10 <= t2 then
-            u_i.U = 0;
-            I = u_i.I;
-            boolOut1 = true;
-          elseif t10 > t2 and t10 <= t3 then
-            12 = -u_i.U;
-            I = u_i.I;
-            boolOut1 = false;
-          else
-            u_i.U = 0;
-            I = u_i.I;
-            boolOut1 = true;
-          end if;
-        end if;
-        annotation(
-          Diagram,
-          Icon(graphics = {Ellipse(origin = {4, 26}, fillPattern = FillPattern.Solid, extent = {{-20, -2}, {-52, -34}}, endAngle = 360), Ellipse(origin = {-56, 61}, lineThickness = 1, extent = {{-22, 19}, {128, -127}}, endAngle = 360), Ellipse(origin = {66, 26}, fillPattern = FillPattern.Solid, extent = {{-20, -2}, {-52, -34}}, endAngle = 360), Rectangle(origin = {-10, 10}, lineThickness = 1, extent = {{-90, 90}, {110, -110}})}, coordinateSystem(initialScale = 0.1)),
-  Documentation(info = "<html><head></head><body><b>Spannungsquelle Zeitverlauf:</b><div><br></div><div>Mit diesem Spannungsmodell kann die Spannung über die Zeit verändert werden.&nbsp;</div><div>Damit lassen sich <b>Hebezyklen realisieren</b> (Heben, Halten Senken, Halten)</div><div><br></div><div>Dabei kann dieses Modell bei dem Beispiel: \"Flaschenzug_Heben_Senken\" frei parametriert werden.</div><div><br></div><div><b>t1</b> -&gt; entspricht der Hebezeit, also wie lange die Masse nach oben beschleunigt werden soll.&nbsp;</div><div><b>t2</b> -&gt; entspricht dem Zeitpunkt wie lange die Masse gehalten werden soll.</div><div><b>t3</b> -&gt; entspricht dem Zeitpunkt bis wann die Masse abgelassen werden soll. Anschließend wird die Masse auf dieser Höhe gehalten.</div><div><br></div><div>Der Nutzer kann mit diesem Modell auch eine <b>konstante Spannung </b>simulieren. Dafür in der Visualisierung das Dropdown der \"Konstanten Spannung\" auf tru schalten.</div></body></html>"));
-      end Spannung_Zeitverlauf;
-      
-      model Spannung_ohne_Sensorik
+model Zeitgesteuert
+  parameter Real U(unit "V") = 36;
+  Real I(unit "A");
+  parameter Real t(unit "s") = 1;
+  parameter Real t1 = 3 "Zeit Masse anheben";
+  parameter Real t2 = 6 "Zeit Masse halten";
+  parameter Real t3 = 7.5 "Zeit Masse senken";
+  Real t10;
+  parameter Boolean KonstanteSpannung = false annotation(
+    Dialog(group = "Betriebsarten"));
+  Flaschenzug.Ports.U_i u_i annotation(
+    Placement(visible = true, transformation(origin = {100, -2}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {124, -2}, extent = {{-24, -24}, {24, 24}}, rotation = 0)));
+
+  Flaschenzug.Ports.BoolOut boolOut1 annotation(
+    Placement(visible = true, transformation(origin = {-148, 66}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-130, 64}, extent = {{-30, 30}, {30, -30}}, rotation = 0)));
+equation
+  if KonstanteSpannung == true then
+    t10 = time * t;
+    U = u_i.U;
+    I = u_i.I;
+    boolOut1 = false;
+  else
+    t10 = time * t;
+    if t10 <= t1 then
+      U = u_i.U;
+      I = u_i.I;
+      boolOut1 = false;
+    elseif t10 > t1 and t10 <= t2 then
+      u_i.U = 0;
+      I = u_i.I;
+      boolOut1 = true;
+    elseif t10 > t2 and t10 <= t3 then
+      12 = -u_i.U;
+      I = u_i.I;
+      boolOut1 = false;
+    else
+      u_i.U = 0;
+      I = u_i.I;
+      boolOut1 = true;
+    end if;
+  end if;
+  annotation(
+    Diagram,
+    Icon(graphics = {Ellipse(origin = {4, 26}, fillPattern = FillPattern.Solid, extent = {{-20, -2}, {-52, -34}}, endAngle = 360), Ellipse(origin = {-56, 61}, lineThickness = 1, extent = {{-22, 19}, {128, -127}}, endAngle = 360), Ellipse(origin = {66, 26}, fillPattern = FillPattern.Solid, extent = {{-20, -2}, {-52, -34}}, endAngle = 360), Rectangle(origin = {-10, 10}, lineThickness = 1, extent = {{-90, 90}, {110, -110}})}, coordinateSystem(initialScale = 0.1)),
+    Documentation(info = "<html><head></head><body><b>Spannungsquelle Zeitverlauf:</b><div><br></div><div>Mit diesem Spannungsmodell kann die Spannung über die Zeit verändert werden.&nbsp;</div><div>Damit lassen sich <b>Hebezyklen realisieren</b> (Heben, Halten Senken, Halten)</div><div><br></div><div>Dabei kann dieses Modell bei dem Beispiel: \"Flaschenzug_Heben_Senken\" frei parametriert werden.</div><div><br></div><div><b>t1</b> -&gt; entspricht der Hebezeit, also wie lange die Masse nach oben beschleunigt werden soll.&nbsp;</div><div><b>t2</b> -&gt; entspricht dem Zeitpunkt wie lange die Masse gehalten werden soll.</div><div><b>t3</b> -&gt; entspricht dem Zeitpunkt bis wann die Masse abgelassen werden soll. Anschließend wird die Masse auf dieser Höhe gehalten.</div><div><br></div><div>Der Nutzer kann mit diesem Modell auch eine <b>konstante Spannung </b>simulieren. Dafür in der Visualisierung das Dropdown der \"Konstanten Spannung\" auf tru schalten.</div></body></html>"));
+end Zeitgesteuert;
+
+      model Konstantspannung
         parameter Real U(unit "V") = 36 annotation(
           Dialog(group = "Elektrisch"));
         Real I(unit "A");
@@ -147,8 +115,40 @@ package Flaschenzug
         annotation(
           Diagram,
           Icon(graphics = {Ellipse(origin = {4, 26}, fillPattern = FillPattern.Solid, extent = {{-20, -2}, {-52, -34}}, endAngle = 360), Ellipse(origin = {-56, 61}, lineThickness = 1, extent = {{-22, 19}, {128, -127}}, endAngle = 360), Ellipse(origin = {66, 26}, fillPattern = FillPattern.Solid, extent = {{-20, -2}, {-52, -34}}, endAngle = 360), Rectangle(origin = {-10, 10}, lineThickness = 1, extent = {{-90, 90}, {110, -110}})}, coordinateSystem(initialScale = 0.1)),
-  Documentation(info = "<html><head></head><body><b style=\"font-size: 12px;\">Spannungsquelle_ohne_Sensorik:</b><div style=\"font-size: 12px;\"><br></div><div style=\"font-size: 12px;\"><br></div><div style=\"font-size: 12px;\">Diese SPannungsquelle beinhaltet keine Sensorik (keine Boolean Ein- oder Ausgänge).&nbsp;</div><div style=\"font-size: 12px;\">Diese wird in der Bibliothek zur Verfügung gestellt, um einfache Modelle (z.B. einen Motortest) zu simulieren.&nbsp;</div><div style=\"font-size: 12px;\"><br></div><div style=\"font-size: 12px;\"><br></div><div style=\"font-size: 12px;\">Mit diesem Spannungsmodell kann die Spannung über die Zeit verändert werden.&nbsp;</div><div style=\"font-size: 12px;\">Damit lassen sich&nbsp;<b>Hebezyklen realisieren</b>&nbsp;(Heben, Halten Senken, Halten)</div><div style=\"font-size: 12px;\"><br></div><div style=\"font-size: 12px;\">Dabei kann dieses Modell bei dem Beispiel: \"Flaschenzug_Heben_Senken\" frei parametriert werden.</div><div style=\"font-size: 12px;\"><br></div><div style=\"font-size: 12px;\"><b>t1</b>&nbsp;-&gt; entspricht der Hebezeit, also wie lange die Masse nach oben beschleunigt werden soll.&nbsp;</div><div style=\"font-size: 12px;\"><b>t2</b>&nbsp;-&gt; entspricht dem Zeitpunkt wie lange die Masse gehalten werden soll.</div><div style=\"font-size: 12px;\"><b>t3</b>&nbsp;-&gt; entspricht dem Zeitpunkt bis wann die Masse abgelassen werden soll. Anschließend wird die Masse auf dieser Höhe gehalten.</div><div style=\"font-size: 12px;\"><br></div><div style=\"font-size: 12px;\">Der Nutzer kann mit diesem Modell auch eine&nbsp;<b>konstante Spannung&nbsp;</b>simulieren. Dafür in der Visualisierung das Dropdown der \"Konstanten Spannung\" auf tru schalten.</div></body></html>"));
-      end Spannung_ohne_Sensorik;
+          Documentation(info = "<html><head></head><body><b style=\"font-size: 12px;\">Spannungsquelle_ohne_Sensorik:</b><div style=\"font-size: 12px;\"><br></div><div style=\"font-size: 12px;\"><br></div><div style=\"font-size: 12px;\">Diese SPannungsquelle beinhaltet keine Sensorik (keine Boolean Ein- oder Ausgänge).&nbsp;</div><div style=\"font-size: 12px;\">Diese wird in der Bibliothek zur Verfügung gestellt, um einfache Modelle (z.B. einen Motortest) zu simulieren.&nbsp;</div><div style=\"font-size: 12px;\"><br></div><div style=\"font-size: 12px;\"><br></div><div style=\"font-size: 12px;\">Mit diesem Spannungsmodell kann die Spannung über die Zeit verändert werden.&nbsp;</div><div style=\"font-size: 12px;\">Damit lassen sich&nbsp;<b>Hebezyklen realisieren</b>&nbsp;(Heben, Halten Senken, Halten)</div><div style=\"font-size: 12px;\"><br></div><div style=\"font-size: 12px;\">Dabei kann dieses Modell bei dem Beispiel: \"Flaschenzug_Heben_Senken\" frei parametriert werden.</div><div style=\"font-size: 12px;\"><br></div><div style=\"font-size: 12px;\"><b>t1</b>&nbsp;-&gt; entspricht der Hebezeit, also wie lange die Masse nach oben beschleunigt werden soll.&nbsp;</div><div style=\"font-size: 12px;\"><b>t2</b>&nbsp;-&gt; entspricht dem Zeitpunkt wie lange die Masse gehalten werden soll.</div><div style=\"font-size: 12px;\"><b>t3</b>&nbsp;-&gt; entspricht dem Zeitpunkt bis wann die Masse abgelassen werden soll. Anschließend wird die Masse auf dieser Höhe gehalten.</div><div style=\"font-size: 12px;\"><br></div><div style=\"font-size: 12px;\">Der Nutzer kann mit diesem Modell auch eine&nbsp;<b>konstante Spannung&nbsp;</b>simulieren. Dafür in der Visualisierung das Dropdown der \"Konstanten Spannung\" auf tru schalten.</div></body></html>"));
+      end Konstantspannung;
+
+      model Gesteuert
+        parameter Real U(unit "V") = 36 annotation(
+          Dialog(group = "Elektrisch"));
+        Real I(unit "A");
+        //parameter Real t(unit "s") = 1;
+        //Real t1;
+        Flaschenzug.Ports.U_i u_i annotation(
+          Placement(visible = true, transformation(origin = {100, -2}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {124, -2}, extent = {{-24, -24}, {24, 24}}, rotation = 0)));
+        Flaschenzug.Ports.BoolIn boolIn1 annotation(
+          Placement(visible = true, transformation(origin = {148, 66}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-130, -2.55351e-15}, extent = {{30, -30}, {-30, 30}}, rotation = 0)));
+        Flaschenzug.Ports.BoolOut boolOut1 annotation(
+          Placement(visible = true, transformation(origin = {-148, 66}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-130, 64}, extent = {{-30, 30}, {30, -30}}, rotation = 0)));
+      equation
+        if U == 0 then
+          0 = u_i.U;
+          I = u_i.I;
+          boolOut1 = true;
+        elseif boolIn1 == true then
+          0 = u_i.U;
+          I = u_i.I;
+          boolOut1 = true;
+        else
+          U = u_i.U;
+          I = u_i.I;
+          boolOut1 = false;
+        end if;
+        annotation(
+          Diagram,
+          Icon(graphics = {Ellipse(origin = {4, 26}, fillPattern = FillPattern.Solid, extent = {{-20, -2}, {-52, -34}}, endAngle = 360), Ellipse(origin = {-56, 61}, lineThickness = 1, extent = {{-22, 19}, {128, -127}}, endAngle = 360), Ellipse(origin = {66, 26}, fillPattern = FillPattern.Solid, extent = {{-20, -2}, {-52, -34}}, endAngle = 360), Rectangle(origin = {-10, 10}, lineThickness = 1, extent = {{-90, 90}, {110, -110}})}, coordinateSystem(initialScale = 0.1)),
+          Documentation(info = "<html><head></head><body><b>Spannungsquelle:</b><div><b><br></b></div><div>Spannungsquelle gesteuert durch Sensorsignal.</div><div><br></div><div>Drei IF-Fälle:</div><div><br></div><div>1. Ist die Spannung 0 wird keine Spannung ausgegeben. boolOut1 = 1 und betätigt damit Bremse.</div><div>2. Ist boolIn1 = 1 bedeutet das, dass der Flaschenzug auf Block und damit an der Decke angekommen ist.</div><div>&nbsp; &nbsp; Damit Schaltet boolOut1 auf 1 und die Bremse wird betätigt.</div><div>3. Tritt Fall eins und zwei nicht ein so gibt die Spannungsquelle eine Spannung an den Motor weiter.</div><div><br><div><br></div><div><br></div></div></body></html>"));
+      end Gesteuert;
       annotation(
         Icon(graphics = {Polygon(fillPattern = FillPattern.Solid, points = {{0, 100}, {-100, -100}, {100, -100}, {100, -100}, {0, 100}}), Polygon(origin = {-1, -2}, fillColor = {255, 255, 0}, fillPattern = FillPattern.Solid, points = {{1, 92}, {-91, -94}, {93, -94}, {1, 92}}), Polygon(origin = {-4, -24}, fillPattern = FillPattern.Solid, points = {{0, 64}, {-36, -20}, {8, 6}, {-10, -52}, {-2, -54}, {22, 22}, {-16, 0}, {24, 58}, {0, 64}, {0, 64}}), Polygon(origin = {-7, -77}, fillPattern = FillPattern.Solid, points = {{-13, 9}, {13, 3}, {-5, -9}, {-13, 9}})}));
     end Spannungsquellen;
@@ -168,9 +168,7 @@ package Flaschenzug
           Dialog(group = "Trägheit und Verlust"));
         parameter Boolean Durchmesserkommulation = false annotation(
           Dialog(group = "Betriebsarten"));
-        parameter Boolean Zugrichtug_aufwaerts = false annotation(
-          Dialog(group = "Betriebsarten"));
-        //(Dialog(group="Geometry"));
+      //(Dialog(group="Geometry"));
         //um Massenträgheit der Rolle zu Berechnen
         Real d_Winde;
         Integer v;
@@ -194,11 +192,8 @@ package Flaschenzug
           s = 0;
         end if;
 //Zurichtungsumkehr
-        if Zugrichtug_aufwaerts == true then
-          -f_s.F = (m_w.M - Lagerwiderstand) / (d_Winde / 2) - J_Rolle * der(v_Rolle);
-        else
-          f_s.F = (m_w.M - Lagerwiderstand) / (d_Winde / 2) - J_Rolle * der(v_Rolle);
-        end if;
+        f_s.F = (m_w.M - Lagerwiderstand) / (d_Winde / 2) - J_Rolle * der(v_Rolle);
+      
         v_Rolle = der(f_s.s);
 //Drehgeschwindigkeit der Rolle
         J_Rolle = 0.5 * m * (Durchmesser / 2) ^ 2;
@@ -229,9 +224,7 @@ package Flaschenzug
           Dialog(group = "Trägheit und Verlust"));
         parameter Boolean Durchmesserkommulation = false annotation(
           Dialog(group = "Betriebsarten"));
-        parameter Boolean Zugrichtug_aufwaerts = false annotation(
-          Dialog(group = "Betriebsarten"));
-        //(Dialog(group="Geometry"));
+       //(Dialog(group="Geometry"));
         //um Massenträgheit der Rolle zu Berechnen
         Real d_Winde;
         Integer v;
@@ -255,11 +248,8 @@ package Flaschenzug
           s = 0;
         end if;
 //Zurichtungsumkehr
-        if Zugrichtug_aufwaerts == true then
-          -f_s.F = (m_w.M - Lagerwiderstand) / (d_Winde / 2) - J_Rolle * der(v_Rolle);
-        else
-          f_s.F = (m_w.M - Lagerwiderstand) / (d_Winde / 2) - J_Rolle * der(v_Rolle);
-        end if;
+        f_s.F = (m_w.M - Lagerwiderstand) / (d_Winde / 2) - J_Rolle * der(v_Rolle);
+        
         v_Rolle = der(f_s.s);
 //Drehgeschwindigkeit der Rolle
         J_Rolle = 0.5 * m * (Durchmesser / 2) ^ 2;
@@ -283,9 +273,9 @@ package Flaschenzug
       model Flaschenzug_Modell
         parameter Integer n = 3 "Anzahl der Rollen" annotation(
           Dialog(group = "Geometrie"));
-        parameter Modelica.SIunits.Length s = 1 "Anfangslänge" annotation(
+        parameter Modelica.SIunits.Length s = 3 "Anfangslänge" annotation(
           Dialog(group = "Geometrie"));
-        parameter Modelica.SIunits.Length Sa = 0.5 "Sensorabstand" annotation(
+        parameter Modelica.SIunits.Length Sa = 0 "Sensorabstand" annotation(
           Dialog(group = "Elektrisch"));
         parameter Modelica.SIunits.Angle Zugwinkel = 45 "Zugwinkel" annotation(
           Dialog(group = "Geometrie"));
@@ -330,9 +320,9 @@ package Flaschenzug
       model Flaschenzug_Modell_b
         parameter Integer n = 3 "Anzahl der Rollen" annotation(
           Dialog(group = "Geometrie"));
-        parameter Modelica.SIunits.Length s = 1 "Anfangslänge" annotation(
+        parameter Modelica.SIunits.Length s = 3 "Anfangslänge" annotation(
           Dialog(group = "Geometrie"));
-        parameter Modelica.SIunits.Length Sa = 0.5 "Sensorabstand" annotation(
+        parameter Modelica.SIunits.Length Sa = 0 "Sensorabstand" annotation(
           Dialog(group = "Elektrisch"));
         parameter Modelica.SIunits.Angle Zugwinkel = 45 "Zugwinkel" annotation(
           Dialog(group = "Geometrie"));
@@ -381,7 +371,7 @@ package Flaschenzug
     package Massen
       model Masse
         //Masse
-        parameter Modelica.SIunits.Mass m = 100 annotation(
+        parameter Modelica.SIunits.Mass m = 40 annotation(
           Dialog(group = "Masse"));
         //Erdbeschleunigung
         Modelica.SIunits.Acceleration g = Modelica.Constants.g_n;
@@ -403,7 +393,7 @@ package Flaschenzug
 
       model Bierkasten
        //Masse
-        parameter Modelica.SIunits.Mass m = 100 annotation(
+        parameter Modelica.SIunits.Mass m = 40 annotation(
           Dialog(group = "Masse"));
        //Erdbeschleunigung
         Modelica.SIunits.Acceleration g = Modelica.Constants.g_n;
@@ -495,11 +485,11 @@ package Flaschenzug
       model Getriebe
         parameter Real Uebersetzung = 3 "Übersetzung" annotation(
           Dialog(group = "Getriebeparameter"));
-        parameter Modelica.SIunits.Efficiency Wirkungsgrad = 95 "Wirkungsgrad" annotation(
+        parameter Modelica.SIunits.Efficiency Wirkungsgrad = 1 "Wirkungsgrad" annotation(
           Dialog(group = "Getriebeparameter"));
-        parameter Modelica.SIunits.MomentOfInertia J_Eingangswelle = 0.05 annotation(
+        parameter Modelica.SIunits.MomentOfInertia J_Eingangswelle = 0.00 annotation(
           Dialog(group = "Trägheiten"));
-        parameter Modelica.SIunits.MomentOfInertia J_Ausgangsewelle = 0.05 annotation(
+        parameter Modelica.SIunits.MomentOfInertia J_Ausgangsewelle = 0.00 annotation(
           Dialog(group = "Trägheiten"));
         Real v_w_ein;
         Real v_w_aus;
@@ -564,7 +554,7 @@ package Flaschenzug
 
     package Gebaeude
       model Decke
-        parameter Modelica.SIunits.Height Hoehe = 4 annotation(
+        parameter Modelica.SIunits.Height Hoehe = 5 annotation(
           Dialog(group = "Höhe"));
         Flaschenzug.Ports.F_s f_s1 annotation(
           Placement(visible = true, transformation(origin = {6, -84}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {3, -91}, extent = {{-15, -15}, {15, 15}}, rotation = 0)));
@@ -578,40 +568,51 @@ package Flaschenzug
     end Gebaeude;
 
     package Sonderkomponenten
-      model Boolsche_Senke
+
+      model Lastmoment
+  Flaschenzug.Ports.M_w m_w1 annotation(
+          Placement(visible = true, transformation(origin = {-58, 24}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-112, -4.44089e-16}, extent = {{-12, -12}, {12, 12}}, rotation = 0)));
+        //Einstellen des Lastmoments
+        parameter Modelica.SIunits.Torque Ml(unit "Nm") = 4 annotation(
+          Dialog(group = "Lastmoment"));
+      equation
+//konstantes Moment an Port weitergeben
+        -Ml = m_w1.M;
+        annotation(
+          Icon(graphics = {Ellipse(origin = {-69, 45}, lineThickness = 0.75, extent = {{-31, 55}, {169, -145}}, endAngle = 360), Text(origin = {-48, 53}, fillPattern = FillPattern.Solid, extent = {{-12, 9}, {110, -113}}, textString = "Lastmoment"), Line(origin = {70.9516, 78.3781}, points = {{0.723622, -9.98965}, {-17.2764, -5.9896}, {0.723622, -9.98965}, {-1.2764, 8.0104}, {0.7236, -9.9896}}, thickness = 0.75)}, coordinateSystem(initialScale = 0.1)));
+  end Lastmoment;
+
+      model Boolesche_Senke
         Flaschenzug.Ports.BoolIn boolIn1 annotation(
-          Placement(visible = true, transformation(origin = {-114, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-120, -8.88178e-16}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+          Placement(visible = true, transformation(origin = {-114, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-124, -8.88178e-16}, extent = {{24, -24}, {-24, 24}}, rotation = 0)));
       equation
 
         annotation(
           Icon(graphics = {Rectangle(fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, lineThickness = 0.5, extent = {{-100, 100}, {100, -100}}), Rectangle(origin = {-108, 54}, lineThickness = 0.5, extent = {{38, 16}, {178, -48}})}),
           Documentation(info = "<html><head></head><body>Die Boolsche_Senke ist eine Senke für boolschen Werte. Sollte im Gesamtmodell ein offener Boolscher Output offen sein, dann die Senke dazu benutzt werden, den wer aufzunehmen.</body></html>"));
-      end Boolsche_Senke;
+      end Boolesche_Senke;
 
-      model Boolsche_Quelle
-      Flaschenzug.Ports.BoolOut boolOut1 annotation(
+      model Boolesche_Quelle
+  Flaschenzug.Ports.BoolOut boolOut1 annotation(
           Placement(visible = true, transformation(origin = {130, 6}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {120, 3.55271e-15}, extent = {{20, -20}, {-20, 20}}, rotation = 0)));
-      //Startparameter
-      parameter Boolean Eingabe = false annotation(
+        //Startparameter
+        parameter Boolean Eingabe = false annotation(
           Dialog(group = "Ausgabe"));
-          //Aenderung nach einem bestimmten Zeitpunkt
-      parameter Boolean Aenderung = false annotation(
+        //Aenderung nach einem bestimmten Zeitpunkt
+        parameter Boolean Aenderung = false annotation(
           Dialog(group = "Zeitgesteuert ändern auf"));
-      parameter Real nach (unit "s") = 1 annotation(
+        parameter Real nach(unit "s") = 1 annotation(
           Dialog(group = "Zeitgesteuert ändern auf"));
-      
       equation
-      
-      
-      if time<= nach then
-        boolOut1=Aenderung;
-      else
-        boolOut1=Eingabe;
-      end if;
-
-      annotation(
+        if time <= nach then
+          boolOut1 = Aenderung;
+        else
+          boolOut1 = Eingabe;
+        end if;
+        annotation(
           Icon(graphics = {Rectangle(fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, lineThickness = 1, extent = {{-100, 100}, {100, -100}}), Line(origin = {15.48, 9.93}, points = {{-73.1063, -71.1063}, {-15.1063, -71.1063}, {-15.1063, 62.8937}, {40.8937, 62.8937}}, thickness = 1)}),
-          Documentation(info = "<html><head></head><body>Die Boolsche Quelle ermögtlicht bie Modellierungen ein boolsches Signal konstant zu halten, oder zeitgesteuert zu ändern. Das erzeugte Signal wird aus dem boolschen Output-Port ausgegeben.<div><br></div><div><b>Folgende Parameter </b>stehen zur Verfügung:</div><div>\"Eingabe\": Dieser Wert nimmt der boolsche Ausgangsport von Beginn an der Simulatiin an</div><div>\"nach\": soll eine Änderung des boolschen Wertes bei einem bestimmten Zeitpunkt erfolgen, so kann unter der Angabe \"nach\" der Zeitpunkt eingegeben werden.</div><div>\"Aenderung\": Diesen Wert nimmt der boolsche Ausgangsport ab dem Zeitpunkt \"nach\" an.</div><div><br></div><div><b>Hinweiß:</b></div><div>Soll keine Änderung des boolschen Wertes simuliert werden, kann entweder der Parameter \"nach\" auf einen Zeitpunktnach dem Simulationsende, oder \"Anderung\"=\"Eingabe\" &nbsp;gesetzt werden.</div></body></html>"));end Boolsche_Quelle;
+          Documentation(info = "<html><head></head><body>Die Boolsche Quelle ermögtlicht bie Modellierungen ein boolsches Signal konstant zu halten, oder zeitgesteuert zu ändern. Das erzeugte Signal wird aus dem boolschen Output-Port ausgegeben.<div><br></div><div><b>Folgende Parameter </b>stehen zur Verfügung:</div><div>\"Eingabe\": Dieser Wert nimmt der boolsche Ausgangsport von Beginn an der Simulatiin an</div><div>\"nach\": soll eine Änderung des boolschen Wertes bei einem bestimmten Zeitpunkt erfolgen, so kann unter der Angabe \"nach\" der Zeitpunkt eingegeben werden.</div><div>\"Aenderung\": Diesen Wert nimmt der boolsche Ausgangsport ab dem Zeitpunkt \"nach\" an.</div><div><br></div><div><b>Hinweiß:</b></div><div>Soll keine Änderung des boolschen Wertes simuliert werden, kann entweder der Parameter \"nach\" auf einen Zeitpunktnach dem Simulationsende, oder \"Anderung\"=\"Eingabe\" &nbsp;gesetzt werden.</div></body></html>"));
+      end Boolesche_Quelle;
   annotation(
         Icon(graphics = {Polygon(origin = {-40, 0}, fillColor = {0, 255, 0}, fillPattern = FillPattern.Solid, points = {{-60, 0}, {60, 100}, {60, -100}, {-60, 0}}), Polygon(origin = {40, 0}, fillColor = {0, 255, 255}, fillPattern = FillPattern.Solid, points = {{-60, -2}, {60, 100}, {60, -100}, {-60, -2}})}));
     end Sonderkomponenten;
@@ -622,8 +623,6 @@ package Flaschenzug
   package Beispiele
   
     model Flaschenzug_Boden
-    Flaschenzug.Modelle.Spannungsquellen.Spannung spannung1 annotation(
-        Placement(visible = true, transformation(origin = {-76, -20}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Flaschenzug.Modelle.Gebaeude.Decke decke1 annotation(
         Placement(visible = true, transformation(origin = {74, 76}, extent = {{-24, -24}, {24, 24}}, rotation = 0)));
   Flaschenzug.Modelle.Antriebskomponenten.Getriebe getriebe1 annotation(
@@ -632,27 +631,29 @@ package Flaschenzug
         Placement(visible = true, transformation(origin = {-76, -50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Flaschenzug.Modelle.Antriebskomponenten.Bremse bremse1 annotation(
         Placement(visible = true, transformation(origin = {-40, -48}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Flaschenzug.Modelle.Massen.Masse masse1 annotation(
+  Flaschenzug.Modelle.Massen.Masse masse1(m = 40)  annotation(
         Placement(visible = true, transformation(origin = {76, -36}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Flaschenzug.Modelle.Flaschenzuege.Flaschenzug_Modell flaschenzug_Modell1 annotation(
         Placement(visible = true, transformation(origin = {75, 17}, extent = {{-23, -23}, {23, 23}}, rotation = 0)));
   Flaschenzug.Modelle.Seilwinden.Seilwinde seilwinde1 annotation(
-        Placement(visible = true, transformation(origin = {33, -47}, extent = {{-13, -13}, {13, 13}}, rotation = 0)));
+        Placement(visible = true, transformation(origin = {34, -50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Flaschenzug.Modelle.Spannungsquellen.Gesteuert gesteuert1 annotation(
+        Placement(visible = true, transformation(origin = {-73, -11}, extent = {{-13, -13}, {13, 13}}, rotation = 0)));
     equation
-      connect(spannung1.boolIn1, flaschenzug_Modell1.boolOut1) annotation(
-        Line(points = {{-90, -20}, {-98, -20}, {-98, 36}, {72, 36}, {72, 36}}));
-      connect(spannung1.boolOut1, bremse1.boolIn1) annotation(
-        Line(points = {{-90, -14}, {-94, -14}, {-94, 0}, {-54, 0}, {-54, -44}, {-46, -44}, {-46, -42}}));
-      connect(motor1.u_i, spannung1.u_i) annotation(
-        Line(points = {{-86, -48}, {-94, -48}, {-94, -34}, {-58, -34}, {-58, -20}, {-64, -20}, {-64, -20}}));
+      connect(bremse1.boolIn1, gesteuert1.boolOut1) annotation(
+        Line(points = {{-46, -42}, {-56, -42}, {-56, -34}, {-36, -34}, {-36, 8}, {-110, 8}, {-110, -2}, {-90, -2}, {-90, -2}}));
+      connect(flaschenzug_Modell1.boolOut1, gesteuert1.boolIn1) annotation(
+        Line(points = {{72, 36}, {-122, 36}, {-122, -12}, {-90, -12}, {-90, -10}}));
+      connect(motor1.u_i, gesteuert1.u_i) annotation(
+        Line(points = {{-84, -48}, {-96, -48}, {-96, -32}, {-44, -32}, {-44, -10}, {-56, -10}, {-56, -12}}));
+      connect(getriebe1.m_w, seilwinde1.m_w) annotation(
+        Line(points = {{10, -52}, {22, -52}, {22, -50}, {22, -50}}));
+      connect(flaschenzug_Modell1.f_s2, seilwinde1.f_s) annotation(
+        Line(points = {{48, 10}, {40, 10}, {40, -38}, {40, -38}}));
       connect(flaschenzug_Modell1.f_s1, decke1.f_s1) annotation(
         Line(points = {{76, 42}, {74, 42}, {74, 54}, {74, 54}}));
       connect(flaschenzug_Modell1.f_s, masse1.f_s) annotation(
         Line(points = {{76, -10}, {76, -10}, {76, -26}, {76, -26}}));
-      connect(seilwinde1.f_s, flaschenzug_Modell1.f_s2) annotation(
-        Line(points = {{40, -32}, {48, -32}, {48, 10}, {48, 10}}));
-      connect(getriebe1.m_w, seilwinde1.m_w) annotation(
-        Line(points = {{10, -52}, {16, -52}, {16, -46}, {18, -46}}));
       connect(bremse1.m_w2, getriebe1.m_w1) annotation(
         Line(points = {{-28, -48}, {-20, -48}, {-20, -46}, {-14, -46}, {-14, -46}}));
       connect(motor1.m_w, bremse1.m_w1) annotation(
@@ -664,13 +665,9 @@ package Flaschenzug
     end Flaschenzug_Boden;
   
     model Flaschenzug_Decke
-      Flaschenzug.Modelle.Spannungsquellen.Spannung spannung1 annotation(
-        Placement(visible = true, transformation(origin = {-64, -34}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelle.Seilwinden.Seilwinde_Decke seilwinde_Decke1 annotation(
-        Placement(visible = true, transformation(origin = {40, 46}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
       Flaschenzug.Modelle.Gebaeude.Decke decke1 annotation(
         Placement(visible = true, transformation(origin = {74, 74}, extent = {{-24, -24}, {24, 24}}, rotation = 0)));
-      Flaschenzug.Modelle.Flaschenzuege.Flaschenzug_Modell_b flaschenzug_Modell_b1 annotation(
+      Flaschenzug.Modelle.Flaschenzuege.Flaschenzug_Modell_b flaschenzug_Modell_b1(n = 4)  annotation(
         Placement(visible = true, transformation(origin = {75, 9}, extent = {{-23, -23}, {23, 23}}, rotation = 0)));
       Modelle.Antriebskomponenten.Getriebe getriebe1 annotation(
         Placement(visible = true, transformation(origin = {8, 46}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -680,21 +677,25 @@ package Flaschenzug
         Placement(visible = true, transformation(origin = {-24, 44}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
       Modelle.Massen.Bierkasten bierkasten1 annotation(
         Placement(visible = true, transformation(origin = {76, -40}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Flaschenzug.Modelle.Seilwinden.Seilwinde_Decke seilwinde_Decke1 annotation(
+        Placement(visible = true, transformation(origin = {40, 44}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Flaschenzug.Modelle.Spannungsquellen.Gesteuert gesteuert1 annotation(
+        Placement(visible = true, transformation(origin = {-66, -4}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
     equation
-      connect(spannung1.boolIn1, flaschenzug_Modell_b1.boolOut1) annotation(
-        Line(points = {{-76, -34}, {-90, -34}, {-90, -54}, {94, -54}, {94, 28}, {78, 28}, {78, 28}}));
-      connect(spannung1.boolOut1, bremse1.boolIn1) annotation(
-        Line(points = {{-78, -28}, {-92, -28}, {-92, 64}, {-38, 64}, {-38, 50}, {-30, 50}, {-30, 50}}));
-      connect(spannung1.u_i, motor1.u_i) annotation(
-        Line(points = {{-52, -34}, {-52, 22}, {-84, 22}, {-84, 44}, {-76, 44}, {-76, 46}}));
+      connect(gesteuert1.boolIn1, flaschenzug_Modell_b1.boolOut1) annotation(
+        Line(points = {{-78, -4}, {-100, -4}, {-100, -54}, {82, -54}, {82, -54}, {96, -54}, {96, 30}, {78, 30}, {78, 28}}));
+      connect(bremse1.boolIn1, gesteuert1.boolOut1) annotation(
+        Line(points = {{-30, 50}, {-44, 50}, {-44, 20}, {-36, 20}, {-36, -16}, {-94, -16}, {-94, 2}, {-78, 2}, {-78, 2}}));
+      connect(gesteuert1.u_i, motor1.u_i) annotation(
+        Line(points = {{-54, -4}, {-42, -4}, {-42, 14}, {-88, 14}, {-88, 44}, {-74, 44}, {-74, 46}}));
+      connect(getriebe1.m_w, seilwinde_Decke1.m_w) annotation(
+        Line(points = {{20, 44}, {28, 44}, {28, 44}, {28, 44}}));
+      connect(seilwinde_Decke1.f_s, flaschenzug_Modell_b1.f_s2) annotation(
+        Line(points = {{46, 32}, {48, 32}, {48, 22}, {48, 22}}));
       connect(motor1.m_w, bremse1.m_w1) annotation(
         Line(points = {{-56, 46}, {-36, 46}, {-36, 44}, {-36, 44}}));
       connect(bremse1.m_w2, getriebe1.m_w1) annotation(
         Line(points = {{-12, 44}, {-4, 44}, {-4, 50}, {-4, 50}}));
-      connect(getriebe1.m_w, seilwinde_Decke1.m_w) annotation(
-        Line(points = {{20, 44}, {28, 44}, {28, 46}, {28, 46}}));
-      connect(seilwinde_Decke1.f_s, flaschenzug_Modell_b1.f_s2) annotation(
-        Line(points = {{46, 34}, {48, 34}, {48, 22}, {48, 22}}));
       connect(flaschenzug_Modell_b1.f_s1, decke1.f_s1) annotation(
         Line(points = {{76, 34}, {76, 34}, {76, 52}, {74, 52}}));
       connect(bierkasten1.f_s, flaschenzug_Modell_b1.f_s) annotation(
@@ -716,26 +717,28 @@ package Flaschenzug
       Flaschenzug.Modelle.Massen.Masse masse1 annotation(
         Placement(visible = true, transformation(origin = {76, -36}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
       Flaschenzug.Modelle.Flaschenzuege.Flaschenzug_Modell flaschenzug_Modell1 annotation(
-        Placement(visible = true, transformation(origin = {75, 17}, extent = {{-23, -23}, {23, 23}}, rotation = 0)));
-      Flaschenzug.Modelle.Seilwinden.Seilwinde seilwinde1 annotation(
-        Placement(visible = true, transformation(origin = {33, -47}, extent = {{-13, -13}, {13, 13}}, rotation = 0)));
-  Modelle.Spannungsquellen.Spannung_Zeitverlauf spannung_Zeitverlauf1 annotation(
-        Placement(visible = true, transformation(origin = {-78, -18}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Placement(visible = true, transformation(origin = {73, 17}, extent = {{-23, -23}, {23, 23}}, rotation = 0)));
+  Flaschenzug.Modelle.Seilwinden.Seilwinde seilwinde1 annotation(
+        Placement(visible = true, transformation(origin = {38, -48}, extent = {{-12, -12}, {12, 12}}, rotation = 0)));
+  Flaschenzug.Modelle.Spannungsquellen.Zeitgesteuert zeitgesteuert1 annotation(
+        Placement(visible = true, transformation(origin = {-74, -6}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Flaschenzug.Modelle.Sonderkomponenten.Boolesche_Senke boolesche_Senke1 annotation(
+        Placement(visible = true, transformation(origin = {24, 36}, extent = {{12, -12}, {-12, 12}}, rotation = 0)));
     equation
-      connect(spannung_Zeitverlauf1.boolIn1, flaschenzug_Modell1.boolOut1) annotation(
-        Line(points = {{-92, -18}, {-98, -18}, {-98, 36}, {72, 36}, {72, 36}}));
-      connect(spannung_Zeitverlauf1.boolOut1, bremse1.boolIn1) annotation(
-        Line(points = {{-92, -12}, {-96, -12}, {-96, 0}, {-52, 0}, {-52, -42}, {-46, -42}, {-46, -42}}));
-      connect(motor1.u_i, spannung_Zeitverlauf1.u_i) annotation(
-        Line(points = {{-86, -48}, {-92, -48}, {-92, -36}, {-60, -36}, {-60, -18}, {-66, -18}, {-66, -18}}));
-      connect(flaschenzug_Modell1.f_s1, decke1.f_s1) annotation(
-        Line(points = {{76, 42}, {74, 42}, {74, 54}, {74, 54}}));
+      connect(boolesche_Senke1.boolIn1, flaschenzug_Modell1.boolOut1) annotation(
+        Line(points = {{39, 36}, {70, 36}}));
       connect(flaschenzug_Modell1.f_s, masse1.f_s) annotation(
-        Line(points = {{76, -10}, {76, -10}, {76, -26}, {76, -26}}));
-      connect(seilwinde1.f_s, flaschenzug_Modell1.f_s2) annotation(
-        Line(points = {{40, -32}, {48, -32}, {48, 10}, {48, 10}}));
+        Line(points = {{73, -9}, {73, -18}, {76, -18}, {76, -26}}));
+      connect(flaschenzug_Modell1.f_s1, decke1.f_s1) annotation(
+        Line(points = {{73, 43}, {74, 43}, {74, 54}}));
+      connect(flaschenzug_Modell1.f_s2, seilwinde1.f_s) annotation(
+        Line(points = {{47, 10}, {44, 10}, {44, -34}, {46, -34}}));
+      connect(zeitgesteuert1.boolOut1, bremse1.boolIn1) annotation(
+        Line(points = {{-86, 0}, {-98, 0}, {-98, -26}, {-60, -26}, {-60, -42}, {-46, -42}, {-46, -42}}));
+      connect(motor1.u_i, zeitgesteuert1.u_i) annotation(
+        Line(points = {{-84, -48}, {-100, -48}, {-100, -22}, {-52, -22}, {-52, -6}, {-62, -6}, {-62, -6}}));
       connect(getriebe1.m_w, seilwinde1.m_w) annotation(
-        Line(points = {{10, -52}, {16, -52}, {16, -46}, {18, -46}}));
+        Line(points = {{10, -52}, {22, -52}, {22, -48}, {24, -48}}));
       connect(bremse1.m_w2, getriebe1.m_w1) annotation(
         Line(points = {{-28, -48}, {-20, -48}, {-20, -46}, {-14, -46}, {-14, -46}}));
       connect(motor1.m_w, bremse1.m_w1) annotation(
@@ -744,6 +747,62 @@ package Flaschenzug
         Diagram(graphics = {Rectangle(origin = {0, -56}, fillPattern = FillPattern.Solid, extent = {{-100, -44}, {100, -4}})}, coordinateSystem(initialScale = 0.1)),
         Icon(graphics = {Polygon(origin = {30, 80}, lineColor = {63, 188, 44}, fillColor = {88, 195, 64}, fillPattern = FillPattern.Solid, points = {{70, -82}, {-30, 20}, {-30, -20}, {-30, -178}, {70, -82}}), Rectangle(origin = {-70, 41}, lineColor = {53, 202, 46}, fillColor = {55, 173, 65}, fillPattern = FillPattern.Solid, extent = {{-30, 9}, {70, -89}})}, coordinateSystem(initialScale = 0.1)));
     end Flaschenzug_Boden_Heben_Senken;
+
+    package Sonderbeispiele
+      model Motor_Getriebe_Seilwinde
+        Flaschenzug.Modelle.Antriebskomponenten.Motor motor1 annotation(
+          Placement(visible = true, transformation(origin = {-59, 39}, extent = {{-21, 21}, {21, -21}}, rotation = 0)));
+        Flaschenzug.Modelle.Antriebskomponenten.Getriebe getriebe1 annotation(
+          Placement(visible = true, transformation(origin = {3, 39}, extent = {{-19, -19}, {19, 19}}, rotation = 0)));
+        Flaschenzug.Modelle.Seilwinden.Seilwinde_Decke seilwinde_Decke1(Zugrichtug_aufwaerts = false)  annotation(
+          Placement(visible = true, transformation(origin = {72, 38}, extent = {{-22, -22}, {22, 22}}, rotation = 0)));
+        Flaschenzug.Modelle.Massen.Bierkasten bierkasten1 annotation(
+          Placement(visible = true, transformation(origin = {85, -41}, extent = {{-19, -19}, {19, 19}}, rotation = 0)));
+  Flaschenzug.Modelle.Spannungsquellen.Konstantspannung konstantspannung1 annotation(
+          Placement(visible = true, transformation(origin = {-139, 35}, extent = {{-21, -21}, {21, 21}}, rotation = 0)));
+      equation
+        connect(konstantspannung1.u_i, motor1.u_i) annotation(
+          Line(points = {{-113, 35}, {-100, 35}, {-100, 36}, {-74, 36}}));
+        connect(motor1.m_w, getriebe1.m_w1) annotation(
+          Line(points = {{-32, 36}, {-20, 36}, {-20, 46}, {-20, 46}}));
+        connect(getriebe1.m_w, seilwinde_Decke1.m_w) annotation(
+          Line(points = {{26, 34}, {46, 34}, {46, 40}, {46, 40}}));
+        connect(bierkasten1.f_s, seilwinde_Decke1.f_s) annotation(
+          Line(points = {{85, -22}, {85, 12}}));
+        annotation(
+          Diagram(graphics = {Rectangle(origin = {0, 104}, fillPattern = FillPattern.Solid, extent = {{-100, -44}, {100, -4}})}, coordinateSystem(initialScale = 0.1)),
+          Icon(graphics = {Polygon(origin = {30, 80}, lineColor = {63, 188, 44}, fillColor = {88, 195, 64}, fillPattern = FillPattern.Solid, points = {{70, -82}, {-30, 20}, {-30, -20}, {-30, -178}, {70, -82}}), Rectangle(origin = {-70, 41}, lineColor = {53, 202, 46}, fillColor = {55, 173, 65}, fillPattern = FillPattern.Solid, extent = {{-30, 9}, {70, -89}})}, coordinateSystem(initialScale = 0.1)));
+      end Motor_Getriebe_Seilwinde;
+
+      model Test_Sonderkomponenten
+        Flaschenzug.Modelle.Antriebskomponenten.Motor motor1 annotation(
+          Placement(visible = true, transformation(origin = {20, -30}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+        Flaschenzug.Modelle.Sonderkomponenten.Lastmoment lastmoment1(Ml = 4) annotation(
+          Placement(visible = true, transformation(origin = {80, -28}, extent = {{-22, -22}, {22, 22}}, rotation = 0)));
+  Flaschenzug.Modelle.Spannungsquellen.Gesteuert gesteuert1 annotation(
+          Placement(visible = true, transformation(origin = { -32, -28}, extent = {{-16, -16}, {16, 16}}, rotation = 0)));
+  Flaschenzug.Modelle.Sonderkomponenten.Boolesche_Senke boolesche_Senke1 annotation(
+          Placement(visible = true, transformation(origin = {-29, 23}, extent = {{-17, -17}, {17, 17}}, rotation = 0)));
+  Flaschenzug.Modelle.Sonderkomponenten.Boolesche_Quelle boolesche_Quelle1(Eingabe = true, nach = 5)  annotation(
+          Placement(visible = true, transformation(origin = {-95, -29}, extent = {{-19, -19}, {19, 19}}, rotation = 0)));
+      equation
+        connect(gesteuert1.boolOut1, boolesche_Senke1.boolIn1) annotation(
+          Line(points = {{-52, -18}, {-68, -18}, {-68, 22}, {-50, 22}, {-50, 24}}));
+        connect(boolesche_Quelle1.boolOut1, gesteuert1.boolIn1) annotation(
+          Line(points = {{-72, -28}, {-52, -28}, {-52, -28}, {-52, -28}}));
+        connect(gesteuert1.u_i, motor1.u_i) annotation(
+          Line(points = {{-12, -28}, {6, -28}, {6, -28}, {6, -28}}));
+        connect(motor1.m_w, lastmoment1.m_w1) annotation(
+          Line(points = {{44, -26}, {52, -26}, {52, -28}, {56, -28}}));
+        annotation(
+          Diagram(coordinateSystem(initialScale = 0.1)),
+          Icon(graphics = {Polygon(origin = {30, 80}, lineColor = {63, 188, 44}, fillColor = {88, 195, 64}, fillPattern = FillPattern.Solid, points = {{70, -82}, {-30, 20}, {-30, -20}, {-30, -178}, {70, -82}}), Rectangle(origin = {-70, 41}, lineColor = {53, 202, 46}, fillColor = {55, 173, 65}, fillPattern = FillPattern.Solid, extent = {{-30, 9}, {70, -89}})}, coordinateSystem(initialScale = 0.1)),
+  Documentation(info = "<html><head></head><body><span style=\"font-size: 12px;\">theoretisch wird keine Senke benötigt</span></body></html>"));
+      end Test_Sonderkomponenten;
+      annotation(
+        Diagram(graphics = {Rectangle(origin = {0, -56}, fillPattern = FillPattern.Solid, extent = {{-100, -44}, {100, -4}})}, coordinateSystem(initialScale = 0.1)),
+        Icon(graphics = {Polygon(origin = {30, 80}, lineColor = {63, 188, 44}, fillColor = {88, 195, 64}, fillPattern = FillPattern.Solid, points = {{70, -82}, {-30, 20}, {-30, -20}, {-30, -178}, {70, -82}}), Rectangle(origin = {-70, 41}, lineColor = {53, 202, 46}, fillColor = {55, 173, 65}, fillPattern = FillPattern.Solid, extent = {{-30, 9}, {70, -89}})}, coordinateSystem(initialScale = 0.1)));
+    end Sonderbeispiele;
     annotation(
       Icon(coordinateSystem(initialScale = 0.1), graphics = {Rectangle(origin = {-70, 41}, lineColor = {53, 202, 46}, fillColor = {55, 173, 65}, fillPattern = FillPattern.Solid, extent = {{-30, 9}, {70, -89}}), Polygon(origin = {30, 80}, lineColor = {63, 188, 44}, fillColor = {88, 195, 64}, fillPattern = FillPattern.Solid, points = {{70, -82}, {-30, 20}, {-30, -20}, {-30, -178}, {70, -82}})}));
   end Beispiele;
