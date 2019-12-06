@@ -409,7 +409,7 @@ end Zeitgesteuert;
 //Berechnung der Geschwindigkeits-Variable
         der(f_s.s) = v;
         annotation(
-          Icon(graphics = {Rectangle(fillColor = {85, 170, 255}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Rectangle(origin = {3, 41}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-77, 19}, {77, -19}}), Text(origin = {6, -22}, lineColor = {255, 255, 255}, extent = {{-74, 18}, {74, -18}}, textString = "Chiemseer"), Rectangle(origin = {6, -38}, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-70, 2}, {70, -2}}), Text(origin = {-20, -41}, lineColor = {255, 255, 255}, extent = {{-6, 5}, {54, -19}}, textString = "Rosenheimer"), Text(origin = {2, -63}, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, extent = {{-60, 7}, {60, -7}}, textString = "Spezialbrauerei")}),
+          Icon(graphics = {Rectangle(fillColor = {85, 170, 255}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Rectangle(origin = {3, 41}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-77, 19}, {77, -19}}), Text(origin = {6, -22}, lineColor = {255, 255, 255}, extent = {{-74, 18}, {74, -18}}, textString = "Chiemseer"), Rectangle(origin = {6, -38}, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-70, 2}, {70, -2}}), Text(origin = {-20, -41}, lineColor = {255, 255, 255}, extent = {{-6, 5}, {54, -19}}, textString = "Rosenheimer"), Text(origin = {2, -63}, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, extent = {{-60, 7}, {60, -7}}, textString = "Spezialbrauerei"), Polygon(origin = {-53, 41}, fillColor = {136, 68, 0}, fillPattern = FillPattern.Solid, points = {{-7, 19}, {5, 19}, {9, -1}, {21, -19}, {-21, -19}, {-9, -1}, {-9, -1}, {-7, 19}}), Polygon(origin = {-13, 41}, fillColor = {136, 68, 0}, fillPattern = FillPattern.Solid, points = {{-7, 19}, {5, 19}, {9, -1}, {21, -19}, {-21, -19}, {-9, -1}, {-9, -1}, {-7, 19}}), Polygon(origin = {23, 41}, fillColor = {136, 68, 0}, fillPattern = FillPattern.Solid, points = {{-7, 19}, {5, 19}, {9, -1}, {21, -19}, {-21, -19}, {-9, -1}, {-9, -1}, {-7, 19}}), Polygon(origin = {59,41}, fillColor = {136, 68, 0}, fillPattern = FillPattern.Solid, points = {{-7, 19}, {5, 19}, {9, -1}, {21, -19}, {-21, -19}, {-9, -1}, {-9, -1}, {-7, 19}})}, coordinateSystem(initialScale = 0.1)),
           Documentation(info = "<html><head></head><body>Die<b>&nbsp;Masse&nbsp;</b>dient im Modell meist als Objekt, das bewegt werden soll. In der Simulation wird die Trägheit mit berücksichtigt.&nbsp;<div><b>Parametrierba</b>r ist hierbei allein die Masse in Kiogramm.&nbsp;</div><div><br></div><div>Am&nbsp;<b>Kraft-Weg-Port</b>&nbsp;können Kräfte und positionen bideirektional übergeben werden.</div></body></html>"));
       end Bierkasten;
     annotation(
@@ -633,7 +633,7 @@ end Zeitgesteuert;
         Placement(visible = true, transformation(origin = {-40, -48}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Flaschenzug.Modelle.Massen.Masse masse1(m = 40)  annotation(
         Placement(visible = true, transformation(origin = {76, -36}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Flaschenzug.Modelle.Flaschenzuege.Flaschenzug_Modell flaschenzug_Modell1 annotation(
+  Flaschenzug.Modelle.Flaschenzuege.Flaschenzug_Modell flaschenzug_Modell1(Zugwinkel(displayUnit = "rad"))  annotation(
         Placement(visible = true, transformation(origin = {75, 17}, extent = {{-23, -23}, {23, 23}}, rotation = 0)));
   Flaschenzug.Modelle.Seilwinden.Seilwinde seilwinde1 annotation(
         Placement(visible = true, transformation(origin = {34, -50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -667,7 +667,7 @@ end Zeitgesteuert;
     model Flaschenzug_Decke
       Flaschenzug.Modelle.Gebaeude.Decke decke1 annotation(
         Placement(visible = true, transformation(origin = {74, 74}, extent = {{-24, -24}, {24, 24}}, rotation = 0)));
-      Flaschenzug.Modelle.Flaschenzuege.Flaschenzug_Modell_b flaschenzug_Modell_b1(n = 4)  annotation(
+      Flaschenzug.Modelle.Flaschenzuege.Flaschenzug_Modell_b flaschenzug_Modell_b1(Zugwinkel(displayUnit = "rad"), n = 4)  annotation(
         Placement(visible = true, transformation(origin = {75, 9}, extent = {{-23, -23}, {23, 23}}, rotation = 0)));
       Modelle.Antriebskomponenten.Getriebe getriebe1 annotation(
         Placement(visible = true, transformation(origin = {8, 46}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -716,7 +716,7 @@ end Zeitgesteuert;
         Placement(visible = true, transformation(origin = {-40, -48}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
       Flaschenzug.Modelle.Massen.Masse masse1 annotation(
         Placement(visible = true, transformation(origin = {76, -36}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Flaschenzug.Modelle.Flaschenzuege.Flaschenzug_Modell flaschenzug_Modell1 annotation(
+      Flaschenzug.Modelle.Flaschenzuege.Flaschenzug_Modell flaschenzug_Modell1(Zugwinkel(displayUnit = "rad"))  annotation(
         Placement(visible = true, transformation(origin = {73, 17}, extent = {{-23, -23}, {23, 23}}, rotation = 0)));
   Flaschenzug.Modelle.Seilwinden.Seilwinde seilwinde1 annotation(
         Placement(visible = true, transformation(origin = {38, -48}, extent = {{-12, -12}, {12, 12}}, rotation = 0)));
@@ -799,6 +799,27 @@ end Zeitgesteuert;
           Icon(graphics = {Polygon(origin = {30, 80}, lineColor = {63, 188, 44}, fillColor = {88, 195, 64}, fillPattern = FillPattern.Solid, points = {{70, -82}, {-30, 20}, {-30, -20}, {-30, -178}, {70, -82}}), Rectangle(origin = {-70, 41}, lineColor = {53, 202, 46}, fillColor = {55, 173, 65}, fillPattern = FillPattern.Solid, extent = {{-30, 9}, {70, -89}})}, coordinateSystem(initialScale = 0.1)),
   Documentation(info = "<html><head></head><body><span style=\"font-size: 12px;\">theoretisch wird keine Senke benötigt</span></body></html>"));
       end Test_Sonderkomponenten;
+
+      model Test_Flaschenzug
+        Flaschenzug.Modelle.Gebaeude.Decke decke annotation(
+          Placement(visible = true, transformation(origin = {-4, 74}, extent = {{-26, -26}, {26, 26}}, rotation = 0)));
+  Flaschenzug.Modelle.Flaschenzuege.Flaschenzug_Modell flaschenzug_Modell(Flaschengewicht_unten = 0, Zugwinkel(displayUnit = "rad"), s = 5)  annotation(
+          Placement(visible = true, transformation(origin = {-4, 14}, extent = {{-24, -24}, {24, 24}}, rotation = 0)));
+  Flaschenzug.Modelle.Massen.Bierkasten bierkasten(m = 120)  annotation(
+          Placement(visible = true, transformation(origin = {-2, -40}, extent = {{-12, -12}, {12, 12}}, rotation = 0)));
+  Modelle.Massen.Masse masse annotation(
+          Placement(visible = true, transformation(origin = {-54, -20}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      equation
+  connect(flaschenzug_Modell.f_s1, decke.f_s1) annotation(
+          Line(points = {{-4, 41}, {-4, 35.5}, {-3, 35.5}, {-3, 50}}));
+  connect(flaschenzug_Modell.f_s, bierkasten.f_s) annotation(
+          Line(points = {{-4, -14}, {-4, -21}, {-2, -21}, {-2, -28}}));
+  connect(masse.f_s, flaschenzug_Modell.f_s2) annotation(
+          Line(points = {{-54, -10}, {-32, -10}, {-32, 6}, {-32, 6}}));
+      annotation(
+          Diagram(graphics = {Rectangle(origin = {-2, -56}, fillPattern = FillPattern.Solid, extent = {{-100, -44}, {100, -4}})}, coordinateSystem(initialScale = 0.1)),
+          Icon(graphics = {Polygon(origin = {30, 80}, lineColor = {63, 188, 44}, fillColor = {88, 195, 64}, fillPattern = FillPattern.Solid, points = {{70, -82}, {-30, 20}, {-30, -20}, {-30, -178}, {70, -82}}), Rectangle(origin = {-70, 41}, lineColor = {53, 202, 46}, fillColor = {55, 173, 65}, fillPattern = FillPattern.Solid, extent = {{-30, 9}, {70, -89}})}, coordinateSystem(initialScale = 0.1)));
+      end Test_Flaschenzug;
       annotation(
         Diagram(graphics = {Rectangle(origin = {0, -56}, fillPattern = FillPattern.Solid, extent = {{-100, -44}, {100, -4}})}, coordinateSystem(initialScale = 0.1)),
         Icon(graphics = {Polygon(origin = {30, 80}, lineColor = {63, 188, 44}, fillColor = {88, 195, 64}, fillPattern = FillPattern.Solid, points = {{70, -82}, {-30, 20}, {-30, -20}, {-30, -178}, {70, -82}}), Rectangle(origin = {-70, 41}, lineColor = {53, 202, 46}, fillColor = {55, 173, 65}, fillPattern = FillPattern.Solid, extent = {{-30, 9}, {70, -89}})}, coordinateSystem(initialScale = 0.1)));
