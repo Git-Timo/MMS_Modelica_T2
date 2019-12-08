@@ -155,9 +155,9 @@ end Zeitgesteuert;
 
     package Seilwinden
       model Seilwinde
+        //Parameter
         parameter Modelica.SIunits.Diameter Durchmesser = 0.2 "Trommeldurchmesser" annotation(
           Dialog(group = "Geometrie"));
-        constant Real Pi = 2 * Modelica.Math.asin(1.0);
         parameter Modelica.SIunits.Momentum Lagerwiderstand = 0.0 "[Nm]" annotation(
           Dialog(group = "Trägheit und Verlust"));
         parameter Modelica.SIunits.Diameter d = 0.05 "Seildurchmesser [m]" annotation(
@@ -168,52 +168,56 @@ end Zeitgesteuert;
           Dialog(group = "Trägheit und Verlust"));
         parameter Boolean Durchmesserkommulation = false annotation(
           Dialog(group = "Betriebsarten"));
-      //(Dialog(group="Geometry"));
-        //um Massenträgheit der Rolle zu Berechnen
+        //Konstanten
+        constant Real Pi = 2 * Modelica.Math.asin(1.0);
+        //Variablen
         Real d_Winde;
         Integer v;
         Real o, dmax, s;
         Real J_Rolle, v_Rolle;
-        //Massenträgheit der Rolle, Rotationsgeschwindigkeit der Rolle
-        //Real d_Zusatz, Winkel;
+        //Ports
         Flaschenzug.Ports.F_s f_s annotation(
           Placement(visible = true, transformation(origin = {58, 126}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {59, 119}, extent = {{-19, -19}, {19, 19}}, rotation = 0)));
         Flaschenzug.Ports.M_w m_w annotation(
           Placement(visible = true, transformation(origin = {-134, 14}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-119, 1}, extent = {{-19, -19}, {19, 19}}, rotation = 0)));
       equation
-  if v - 1 >= 1 and Durchmesserkommulation == true then
-///Berechnung des Windendurchmessers nicht als Step Funktion, sondern bisher als lineare Funktion
+    if v - 1 >= 1 and Durchmesserkommulation == true then
+    //Berechnung des Windendurchmessers als lineare Funktion
           d_Winde = Durchmesser + s * d;
           dmax = Durchmesser + (o - 1) * d * 2;
           s = (-m_w.w / (2 * Pi)) / (b / d) - 1;
         else
+          //keine Durchmesseraproximation
           d_Winde = Durchmesser;
           dmax = Durchmesser;
           s = 0;
         end if;
-//Zurichtungsumkehr
+  //Zurichtungsumkehr
         f_s.F = (m_w.M - Lagerwiderstand) / (d_Winde / 2) - J_Rolle * der(v_Rolle);
-      
+        
+        //Drehgeschwindigkeit der Rolle
         v_Rolle = der(f_s.s);
-//Drehgeschwindigkeit der Rolle
+
+        //Berechneung des Massenträgheits der Rolle unter Annahme eines massiven Zylinders.
         J_Rolle = 0.5 * m * (Durchmesser / 2) ^ 2;
-//Berechneung des Massenträgheits der Rolle unter Annahme eines massiven Zylinders.
+        
+  //berechnet die Anzahl der Schichten +1
         -v = floor(m_w.w / (2 * Pi) / (b / d));
         v = o;
-//berechnet die Anzahl der Schichten +1
+  
+        //Ausgabe der Seilposition
         f_s.s = Pi * d_Winde * (m_w.w / (2 * Pi));
-//Kraftberechnung am Port, inklusive Massenträgheitsbetrachtung
-//d_Zusatz-(Durchmesser*Winkel)=sum((((i/i)*((b/d)*2))/100)*(Winkel-((b/d)*2*Pi*i-1)) for i in 1:(v-1));
-//Winkel= (m_w1.w/(2*Pi));
+
         annotation(
           choices(choice(redeclare lib2.Resistor Load(a = {2}) "..."), choice(redeclare Capacitor Load(L = 3) "...")),
-          Icon(graphics = {Rectangle(origin = {-44, 25}, fillColor = {208, 208, 208}, fillPattern = FillPattern.Solid, lineThickness = 1, extent = {{-56, 15}, {144, -65}}), Line(origin = {42.7034, 3.51}, points = {{18, 97}, {18, -45}}, color = {255, 85, 0}, thickness = 1), Line(origin = {-17.8189, 3.16671}, points = {{-22, 39}, {18, -45}}, color = {255, 85, 0}, thickness = 1), Line(origin = {1.89746, 1.88313}, points = {{-22, 39}, {18, -45}}, color = {255, 85, 0}, thickness = 1), Line(origin = {21.9273, 3.10701}, points = {{-22, 39}, {18, -45}}, color = {255, 85, 0}, thickness = 1), Rectangle(origin = {-92, -10}, fillPattern = FillPattern.Solid, extent = {{-9, 70}, {9, -70}}), Rectangle(origin = {92, -10}, fillPattern = FillPattern.Solid, extent = {{-9, 70}, {9, -70}}), Rectangle(origin = {-13, -61}, rotation = -90, fillPattern = FillPattern.Solid, extent = {{-9, 114}, {41, -88}})}, coordinateSystem(initialScale = 0.1)));
+          Icon(graphics = {Rectangle(origin = {-44, 25}, fillColor = {208, 208, 208}, fillPattern = FillPattern.Solid, lineThickness = 1, extent = {{-56, 15}, {144, -65}}), Line(origin = {42.7034, 3.51}, points = {{18, 97}, {18, -45}}, color = {255, 85, 0}, thickness = 1), Line(origin = {-17.8189, 3.16671}, points = {{-22, 39}, {18, -45}}, color = {255, 85, 0}, thickness = 1), Line(origin = {1.89746, 1.88313}, points = {{-22, 39}, {18, -45}}, color = {255, 85, 0}, thickness = 1), Line(origin = {21.9273, 3.10701}, points = {{-22, 39}, {18, -45}}, color = {255, 85, 0}, thickness = 1), Rectangle(origin = {-92, -10}, fillPattern = FillPattern.Solid, extent = {{-9, 70}, {9, -70}}), Rectangle(origin = {92, -10}, fillPattern = FillPattern.Solid, extent = {{-9, 70}, {9, -70}}), Rectangle(origin = {-13, -61}, rotation = -90, fillPattern = FillPattern.Solid, extent = {{-9, 114}, {41, -88}})}, coordinateSystem(initialScale = 0.1)),
+  Documentation(info = "<html><head></head><body><b>Die Seilwinde</b>&nbsp;dient zur Umwandling einer Drehbewegung in eine translatorische Bewegung. Durch die Bidirektionalität kann auch eine translatorische Bewegung in eine Rotatorische umgewandelt werden.&nbsp;<div><br></div><div>Das Modell besitzt zwei Ports: Ein für translatorische Bewegung (f_s) und einen für rotatorische Bewegung (m_w).<br><div><br></div><div>Folgende <b>Parameter</b> stehen zur Eingabe bereit:</div><div><br></div><div><b>Durchmesser: </b>Dieser Parameter beschreibt in der Einheit Meter den Durchmesser der Seiltrommel.</div><div><b>d</b>: Beschreibt den Durchmesser des Seiles in Metern. Da in der Bibliothek die Seildehnung nicht betrachtet wird, ist der Durchmesser des Seiles Lastunabhängig und wird als konstant angenommen.</div><div><b>b</b>: Die Breite der Winde in Metern. UNnter Berücksichtigung von d wird mit dieser Angabe in der Betriebsart Durchmesserkommulation berechnet, wieviele Umdrehungen das Seil einlagig auf die Seilrolle passt.</div><div><b>Lagerwiderstand: </b>Angabe des Lagerwiderstandes der Seilrolle in Newtonmeter. Damit kann ein Verlust des Aantriebmomentes simuliert werden.&nbsp;</div><div><b>m</b>: Die Masse der Seilrolle in Kilogramm. Mit dieser Angabe wird die Trägkhit der Seilrolle berechnet. Dabei wird angenommen, dass es sich um einen Vollzylinder handelt. Einetwaiges Gewicht des Seiles wird in dieser Berechnung nicht beachtet.&nbsp;</div><div><b>Durchmesserkommulation</b>: Eingabe eines Wertes im booledchen Format. Bei der Eingabe des Wetes \"False\", wird ein konstanter Windendurchmesser angenommen. Wird der Parameter auf \"True\" gesetzt wird in der Simulation berücksichtigt, dass der Durchmesser der Seiltrommel im Betrieb mit zunehmend aufgewickeltem Seil wächst. Das Hat direkte Auswirkungen auf die ausgegebene Seilposition. Dabei ist zu beachten, dass in dieser Betriebsart die Position nicht exakt, sondern aproximiert ausgegeben wird.</div><div>&nbsp;<div><div><br></div><div><b>Hinweiß:</b> Die Parameter in der Gruppe Geometrie werden nur in der Betriebsart mit aktivierter Durchmesserkommulation benötigt. Ist diese Betriebsart nicht aktiviert, werden die EIngetragenen Werte nicht beachtet, sodass sie keinerlei Einfluss auf die Simulation haben.&nbsp;</div></div></div></div></body></html>"));
       end Seilwinde;
 
       model Seilwinde_Decke
+  //Parameter
         parameter Modelica.SIunits.Diameter Durchmesser = 0.2 "Trommeldurchmesser" annotation(
           Dialog(group = "Geometrie"));
-        constant Real Pi = 2 * Modelica.Math.asin(1.0);
         parameter Modelica.SIunits.Momentum Lagerwiderstand = 0.0 "[Nm]" annotation(
           Dialog(group = "Trägheit und Verlust"));
         parameter Modelica.SIunits.Diameter d = 0.05 "Seildurchmesser [m]" annotation(
@@ -224,49 +228,55 @@ end Zeitgesteuert;
           Dialog(group = "Trägheit und Verlust"));
         parameter Boolean Durchmesserkommulation = false annotation(
           Dialog(group = "Betriebsarten"));
-       //(Dialog(group="Geometry"));
-        //um Massenträgheit der Rolle zu Berechnen
+        //Konstanten
+        constant Real Pi = 2 * Modelica.Math.asin(1.0);
+        //Variablen
         Real d_Winde;
         Integer v;
         Real o, dmax, s;
         Real J_Rolle, v_Rolle;
-        //Massenträgheit der Rolle, Rotationsgeschwindigkeit der Rolle
-        //Real d_Zusatz, Winkel;
+        //Ports
         Flaschenzug.Ports.F_s f_s annotation(
-          Placement(visible = true, transformation(origin = {58, 126}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {57, -117}, extent = {{-19, -19}, {19, 19}}, rotation = 0)));
+          Placement(visible = true, transformation(origin = {58, 126}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {59, 119}, extent = {{-19, -19}, {19, 19}}, rotation = 0)));
         Flaschenzug.Ports.M_w m_w annotation(
-          Placement(visible = true, transformation(origin = {-134, 14}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-119, 5}, extent = {{-19, -19}, {19, 19}}, rotation = 0)));
+          Placement(visible = true, transformation(origin = {-134, 14}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-119, 1}, extent = {{-19, -19}, {19, 19}}, rotation = 0)));
       equation
-  if v - 1 >= 1 and Durchmesserkommulation == true then
-///Berechnung des Windendurchmessers nicht als Step Funktion, sondern bisher als lineare Funktion
+      if v - 1 >= 1 and Durchmesserkommulation == true then
+      //Berechnung des Windendurchmessers als lineare Funktion
           d_Winde = Durchmesser + s * d;
           dmax = Durchmesser + (o - 1) * d * 2;
           s = (-m_w.w / (2 * Pi)) / (b / d) - 1;
         else
+          //keine Durchmesseraproximation
           d_Winde = Durchmesser;
           dmax = Durchmesser;
           s = 0;
         end if;
-//Zurichtungsumkehr
+        
+        //am Seil wirkende Kraft
         f_s.F = (m_w.M - Lagerwiderstand) / (d_Winde / 2) - J_Rolle * der(v_Rolle);
         
+        //Drehgeschwindigkeit der Rolle
         v_Rolle = der(f_s.s);
-//Drehgeschwindigkeit der Rolle
+      
+        //Berechneung des Massenträgheits der Rolle unter Annahme eines massiven Zylinders.
         J_Rolle = 0.5 * m * (Durchmesser / 2) ^ 2;
-//Berechneung des Massenträgheits der Rolle unter Annahme eines massiven Zylinders.
+        
+      //berechnet die Anzahl der Schichten +1
         -v = floor(m_w.w / (2 * Pi) / (b / d));
         v = o;
-//berechnet die Anzahl der Schichten +1
+      
+        //Ausgabe der Seilposition
         f_s.s = Pi * d_Winde * (m_w.w / (2 * Pi));
-//Kraftberechnung am Port, inklusive Massenträgheitsbetrachtung
-//d_Zusatz-(Durchmesser*Winkel)=sum((((i/i)*((b/d)*2))/100)*(Winkel-((b/d)*2*Pi*i-1)) for i in 1:(v-1));
-//Winkel= (m_w1.w/(2*Pi));
+      
         annotation(
           choices(choice(redeclare lib2.Resistor Load(a = {2}) "..."), choice(redeclare Capacitor Load(L = 3) "...")),
-          Icon(graphics = {Rectangle(origin = {-44, 25}, fillColor = {208, 208, 208}, fillPattern = FillPattern.Solid, lineThickness = 1, extent = {{-56, 15}, {144, -65}}), Line(origin = {38.3208, -57.8465}, points = {{18, 97}, {18, -45}}, color = {255, 85, 0}, thickness = 1), Line(origin = {-17.8189, 3.16671}, points = {{-22, 39}, {18, -45}}, color = {255, 85, 0}, thickness = 1), Line(origin = {1.89746, 1.88313}, points = {{-22, 39}, {18, -45}}, color = {255, 85, 0}, thickness = 1), Line(origin = {21.9273, 3.10701}, points = {{-22, 39}, {18, -45}}, color = {255, 85, 0}, thickness = 1), Rectangle(origin = {-92, 10}, fillPattern = FillPattern.Solid, extent = {{-9, 70}, {9, -70}}), Rectangle(origin = {92, 8}, fillPattern = FillPattern.Solid, extent = {{-9, 70}, {9, -70}}), Rectangle(origin = {-13, 91}, rotation = -90, fillPattern = FillPattern.Solid, extent = {{-9, 114}, {41, -88}})}, coordinateSystem(initialScale = 0.1)));
+          Icon(graphics = {Rectangle(origin = {-44, 25}, fillColor = {208, 208, 208}, fillPattern = FillPattern.Solid, lineThickness = 1, extent = {{-56, 15}, {144, -65}}), Line(origin = {38.3208, -57.8465}, points = {{18, 97}, {18, -45}}, color = {255, 85, 0}, thickness = 1), Line(origin = {-17.8189, 3.16671}, points = {{-22, 39}, {18, -45}}, color = {255, 85, 0}, thickness = 1), Line(origin = {1.89746, 1.88313}, points = {{-22, 39}, {18, -45}}, color = {255, 85, 0}, thickness = 1), Line(origin = {21.9273, 3.10701}, points = {{-22, 39}, {18, -45}}, color = {255, 85, 0}, thickness = 1), Rectangle(origin = {-92, 10}, fillPattern = FillPattern.Solid, extent = {{-9, 70}, {9, -70}}), Rectangle(origin = {92, 8}, fillPattern = FillPattern.Solid, extent = {{-9, 70}, {9, -70}}), Rectangle(origin = {-13, 91}, rotation = -90, fillPattern = FillPattern.Solid, extent = {{-9, 114}, {41, -88}})}, coordinateSystem(initialScale = 0.1)),
+  Documentation(info = "<html><head></head><body><b>Die Seilwinde</b>&nbsp;dient zur Umwandling einer Drehbewegung in eine translatorische Bewegung. Durch die Bidirektionalität kann auch eine translatorische Bewegung in eine Rotatorische umgewandelt werden.&nbsp;<div><br></div><div>Das Modell besitzt zwei Ports: Ein für translatorische Bewegung (f_s) und einen für rotatorische Bewegung (m_w).<br><div><br></div><div>Folgende&nbsp;<b>Parameter</b>&nbsp;stehen zur Eingabe bereit:</div><div><br></div><div><b>Durchmesser:&nbsp;</b>Dieser Parameter beschreibt in der Einheit Meter den Durchmesser der Seiltrommel.</div><div><b>d</b>: Beschreibt den Durchmesser des Seiles in Metern. Da in der Bibliothek die Seildehnung nicht betrachtet wird, ist der Durchmesser des Seiles Lastunabhängig und wird als konstant angenommen.</div><div><b>b</b>: Die Breite der Winde in Metern. UNnter Berücksichtigung von d wird mit dieser Angabe in der Betriebsart Durchmesserkommulation berechnet, wieviele Umdrehungen das Seil einlagig auf die Seilrolle passt.</div><div><b>Lagerwiderstand:&nbsp;</b>Angabe des Lagerwiderstandes der Seilrolle in Newtonmeter. Damit kann ein Verlust des Aantriebmomentes simuliert werden.&nbsp;</div><div><b>m</b>: Die Masse der Seilrolle in Kilogramm. Mit dieser Angabe wird die Trägkhit der Seilrolle berechnet. Dabei wird angenommen, dass es sich um einen Vollzylinder handelt. Einetwaiges Gewicht des Seiles wird in dieser Berechnung nicht beachtet.&nbsp;</div><div><b>Durchmesserkommulation</b>: Eingabe eines Wertes im booledchen Format. Bei der Eingabe des Wetes \"False\", wird ein konstanter Windendurchmesser angenommen. Wird der Parameter auf \"True\" gesetzt wird in der Simulation berücksichtigt, dass der Durchmesser der Seiltrommel im Betrieb mit zunehmend aufgewickeltem Seil wächst. Das Hat direkte Auswirkungen auf die ausgegebene Seilposition. Dabei ist zu beachten, dass in dieser Betriebsart die Position nicht exakt, sondern aproximiert ausgegeben wird.</div><div>&nbsp;<div><div><br></div><div><b>Hinweiß:</b>&nbsp;Die Parameter in der Gruppe Geometrie werden nur in der Betriebsart mit aktivierter Durchmesserkommulation benötigt. Ist diese Betriebsart nicht aktiviert, werden die EIngetragenen Werte nicht beachtet, sodass sie keinerlei Einfluss auf die Simulation haben.&nbsp;</div></div></div></div></body></html>"));
       end Seilwinde_Decke;
   annotation(
-        Icon(graphics = {Rectangle(origin = {-1, -1}, fillColor = {140, 140, 140}, fillPattern = FillPattern.Solid, extent = {{-99, 41}, {101, -41}}), Line(origin = {-25.7439, -1.2561}, points = {{-22, 41}, {22, -41}, {22, -41}}, color = {213, 0, 0}, thickness = 3), Line(origin = {-2.42683, -0.475612}, points = {{-22, 41}, {22, -41}, {22, -41}}, color = {213, 0, 0}, thickness = 3), Line(origin = {23.4512, -0.463417}, points = {{-22, 41}, {22, -41}, {22, -41}}, color = {213, 0, 0}, thickness = 3), Line(origin = {36.2439, -0.731709}, points = {{20, 75}, {22, -41}, {22, -41}}, color = {213, 0, 0}, thickness = 3)}));
+        Icon(graphics = {Rectangle(origin = {-1, -1}, fillColor = {140, 140, 140}, fillPattern = FillPattern.Solid, extent = {{-99, 41}, {101, -41}}), Line(origin = {-25.7439, -1.2561}, points = {{-22, 41}, {22, -41}, {22, -41}}, color = {213, 0, 0}, thickness = 3), Line(origin = {-2.42683, -0.475612}, points = {{-22, 41}, {22, -41}, {22, -41}}, color = {213, 0, 0}, thickness = 3), Line(origin = {23.4512, -0.463417}, points = {{-22, 41}, {22, -41}, {22, -41}}, color = {213, 0, 0}, thickness = 3), Line(origin = {36.2439, -0.731709}, points = {{20, 75}, {22, -41}, {22, -41}}, color = {213, 0, 0}, thickness = 3)}),
+        Documentation(info = "<html><head></head><body>Die Seilwinden dienen zur Umwandling einer Drehbewegung in eine translatorische Bewegung.<div><br></div><div>Die hierin enthaltenen Seilwinden unterscheiden sich nur optisch, um eine etwaige spiegelung im Simulationsmodell vorzubeugen.</div></body></html>"));
     end Seilwinden;
 
     package Flaschenzuege
@@ -483,6 +493,7 @@ end Zeitgesteuert;
       end Motor;
 
       model Getriebe
+        //Paramtereingabe
         parameter Real Uebersetzung = 3 "Übersetzung" annotation(
           Dialog(group = "Getriebeparameter"));
         parameter Modelica.SIunits.Efficiency Wirkungsgrad = 1 "Wirkungsgrad" annotation(
@@ -491,22 +502,28 @@ end Zeitgesteuert;
           Dialog(group = "Trägheiten"));
         parameter Modelica.SIunits.MomentOfInertia J_Ausgangsewelle = 0.00 annotation(
           Dialog(group = "Trägheiten"));
+        //Variablen der Wellengeschwindigkeiten
         Real v_w_ein;
         Real v_w_aus;
+        //Ports
         Flaschenzug.Ports.M_w m_w annotation(
           Placement(visible = true, transformation(origin = {110, -28}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {119, -29}, extent = {{-17, -17}, {17, 17}}, rotation = 0)));
         Flaschenzug.Ports.M_w m_w1 annotation(
           Placement(visible = true, transformation(origin = {-124, 38}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-120, 40}, extent = {{-18, -18}, {18, 18}}, rotation = 0)));
       equation
+        //Berechnung Ausgangsmoment
         m_w.M = m_w1.M * Uebersetzung * Wirkungsgrad - (v_w_aus * J_Ausgangsewelle - v_w_ein * J_Eingangswelle);
+        //Berechnug Winkel der Ausgabewelle
         -m_w.w = m_w1.w / Uebersetzung;
+        //Geschwindigkeit der Eingangswelle
         v_w_ein = der(m_w1.w);
-//Geschwindigkeit der Eingangswelle
+  //Geschwindigkeit der Ausgangswelle
         v_w_aus = der(m_w.w);
-//Geschwindigkeit der Ausgangswelle
+
         annotation(
           Icon(graphics = {Rectangle(origin = {-77, 61}, lineColor = {70, 70, 70}, lineThickness = 4, extent = {{-23, 39}, {177, -159}}), Rectangle(origin = {91, -32}, fillColor = {52, 52, 52}, fillPattern = FillPattern.Solid, extent = {{-161, 10}, {11, -8}}), Rectangle(origin = {-75, 38}, fillColor = {52, 52, 52}, fillPattern = FillPattern.Solid, extent = {{-27, 6}, {119, -4}}), Rectangle(origin = {-9, 68}, fillColor = {159, 159, 159}, fillPattern = FillPattern.Forward, extent = {{-10, 7}, {20, -65}}), Rectangle(origin = {-19, -4}, fillColor = {106, 106, 106}, fillPattern = FillPattern.Forward, extent = {{-4, 7}, {34, -81}}), Rectangle(origin = {32, 59}, fillPattern = FillPattern.Solid, lineThickness = 0.5, extent = {{-10, 7}, {12, -15}}), Rectangle(origin = {72, 58}, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-54, 0}, {-26, -6}}), Ellipse(origin = {32, 56}, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-6, 6}, {8, -8}}, endAngle = 360), Rectangle(origin = {-82, 27}, fillPattern = FillPattern.Solid, lineThickness = 0.5, extent = {{-10, 7}, {12, -15}}), Ellipse(origin = {-82, 24}, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-6, 6}, {8, -8}}, endAngle = 360), Rectangle(origin = {-42, 26}, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-54, 0}, {-26, -6}}), Rectangle(origin = {-82, 59}, fillPattern = FillPattern.Solid, lineThickness = 0.5, extent = {{-10, 7}, {12, -15}}), Ellipse(origin = {-82, 56}, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-6, 6}, {8, -8}}, endAngle = 360), Rectangle(origin = {-42, 58}, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-54, 0}, {-24, -6}}), Rectangle(origin = {-56, -7}, fillPattern = FillPattern.Solid, lineThickness = 0.5, extent = {{-10, 7}, {12, -15}}), Ellipse(origin = {-56, -10}, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-6, 6}, {8, -8}}, endAngle = 360), Rectangle(origin = {-16, -8}, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-54, 0}, {-24, -6}}), Rectangle(origin = {-56, -47}, fillPattern = FillPattern.Solid, lineThickness = 0.5, extent = {{-10, 7}, {12, -15}}), Ellipse(origin = {-56, -50}, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-6, 6}, {8, -8}}, endAngle = 360), Rectangle(origin = {-16, -48}, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-54, 0}, {-26, -6}}), Rectangle(origin = {82, -47}, fillPattern = FillPattern.Solid, lineThickness = 0.5, extent = {{-10, 7}, {12, -15}}), Ellipse(origin = {82, -50}, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-6, 6}, {8, -8}}, endAngle = 360), Rectangle(origin = {122, -48}, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-54, 0}, {-26, -6}}), Rectangle(origin = {82, -7}, fillPattern = FillPattern.Solid, lineThickness = 0.5, extent = {{-10, 7}, {12, -15}}), Ellipse(origin = {82, -10}, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-6, 6}, {8, -8}}, endAngle = 360), Rectangle(origin = {122, -8}, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-54, 0}, {-26, -6}}), Rectangle(origin = {32, 27}, fillPattern = FillPattern.Solid, lineThickness = 0.5, extent = {{-10, 7}, {12, -15}}), Ellipse(origin = {32, 24}, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-6, 6}, {8, -8}}, endAngle = 360), Rectangle(origin = {72, 26}, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-54, 0}, {-26, -6}}), Text(origin = {-83, 84}, extent = {{-13, 10}, {13, -10}}, textString = "IN"), Text(origin = {79, -84}, extent = {{-13, 10}, {13, -10}}, textString = "OUT")}, coordinateSystem(initialScale = 0.1)),
-          Dialog(group = "Getriebeparameter"));
+          Dialog(group = "Getriebeparameter"),
+  Documentation(info = "<html><head></head><body><b>Das Getriebe</b> dient zur Übersetzung der Antriebswelle zur Abtriebswelle. Es muss darauf geachtet werden, dass der Port m_w1 mit der EIngangswelle und m_w mit der Ausgangswelle verbunden ist.&nbsp;<div><br></div><div>Folgende Parameter stehen zur Auswahl:&nbsp;</div><div><br></div><div><b>Ueubersetzunsverhältniss</b>: Einstellen des Übersetzungsverhältnisses. Die Ausgabedrehzahl wird um diesen Faktor im Vergleich der Eingangsdrehzahl verringert, das Drehmoment (bei einem Wirkungsgrad von 1) erhöht.</div><div><br></div><div><b>Wirkungsgrad</b>: Eingabe des Wirkungsgrades zwischen 0 (0%) und 1 (100%). Das Ausgabedrehmoment wird nach der Übersetzungsberechnung mit diesem Wert multipliziert.&nbsp;</div><div><br></div><div><b>J_Eingangswelle</b> und<b> J_Ausgangswelle</b>: Hier kann die Trägheit der Wellen angegeben werden.</div><div><br></div></body></html>"));
       end Getriebe;
 
       model Bremse
@@ -558,7 +575,7 @@ end Zeitgesteuert;
         Flaschenzug.Ports.F_s f_s1 annotation(
           Placement(visible = true, transformation(origin = {6, -84}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {3, -91}, extent = {{-15, -15}, {15, 15}}, rotation = 0)));
       equation
-        //f_s.s = konsatant -> Fixpunkt
+//f_s.s = konsatant -> Fixpunkt
         f_s1.s = Hoehe;
         annotation(
           Icon(graphics = {Rectangle(origin = {0, -74}, fillPattern = FillPattern.Solid, extent = {{-100, 2}, {100, -2}}), Line(origin = {-29.3731, -69.4329}, points = {{-5, -4}, {5, 4}}), Line(origin = {41.0299, -69.5523}, points = {{-5, -4}, {5, 4}}), Line(origin = {-80.7164, -69.6866}, points = {{-5, -4}, {5, 4}}), Line(origin = {55.4179, -69.2687}, points = {{-5, -4}, {5, 4}}), Line(origin = {-60.0597, -70.0299}, points = {{-5, -4}, {5, 4}}), Line(origin = {-3.38808, -69.7762}, points = {{-5, -4}, {5, 4}}), Line(origin = {-91.9701, -69.9702}, points = {{-5, -4}, {5, 4}}), Line(origin = {-91.9701, -69.9702}, points = {{-5, -4}, {5, 4}}), Line(origin = {-49.7462, -69.7463}, points = {{-5, -4}, {5, 4}}), Line(origin = {-80.7164, -69.6866}, points = {{-5, -4}, {5, 4}}), Line(origin = {80.7463, -70.2687}, points = {{-5, -4}, {5, 4}}), Line(origin = {26.6418, -69.5225}, points = {{-5, -4}, {5, 4}}), Line(origin = {-91.9701, -69.9702}, points = {{-5, -4}, {5, 4}}), Line(origin = {11.6269, -69.4926}, points = {{-5, -4}, {5, 4}}), Line(origin = {-17.3283, -69.9254}, points = {{-5, -4}, {5, 4}}), Line(origin = {67.2985, -69.9254}, points = {{-5, -4}, {5, 4}}), Line(origin = {-39.9701, -69.3732}, points = {{-5, -4}, {5, 4}}), Line(origin = {-72.3432, -69.4627}, points = {{-5, -4}, {5, 4}}), Polygon(origin = {0, 12}, fillColor = {211, 60, 14}, fillPattern = FillPattern.CrossDiag, points = {{-100, -84}, {0, 88}, {100, -84}, {34, -84}, {-100, -84}}), Ellipse(origin = {60, 84}, fillColor = {30, 30, 238}, fillPattern = FillPattern.Solid, extent = {{-38, 12}, {38, -12}}, endAngle = 360), Ellipse(origin = {77, 69}, fillColor = {48, 141, 255}, fillPattern = FillPattern.Solid, extent = {{-25, 9}, {25, -9}}, endAngle = 360), Ellipse(origin = {52, 71}, fillColor = {103, 117, 244}, fillPattern = FillPattern.Solid, extent = {{14, 9}, {-14, -9}}, endAngle = 360), Polygon(origin = {-52, 36}, fillColor = {81, 75, 74}, fillPattern = FillPattern.Solid, points = {{-12, -46}, {12, -6}, {12, 46}, {-12, 46}, {-12, 40}, {-12, -46}})}, coordinateSystem(initialScale = 0.1)),
@@ -572,7 +589,7 @@ end Zeitgesteuert;
         Flaschenzug.Ports.F_s f_s1 annotation(
           Placement(visible = true, transformation(origin = {6, -84}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-2, 10}, extent = {{-70, -70}, {70, 70}}, rotation = 0)));
       equation
-        //f_s.s = konsatant  -> Fixpunkt
+//f_s.s = konsatant  -> Fixpunkt
         f_s1.s = Hoehe;
         annotation(
           Icon(graphics = {Rectangle(origin = {-2, -74}, fillPattern = FillPattern.Solid, extent = {{-98, 14}, {102, -26}})}, coordinateSystem(initialScale = 0.1)),
