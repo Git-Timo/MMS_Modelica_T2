@@ -270,6 +270,7 @@ end Zeitgesteuert;
 
     package Flaschenzuege
       model Flaschenzug_Modell
+        //Parametereingabe
         parameter Integer n = 3 "Anzahl der Rollen" annotation(
           Dialog(group = "Geometrie"));
         parameter Modelica.SIunits.Length s = 3 "Anfangslänge" annotation(
@@ -280,15 +281,19 @@ end Zeitgesteuert;
           Dialog(group = "Geometrie"));
         parameter Modelica.SIunits.Mass Flaschengewicht_unten = 2 "[kg]" annotation(
           Dialog(group = "Trägheit und Verlust"));
+        
+        //Konstante
         Modelica.SIunits.Acceleration g = Modelica.Constants.g_n;
-        //Erdbeschleunigung
-        Real v;
-        //Geschwindigkeit der unteren Flasche
-        Real Fges;
-        //Flaschengewicht und Beschleunigungskraft
-        Real Zwinkel;
-        //Umrechnung Zugwinkel von Grad in Rad/s
         constant Real Pi = 2 * Modelica.Math.asin(1.0);
+        
+        //Geschwindigkeit der unteren Flasche
+        Real v;
+        //Flaschengewicht und Beschleunigungskraft
+        Real Fges;
+        //Umrechnung Zugwinkel von Grad in Rad/s
+        Real Zwinkel;
+        
+        //Ports
         Flaschenzug.Ports.F_s f_s annotation(
           Placement(visible = true, transformation(origin = {2, -106}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {1, -115}, extent = {{-15, -15}, {15, 15}}, rotation = 0)));
         Flaschenzug.Ports.F_s f_s1 annotation(
@@ -299,24 +304,31 @@ end Zeitgesteuert;
           Placement(visible = true, transformation(origin = {-32, 86}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-14, 86}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
       equation
   if f_s.s + Sa >= f_s1.s then
-//Stoppen, wenn Flaschenzug ganz zusammengefahren
+    //Signal auf true setzten, wenn Flaschenzug ganz zusammengefahren
           boolOut1 = true;
         else
           boolOut1 = false;
         end if;
+        
+        //Einfluss der Massenträgheit der unteren Flasche aud die Gesamtkraft
         Fges = f_s.F - Flaschengewicht_unten * g - Flaschengewicht_unten * der(v);
+        //an der unteren Flasche wirkende Kraft
         f_s2.F = Fges / n;
-//nur positive Seilräfte werden zugelassen
+  //Gesch. der unteren Flasche
         v = der(f_s.s);
+        //Winkelumrechnung
         Zwinkel = Zugwinkel * (180 / Pi);
+        //Pos der unteren Flasche
         -f_s.s = (-f_s1.s) + s + f_s2.s / n;
+        //Kraft an oberer Flasche
         f_s1.F = f_s.F + cos(Zwinkel) * f_s2.F - Flaschengewicht_unten * g;
         annotation(
           Icon(graphics = {Rectangle(origin = {-3, -65}, fillPattern = FillPattern.Solid, extent = {{-1, 3}, {9, -35}}), Rectangle(origin = {-3, 69}, fillPattern = FillPattern.Solid, extent = {{-1, 31}, {9, -47}}), Line(origin = {-69.18, 25}, points = {{55, 42}, {-31, -56}}, color = {255, 85, 0}, thickness = 1), Line(origin = {-21.89, -45.81}, points = {{11, 57}, {9, -37}}, color = {255, 85, 0}, thickness = 1), Line(origin = {21.8499, 44.31}, points = {{0, 9}, {-8, -127}}, color = {255, 85, 0}, thickness = 1), Line(origin = {43.12, -11.0249}, points = {{-31, 20}, {-41, -50}}, color = {255, 85, 0}, thickness = 1), Ellipse(origin = {2, 51}, fillColor = {144, 144, 144}, fillPattern = FillPattern.Solid, lineThickness = 0.5, extent = {{-24, 23}, {20, -21}}, endAngle = 360), Ellipse(origin = {4, -84}, fillColor = {144, 144, 144}, fillPattern = FillPattern.Solid, lineThickness = 0.5, extent = {{-18, 16}, {12, -14}}, endAngle = 360), Ellipse(origin = {1, 9}, fillColor = {144, 144, 144}, fillPattern = FillPattern.Solid, lineThickness = 0.5, extent = {{-13, 15}, {13, -11}}, endAngle = 360)}, coordinateSystem(initialScale = 0.1)),
-          Documentation(info = "<html><head></head><body>Der Flaschenzug bietet analog zum Getriebe im Rotatorischen eine Untersetzung im Translatorischen.&nbsp;<div><br></div><div><b>Ports</b></div><div>Das Modell besitzt drei F_s Prots über diese bidirektional Kraft und Position übergeben werden kann.&nbsp;<br>Ein boolescher Output dient zur Ausgabe eines Sensorsignals. Der Sensor detektiert, ob sich die Masse bei einer bestimmten Position (s. Parameter) &nbsp;befindet. Detektiert der Sensor dei Masse, so wird am booleschen Ausgang ein <i>true</i> ausgegeben. Ist dei Masse an einer anderen Position, so wird <i>false</i> ausgegeben.</div><div><br></div><div>Folgeende<b> Parameter</b> stehen bereit:&nbsp;</div><div>n (Anzahl der Rollen)</div><div><b>s</b> (Anfangslänge): Die Anfangslänge beschreibt den Abstand der oberen zur unteren Flasche. Meist wird im Modell die obere Flasche mit einem Fixpunkt verbunden, sodass sich die Position der unteren Flasche aus der Höhe des Fixpunktes - s ergibt.&nbsp;</div><div><b>Zugwinkel: </b>Der Zugwinkel in Rad wird im odell afür verwendet</div><div><b>Sa </b>(Sensorabstand): Der Sensorabstand in Metern gibt den Abstand des Positionnssensors bis zur oberen Flasche an. Die Funktionsweise des Swnsors ist bei den Portbeschreibungen zu finden.&nbsp;</div><div><b>Flaschengewicht_unten</b>: Dieser Parameter gibt das Flaschengewicht der unteren Flasche an. Die angabe wird im Model benutzt um die Trägheit und das Leergewicht des Flaschenzuges zu kennen.&nbsp;</div><div><br></div></body></html>"));
+          Documentation(info = "<html><head></head><body>Der Flaschenzug bietet analog zum Getriebe im Rotatorischen eine Untersetzung im Translatorischen.&nbsp;<div><br></div><div><b>Ports</b></div><div>Das Modell besitzt drei F_s Prots über diese bidirektional Kraft und Position übergeben werden kann.&nbsp;<br>Ein boolescher Output dient zur Ausgabe eines Sensorsignals. Der Sensor detektiert, ob sich die Masse bei einer bestimmten Position (s. Parameter) &nbsp;befindet. Detektiert der Sensor dei Masse, so wird am booleschen Ausgang ein <i>true</i> ausgegeben. Ist dei Masse an einer anderen Position, so wird <i>false</i> ausgegeben.</div><div><br></div><div>Folgeende<b> Parameter</b> stehen bereit:&nbsp;</div><div><b>n</b> (Anzahl der Rollen): n beschreibt das Übersetzungsverhältniss des Flaschenzugs. Für n können nur ganzzahlige Werte größer 1 eingegeben werden. Grundlegend ist die an der unteren Flasche (f_s) wirkedne Kraft n mal höher als die am f_s2 -Port wirkende Kraft. Störgrößen, wie die Trägheit der unteren Flasche wirken sich auf diese grundlegende Gleichung aus. Beim Weg verhält sich der Zusammenhang ähnlich: die Positionsänderung &nbsp;der unteren Flashe n mal kleiner als die Positionsänderung des f_s2 -Ports. Die Verringerung von n um 1 ergibt sich aus der Zugrichtung &nbsp;nach oben, wodurch eine Role nicht benutzt wird. Der Startwert ergibt sich aus der Position der oberen Flasche - der Anfangslänge des Flaschenzugs s.&nbsp;</div><div><b>s</b> (Anfangslänge): Die Anfangslänge beschreibt den Abstand der oberen zur unteren Flasche. Meist wird im Modell die obere Flasche mit einem Fixpunkt verbunden, sodass sich die Position der unteren Flasche aus der Höhe des Fixpunktes - s ergibt.&nbsp;</div><div><b>Zugwinkel: </b>Der Zugwinkel in Rad wird im Modell dafür verwendet die am f_s1-Port (obere Flasche) auftretenden Kräfte in vertikale Richtung zu berechnen. Die horizontal Wirkenden Kräfte werden im Modell vernachlässigt.</div><div><b>Sa </b>(Sensorabstand): Der Sensorabstand in Metern gibt den Abstand des Positionnssensors bis zur oberen Flasche an. Die Funktionsweise des Swnsors ist bei den Portbeschreibungen zu finden.&nbsp;</div><div><b>Flaschengewicht_unten</b>: Dieser Parameter gibt das Flaschengewicht der unteren Flasche an. Die angabe wird im Model benutzt um die Trägheit und das Leergewicht des Flaschenzuges zu kennen.&nbsp;</div><div><br></div></body></html>"));
       end Flaschenzug_Modell;
 
       model Flaschenzug_Modell_b
+        //Parametereingabe
         parameter Integer n = 3 "Anzahl der Rollen" annotation(
           Dialog(group = "Geometrie"));
         parameter Modelica.SIunits.Length s = 3 "Anfangslänge" annotation(
@@ -327,40 +339,50 @@ end Zeitgesteuert;
           Dialog(group = "Geometrie"));
         parameter Modelica.SIunits.Mass Flaschengewicht_unten = 2 "[kg]" annotation(
           Dialog(group = "Trägheit und Verlust"));
+        
+        //Konstante
         Modelica.SIunits.Acceleration g = Modelica.Constants.g_n;
-        //Erdbeschleunigung
-        Real v;
-        //Geschwindigkeit der unteren Flasche
-        Real Fges;
-        //Flaschengewicht und Beschleunigungskraft
-        Real Zwinkel;
-        //Umrechnung Zugwinkel von Grad in Rad/s
         constant Real Pi = 2 * Modelica.Math.asin(1.0);
+        
+        //Geschwindigkeit der unteren Flasche
+        Real v;
+        //Flaschengewicht und Beschleunigungskraft
+        Real Fges;
+        //Umrechnung Zugwinkel von Grad in Rad/s
+        Real Zwinkel;
+        
+        //Ports
         Flaschenzug.Ports.F_s f_s annotation(
           Placement(visible = true, transformation(origin = {2, -106}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {1, -115}, extent = {{-15, -15}, {15, 15}}, rotation = 0)));
         Flaschenzug.Ports.F_s f_s1 annotation(
           Placement(visible = true, transformation(origin = {0, 110}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {1, 113}, extent = {{-13, -13}, {13, 13}}, rotation = 0)));
         Flaschenzug.Ports.F_s f_s2 annotation(
-          Placement(visible = true, transformation(origin = {-114, -26}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-114, 56}, extent = {{-14, -14}, {14, 14}}, rotation = 0)));
+          Placement(visible = true, transformation(origin = {-114, -26}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-114, -30}, extent = {{-14, -14}, {14, 14}}, rotation = 0)));
         Flaschenzug.Ports.BoolOut boolOut1 annotation(
-          Placement(visible = true, transformation(origin = {-32, 86}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {16, 86}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+          Placement(visible = true, transformation(origin = {-32, 86}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-14, 86}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
       equation
-  if f_s.s + Sa >= f_s1.s then
-//Stoppen, wenn Flaschenzug ganz zusammengefahren
+      if f_s.s + Sa >= f_s1.s then
+      //Signal auf true setzten, wenn Flaschenzug ganz zusammengefahren
           boolOut1 = true;
         else
           boolOut1 = false;
         end if;
+        
+        //Einfluss der Massenträgheit der unteren Flasche aud die Gesamtkraft
         Fges = f_s.F - Flaschengewicht_unten * g - Flaschengewicht_unten * der(v);
-        f_s2.F = Fges / (n - 1);
-//nur positive Seilräfte werden zugelassen
+        //an der unteren Flasche wirkende Kraft
+        f_s2.F = Fges / (n-1);
+      //Gesch. der unteren Flasche
         v = der(f_s.s);
+        //Winkelumrechnung
         Zwinkel = Zugwinkel * (180 / Pi);
-        -f_s.s = (-f_s1.s) + s + f_s2.s / (n - 1);
+        //Pos der unteren Flasche
+        -f_s.s = (-f_s1.s) + s + f_s2.s / (n-1);
+        //Kraft an oberer Flasche
         f_s1.F = f_s.F + cos(Zwinkel) * f_s2.F - Flaschengewicht_unten * g;
         annotation(
           Icon(graphics = {Rectangle(origin = {-3, -65}, fillPattern = FillPattern.Solid, extent = {{-1, 39}, {9, -35}}), Rectangle(origin = {-3, 69}, fillPattern = FillPattern.Solid, extent = {{-1, 31}, {9, -31}}), Line(origin = {-68.89, 24.71}, points = {{55, -114}, {-31, 32}}, color = {255, 85, 0}, thickness = 1), Line(origin = {-20.4565, 11.2428}, points = {{7, 45}, {9, -37}}, color = {255, 85, 0}, thickness = 1), Line(origin = {28.73, 52.62}, points = {{-14, 9}, {-8, -127}}, color = {255, 85, 0}, thickness = 1), Line(origin = {54.0145, 23.3787}, points = {{-53, 14}, {-41, -50}}, color = {255, 85, 0}, thickness = 1), Ellipse(origin = {2, -75}, fillColor = {144, 144, 144}, fillPattern = FillPattern.Solid, lineThickness = 0.5, extent = {{-24, 23}, {20, -21}}, endAngle = 360), Ellipse(origin = {4, 56}, fillColor = {144, 144, 144}, fillPattern = FillPattern.Solid, lineThickness = 0.5, extent = {{-18, 16}, {12, -14}}, endAngle = 360), Ellipse(origin = {1, -27}, fillColor = {144, 144, 144}, fillPattern = FillPattern.Solid, lineThickness = 0.5, extent = {{-13, 15}, {13, -11}}, endAngle = 360)}, coordinateSystem(initialScale = 0.1)),
-          Documentation(info = "<html><head></head><body>s. Flaschenzugmodell<div><br></div><div>Unterschied zum Flaschenzug_Modell:<br>Die Anzahl der eingegebenen Tragenden Seile wird in den Formeln um 1 minimiert, um ein Festes Seilende an der oberen Flasche zu simulieren</div></body></html>"));
+          Documentation(info = "<html><head></head><body><p style=\"font-size: 12px;\"><strong><u>Information</u></strong></p><div class=\"textDoc\"><p style=\"font-family: 'Courier New'; font-size: 12px;\"></p></div><div class=\"htmlDoc\">Der Flaschenzug bietet analog zum Getriebe im Rotatorischen eine Untersetzung im Translatorischen.&nbsp;<div><br></div><div><b>Ports</b></div><div>Das Modell besitzt drei F_s Prots über diese bidirektional Kraft und Position übergeben werden kann.&nbsp;<br>Ein boolescher Output dient zur Ausgabe eines Sensorsignals. Der Sensor detektiert, ob sich die Masse bei einer bestimmten Position (s. Parameter) &nbsp;befindet. Detektiert der Sensor dei Masse, so wird am booleschen Ausgang ein&nbsp;<i>true</i>&nbsp;ausgegeben. Ist dei Masse an einer anderen Position, so wird&nbsp;<i>false</i>&nbsp;ausgegeben.</div><div><br></div><div>Folgeende<b>&nbsp;Parameter</b>&nbsp;stehen bereit:&nbsp;</div><div><b>n</b>&nbsp;(Anzahl der Rollen): n beschreibt das Übersetzungsverhältniss des Flaschenzugs. Für n können nur ganzzahlige Werte größer 1 eingegeben werden. Grundlegend ist die an der unteren Flasche (f_s) wirkedne Kraft n mal höher als die am f_s2 -Port wirkende Kraft. Störgrößen, wie die Trägheit der unteren Flasche wirken sich auf diese grundlegende Gleichung aus. Beim Weg verhält sich der Zusammenhang ähnlich: die Positionsänderung &nbsp;der unteren Flashe n mal kleiner als die Positionsänderung des f_s2 -Ports. Der Startwert ergibt sich aus der Position der oberen Flasche - der Anfangslänge des Flaschenzugs s.&nbsp;</div><div><b>s</b>&nbsp;(Anfangslänge): Die Anfangslänge beschreibt den Abstand der oberen zur unteren Flasche. Meist wird im Modell die obere Flasche mit einem Fixpunkt verbunden, sodass sich die Position der unteren Flasche aus der Höhe des Fixpunktes - s ergibt.&nbsp;</div><div><b>Zugwinkel:&nbsp;</b>Der Zugwinkel in Rad wird im Modell dafür verwendet die am f_s1-Port (obere Flasche) auftretenden Kräfte in vertikale Richtung zu berechnen. Die horizontal Wirkenden Kräfte werden im Modell vernachlässigt.</div><div><b>Sa&nbsp;</b>(Sensorabstand): Der Sensorabstand in Metern gibt den Abstand des Positionnssensors bis zur oberen Flasche an. Die Funktionsweise des Swnsors ist bei den Portbeschreibungen zu finden.&nbsp;</div><div><b>Flaschengewicht_unten</b>: Dieser Parameter gibt das Flaschengewicht der unteren Flasche an. Die angabe wird im Model benutzt um die Trägheit und das Leergewicht des Flaschenzuges zu kennen.&nbsp;</div></div></body></html>"));
       end Flaschenzug_Modell_b;
     annotation(
         Icon(graphics = {Rectangle(origin = {-3, -65}, fillPattern = FillPattern.Solid, extent = {{-1, 3}, {9, -35}}), Rectangle(origin = {-3, 69}, fillPattern = FillPattern.Solid, extent = {{-1, 31}, {9, -47}}), Line(origin = {-69.18, 25}, points = {{55, 42}, {-31, -56}}, color = {255, 85, 0}, thickness = 1), Line(origin = {-21.89, -45.81}, points = {{11, 57}, {9, -37}}, color = {255, 85, 0}, thickness = 1), Line(origin = {21.8499, 44.31}, points = {{0, 9}, {-8, -127}}, color = {255, 85, 0}, thickness = 1), Line(origin = {43.12, -11.0249}, points = {{-31, 20}, {-41, -50}}, color = {255, 85, 0}, thickness = 1), Ellipse(origin = {2, 51}, fillColor = {144, 144, 144}, fillPattern = FillPattern.Solid, lineThickness = 0.5, extent = {{-24, 23}, {20, -21}}, endAngle = 360), Ellipse(origin = {4, -84}, fillColor = {144, 144, 144}, fillPattern = FillPattern.Solid, lineThickness = 0.5, extent = {{-18, 16}, {12, -14}}, endAngle = 360), Ellipse(origin = {1, 9}, fillColor = {144, 144, 144}, fillPattern = FillPattern.Solid, lineThickness = 0.5, extent = {{-13, 15}, {13, -11}}, endAngle = 360)}, coordinateSystem(initialScale = 0.1)),
