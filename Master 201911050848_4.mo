@@ -181,33 +181,28 @@ end Zeitgesteuert;
         Flaschenzug.Ports.M_w m_w annotation(
           Placement(visible = true, transformation(origin = {-134, 14}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-119, 1}, extent = {{-19, -19}, {19, 19}}, rotation = 0)));
       equation
-    if v - 1 >= 1 and Durchmesserkommulation == true then
-    //Berechnung des Windendurchmessers als lineare Funktion
+  if v - 1 >= 1 and Durchmesserkommulation == true then
+//Berechnung des Windendurchmessers als lineare Funktion
           d_Winde = Durchmesser + s * d;
           dmax = Durchmesser + (o - 1) * d * 2;
           s = (-m_w.w / (2 * Pi)) / (b / d) - 1;
         else
-          //keine Durchmesseraproximation
+//keine Durchmesseraproximation
           d_Winde = Durchmesser;
           dmax = Durchmesser;
           s = 0;
         end if;
-  //Zurichtungsumkehr
+//Zurichtungsumkehr
         f_s.F = (m_w.M - Lagerwiderstand) / (d_Winde / 2) - J_Rolle * der(v_Rolle);
-        
-        //Drehgeschwindigkeit der Rolle
+//Drehgeschwindigkeit der Rolle
         v_Rolle = der(f_s.s);
-
-        //Berechneung des Massenträgheits der Rolle unter Annahme eines massiven Zylinders.
+//Berechneung des Massenträgheits der Rolle unter Annahme eines massiven Zylinders.
         J_Rolle = 0.5 * m * (Durchmesser / 2) ^ 2;
-        
-  //berechnet die Anzahl der Schichten +1
+//berechnet die Anzahl der Schichten +1
         -v = floor(m_w.w / (2 * Pi) / (b / d));
         v = o;
-  
-        //Ausgabe der Seilposition
+//Ausgabe der Seilposition
         f_s.s = Pi * d_Winde * (m_w.w / (2 * Pi));
-
         annotation(
           choices(choice(redeclare lib2.Resistor Load(a = {2}) "..."), choice(redeclare Capacitor Load(L = 3) "...")),
           Icon(graphics = {Rectangle(origin = {-44, 25}, fillColor = {208, 208, 208}, fillPattern = FillPattern.Solid, lineThickness = 1, extent = {{-56, 15}, {144, -65}}), Line(origin = {42.7034, 3.51}, points = {{18, 97}, {18, -45}}, color = {255, 85, 0}, thickness = 1), Line(origin = {-17.8189, 3.16671}, points = {{-22, 39}, {18, -45}}, color = {255, 85, 0}, thickness = 1), Line(origin = {1.89746, 1.88313}, points = {{-22, 39}, {18, -45}}, color = {255, 85, 0}, thickness = 1), Line(origin = {21.9273, 3.10701}, points = {{-22, 39}, {18, -45}}, color = {255, 85, 0}, thickness = 1), Rectangle(origin = {-92, -10}, fillPattern = FillPattern.Solid, extent = {{-9, 70}, {9, -70}}), Rectangle(origin = {92, -10}, fillPattern = FillPattern.Solid, extent = {{-9, 70}, {9, -70}}), Rectangle(origin = {-13, -61}, rotation = -90, fillPattern = FillPattern.Solid, extent = {{-9, 114}, {41, -88}})}, coordinateSystem(initialScale = 0.1)),
@@ -241,34 +236,28 @@ end Zeitgesteuert;
         Flaschenzug.Ports.M_w m_w annotation(
           Placement(visible = true, transformation(origin = {-134, 14}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-119, 1}, extent = {{-19, -19}, {19, 19}}, rotation = 0)));
       equation
-      if v - 1 >= 1 and Durchmesserkommulation == true then
-      //Berechnung des Windendurchmessers als lineare Funktion
+  if v - 1 >= 1 and Durchmesserkommulation == true then
+//Berechnung des Windendurchmessers als lineare Funktion
           d_Winde = Durchmesser + s * d;
           dmax = Durchmesser + (o - 1) * d * 2;
           s = (-m_w.w / (2 * Pi)) / (b / d) - 1;
         else
-          //keine Durchmesseraproximation
+//keine Durchmesseraproximation
           d_Winde = Durchmesser;
           dmax = Durchmesser;
           s = 0;
         end if;
-        
-        //am Seil wirkende Kraft
+//am Seil wirkende Kraft
         f_s.F = (m_w.M - Lagerwiderstand) / (d_Winde / 2) - J_Rolle * der(v_Rolle);
-        
-        //Drehgeschwindigkeit der Rolle
+//Drehgeschwindigkeit der Rolle
         v_Rolle = der(f_s.s);
-      
-        //Berechneung des Massenträgheits der Rolle unter Annahme eines massiven Zylinders.
+//Berechneung des Massenträgheits der Rolle unter Annahme eines massiven Zylinders.
         J_Rolle = 0.5 * m * (Durchmesser / 2) ^ 2;
-        
-      //berechnet die Anzahl der Schichten +1
+//berechnet die Anzahl der Schichten +1
         -v = floor(m_w.w / (2 * Pi) / (b / d));
         v = o;
-      
-        //Ausgabe der Seilposition
+//Ausgabe der Seilposition
         f_s.s = Pi * d_Winde * (m_w.w / (2 * Pi));
-      
         annotation(
           choices(choice(redeclare lib2.Resistor Load(a = {2}) "..."), choice(redeclare Capacitor Load(L = 3) "...")),
           Icon(graphics = {Rectangle(origin = {-44, 25}, fillColor = {208, 208, 208}, fillPattern = FillPattern.Solid, lineThickness = 1, extent = {{-56, 15}, {144, -65}}), Line(origin = {38.3208, -57.8465}, points = {{18, 97}, {18, -45}}, color = {255, 85, 0}, thickness = 1), Line(origin = {-17.8189, 3.16671}, points = {{-22, 39}, {18, -45}}, color = {255, 85, 0}, thickness = 1), Line(origin = {1.89746, 1.88313}, points = {{-22, 39}, {18, -45}}, color = {255, 85, 0}, thickness = 1), Line(origin = {21.9273, 3.10701}, points = {{-22, 39}, {18, -45}}, color = {255, 85, 0}, thickness = 1), Rectangle(origin = {-92, 10}, fillPattern = FillPattern.Solid, extent = {{-9, 70}, {9, -70}}), Rectangle(origin = {92, 8}, fillPattern = FillPattern.Solid, extent = {{-9, 70}, {9, -70}}), Rectangle(origin = {-13, 91}, rotation = -90, fillPattern = FillPattern.Solid, extent = {{-9, 114}, {41, -88}})}, coordinateSystem(initialScale = 0.1)),
@@ -488,8 +477,7 @@ end Zeitgesteuert;
         P = u_i.U * Ia;
         annotation(
           Icon(graphics = {Rectangle(origin = {-35, -17}, fillColor = {186, 186, 186}, fillPattern = FillPattern.Horizontal, lineThickness = 1, extent = {{-65, 117}, {135, -61}}), Polygon(origin = {0, -89}, fillPattern = FillPattern.Solid, points = {{-92, -11}, {92, -11}, {64, 11}, {-64, 11}, {-62, 11}, {-92, -11}}), Rectangle(origin = {-17, 53}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-22, 18}, {22, -18}}), Text(origin = {-17, 54}, lineColor = {255, 30, 33}, extent = {{-13, -6}, {13, 6}}, textString = "ABB")}, coordinateSystem(initialScale = 0.1)),
-          Documentation(info = "<html><head></head><body><font size=\"4\">Der Motor ist eine Gleichstrommaschine mit Permanentmagneten und Grafitbürsten.</font><div><font size=\"4\">Die Bemessungsspannung beträgt U<sub>a rat&nbsp;</sub>= 48V<br></font><div><font size=\"4\"><br></font></div><div><font size=\"4\"><b>Auslegung des Motors:</b></font></div><div><span style=\"font-size: large;\">Moment an der Welle: M</span><sub>sh&nbsp;</sub><span style=\"font-size: large;\">= 0-8 Nm</span></div><div><font size=\"4\">Umdrehung pro min: n = 0-5000 min<sup>-1</sup></font></div><div><font size=\"4\"><br></font></div><div><font size=\"4\"><b>Parametrierbare Parameter in der Visualisierung</b></font></div><div><font size=\"4\">Bürstenspannungsabfall: 2<sub>Ub&nbsp;</sub>= 0.8&nbsp;V</font></div><div><font size=\"4\">Ankerwiderstand: R<sub>a </sub>=&nbsp;0.608&nbsp;Ohm</font></div><div><font size=\"4\">Ankerinduktivität: L<sub>a </sub>=&nbsp;423 µ</font><span style=\"font-size: large;\">H</span></div><div><font size=\"4\">Gesamtes Massenträgheitsmoment: J<sub>tot </sub>= 0.018&nbsp;kgm<sup>2</sup></font></div><div><font size=\"4\">Drehmomentkonstante: k<sub>t</sub>&nbsp;= 0.091534&nbsp;</font><span style=\"font-size: large;\">Nm/A</span></div>
-<div><font size=\"4\">Reibungskonstante: C<sub>f</sub>&nbsp;= 0 Nms</font></div><div><font size=\"4\">Ventilationskonstante: C<sub>v</sub>&nbsp;= 0.000005 Nms<sup>2</sup></font></div></div></body></html>"));
+          Documentation(info = "<html><head></head><body><!--StartFragment--><font size=\"4\">Der Motor ist eine permanenterregte Gleichstrommaschine mit Grafitbürsten, welche einphasig betrieben wird.</font><div><font size=\"4\">Die voreingestelllte Bemessungsspannung beträgt U<sub>a rat&nbsp;</sub>= 48V.</font></div><div><span style=\"font-size: large;\">Die Gleichstromaschine lässt sich sowohl motorisch als auch generatorisch betreiben.</span></div><div><span style=\"font-size: large;\">Weiterhin ist die Drehrichtung des Motors variabel. Sie ist über das Vorzeichen der Bemessungsspannung einstellbar.</span></div><div><span style=\"font-size: large;\"><br></span></div><div><b style=\"font-size: large;\">Positive Bemessungspannung</b></div><div><font size=\"4\">*<span class=\"Apple-tab-span\" style=\"white-space: pre;\">	</span>Lastmoment positiv: motorischer Betrieb</font></div><div><font size=\"4\">*<span class=\"Apple-tab-span\" style=\"white-space: pre;\">	</span>Lastmoment negativ: generatorischer Betrieb</font></div><div><font size=\"4\"><br></font></div><div><div><font size=\"4\"><b>Negative Bemessungspannung</b></font></div><div><font size=\"4\">*<span class=\"Apple-tab-span\" style=\"white-space: pre;\">	</span>Lastmoment positiv: generatorischer Betrieb</font></div><div><font size=\"4\">*<span class=\"Apple-tab-span\" style=\"white-space: pre;\">	</span>Lastmoment negativ: motorischer Betrieb</font></div></div><div><br></div><div><div><font size=\"4\"><b>Parametrierbarkeit in der Visualisierung</b></font></div><div><font size=\"4\">In der Visualisierung lassen sich die Motordaten an die entsprechenden Anforderungen anpassen. Damit lassen sich verschiedene permanenterregte Gleichstommaschinen mit und ohne Bürstenspannungsabfällen simulieren.&nbsp;</font><span style=\"font-size: large;\">Die Gleichstommaschine ist mit den nachfolgenden Parametern voreingestellt:</span></div><div><span style=\"font-size: large;\"><br></span></div><div><font size=\"4\">Bürstenspannungsabfall: 2<sub>Ub&nbsp;</sub>= 0.8&nbsp;V</font></div><div><font size=\"4\">Ankerwiderstand: R<sub>a&nbsp;</sub>=&nbsp;0.608&nbsp;Ohm</font></div><div><font size=\"4\">Ankerinduktivität: L<sub>a&nbsp;</sub>=&nbsp;423 µ</font><span style=\"font-size: large;\">H</span></div><div><font size=\"4\">Gesamtes Massenträgheitsmoment: J<sub>tot&nbsp;</sub>= 0.018&nbsp;kgm<sup>2</sup></font></div><div><font size=\"4\">Drehmomentkonstante: k<sub>t</sub>&nbsp;= 0.091534&nbsp;</font><span style=\"font-size: large;\">Nm/A</span></div><div><font size=\"4\">Reibungskonstante: C<sub>f</sub>&nbsp;= 0 Nms</font></div><div><font size=\"4\">Ventilationskonstante: C<sub>v</sub>&nbsp;= 0.000005 Nms<sup>2</sup></font></div></div><div><font size=\"4\"><sup><br></sup></font></div><div><div><b style=\"font-size: large;\">Auslegung des Motors:</b></div><div><font size=\"4\">Basierend auf den voreingestellten Parametern ist der Motor wie folgt ausgelegt:</font></div><div><font size=\"4\"><br></font></div><div><span style=\"font-size: large;\">Moment an der Welle: M</span><sub>sh&nbsp;</sub><span style=\"font-size: large;\">= 0-7 Nm</span></div><div><div><font size=\"4\">Umdrehung pro min: n = 0-5000 min<sup>-1</sup></font></div></div></div><div><font size=\"4\">Analaufdrehmoment: M<sub>sh su&nbsp;</sub>= 7.1 Nm</font></div><div><font size=\"4\">Anlaufstrom: I<sub>a su</sub>&nbsp;= 77.6 A</font></div><!--EndFragment--></body></html>"));
       end Motor;
 
       model Getriebe
@@ -511,15 +499,14 @@ end Zeitgesteuert;
         Flaschenzug.Ports.M_w m_w1 annotation(
           Placement(visible = true, transformation(origin = {-124, 38}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-120, 40}, extent = {{-18, -18}, {18, 18}}, rotation = 0)));
       equation
-        //Berechnung Ausgangsmoment
+//Berechnung Ausgangsmoment
         m_w.M = m_w1.M * Uebersetzung * Wirkungsgrad - (v_w_aus * J_Ausgangsewelle - v_w_ein * J_Eingangswelle);
-        //Berechnug Winkel der Ausgabewelle
+//Berechnug Winkel der Ausgabewelle
         -m_w.w = m_w1.w / Uebersetzung;
-        //Geschwindigkeit der Eingangswelle
+//Geschwindigkeit der Eingangswelle
         v_w_ein = der(m_w1.w);
-  //Geschwindigkeit der Ausgangswelle
+//Geschwindigkeit der Ausgangswelle
         v_w_aus = der(m_w.w);
-
         annotation(
           Icon(graphics = {Rectangle(origin = {-77, 61}, lineColor = {70, 70, 70}, lineThickness = 4, extent = {{-23, 39}, {177, -159}}), Rectangle(origin = {91, -32}, fillColor = {52, 52, 52}, fillPattern = FillPattern.Solid, extent = {{-161, 10}, {11, -8}}), Rectangle(origin = {-75, 38}, fillColor = {52, 52, 52}, fillPattern = FillPattern.Solid, extent = {{-27, 6}, {119, -4}}), Rectangle(origin = {-9, 68}, fillColor = {159, 159, 159}, fillPattern = FillPattern.Forward, extent = {{-10, 7}, {20, -65}}), Rectangle(origin = {-19, -4}, fillColor = {106, 106, 106}, fillPattern = FillPattern.Forward, extent = {{-4, 7}, {34, -81}}), Rectangle(origin = {32, 59}, fillPattern = FillPattern.Solid, lineThickness = 0.5, extent = {{-10, 7}, {12, -15}}), Rectangle(origin = {72, 58}, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-54, 0}, {-26, -6}}), Ellipse(origin = {32, 56}, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-6, 6}, {8, -8}}, endAngle = 360), Rectangle(origin = {-82, 27}, fillPattern = FillPattern.Solid, lineThickness = 0.5, extent = {{-10, 7}, {12, -15}}), Ellipse(origin = {-82, 24}, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-6, 6}, {8, -8}}, endAngle = 360), Rectangle(origin = {-42, 26}, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-54, 0}, {-26, -6}}), Rectangle(origin = {-82, 59}, fillPattern = FillPattern.Solid, lineThickness = 0.5, extent = {{-10, 7}, {12, -15}}), Ellipse(origin = {-82, 56}, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-6, 6}, {8, -8}}, endAngle = 360), Rectangle(origin = {-42, 58}, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-54, 0}, {-24, -6}}), Rectangle(origin = {-56, -7}, fillPattern = FillPattern.Solid, lineThickness = 0.5, extent = {{-10, 7}, {12, -15}}), Ellipse(origin = {-56, -10}, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-6, 6}, {8, -8}}, endAngle = 360), Rectangle(origin = {-16, -8}, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-54, 0}, {-24, -6}}), Rectangle(origin = {-56, -47}, fillPattern = FillPattern.Solid, lineThickness = 0.5, extent = {{-10, 7}, {12, -15}}), Ellipse(origin = {-56, -50}, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-6, 6}, {8, -8}}, endAngle = 360), Rectangle(origin = {-16, -48}, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-54, 0}, {-26, -6}}), Rectangle(origin = {82, -47}, fillPattern = FillPattern.Solid, lineThickness = 0.5, extent = {{-10, 7}, {12, -15}}), Ellipse(origin = {82, -50}, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-6, 6}, {8, -8}}, endAngle = 360), Rectangle(origin = {122, -48}, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-54, 0}, {-26, -6}}), Rectangle(origin = {82, -7}, fillPattern = FillPattern.Solid, lineThickness = 0.5, extent = {{-10, 7}, {12, -15}}), Ellipse(origin = {82, -10}, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-6, 6}, {8, -8}}, endAngle = 360), Rectangle(origin = {122, -8}, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-54, 0}, {-26, -6}}), Rectangle(origin = {32, 27}, fillPattern = FillPattern.Solid, lineThickness = 0.5, extent = {{-10, 7}, {12, -15}}), Ellipse(origin = {32, 24}, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-6, 6}, {8, -8}}, endAngle = 360), Rectangle(origin = {72, 26}, lineColor = {255, 255, 255}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-54, 0}, {-26, -6}}), Text(origin = {-83, 84}, extent = {{-13, 10}, {13, -10}}, textString = "IN"), Text(origin = {79, -84}, extent = {{-13, 10}, {13, -10}}, textString = "OUT")}, coordinateSystem(initialScale = 0.1)),
           Dialog(group = "Getriebeparameter"),
