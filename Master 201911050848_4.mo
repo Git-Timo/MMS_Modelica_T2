@@ -34,7 +34,6 @@ package Flaschenzug
     package Spannungsquellen
 
 model Zeitgesteuert
-  
   //Paramter
   parameter Real U(unit "V") = 36 "[V] Spannung beim anheben";
   parameter Real t1(unit "s") = 3 "[s] Masse anheben bis Zeitpunkt";
@@ -43,15 +42,11 @@ model Zeitgesteuert
   parameter Boolean KonstanteSpannung = false annotation(
     Dialog(group = "Betriebsarten"));
   parameter Real U_A(unit "V") = 12 "[V] Spannung zum Senken ab Zeitpunkt t2";   
-  
-  //Variablen
+//Variablen
   Real t10; 
   Real I(unit "A");
-  
   //Konstanten
   constant Real t(unit "s") = 1;
-  
-  
   //Ports
   Flaschenzug.Ports.U_i u_i annotation(
     Placement(visible = true, transformation(origin = {100, -2}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {124, -2}, extent = {{-24, -24}, {24, 24}}, rotation = 0)));
@@ -98,15 +93,12 @@ end Zeitgesteuert;
           Dialog(group = "Betriebsarten"));
         parameter Boolean KonstanteSpannung = false annotation(
           Dialog(group = "Betriebsarten"));
-        
         //Variablen
         Real I(unit "A");
         Real t1;
-        
-        //Port
+          //Port
         Flaschenzug.Ports.U_i u_i annotation(
           Placement(visible = true, transformation(origin = {100, -2}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {124, -2}, extent = {{-24, -24}, {24, 24}}, rotation = 0)));
-          
       equation
         if KonstanteSpannung == true then
           t1 = time * t;
@@ -138,10 +130,8 @@ end Zeitgesteuert;
         //Parameter
         parameter Real U(unit "V") = 36 annotation(
           Dialog(group = "Elektrisch"));
-        
         //Variable
         Real I(unit "A");
-        
         //Ports
         Flaschenzug.Ports.U_i u_i annotation(
           Placement(visible = true, transformation(origin = {100, -2}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {124, -2}, extent = {{-24, -24}, {24, 24}}, rotation = 0)));
@@ -552,13 +542,11 @@ end Zeitgesteuert;
         //Parameter
         parameter Real b = 10000 annotation(
           Dialog(group = "Bremskonstante"));
-        
         //Variablen
         Real t = 1;
         Real t1;
         Real test;
         Real Bremsmoment;
-        
         //Ports
         Flaschenzug.Ports.M_w m_w1 annotation(
           Placement(visible = true, transformation(origin = {-138, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-121, -9}, extent = {{-21, -21}, {21, 21}}, rotation = 0)));
@@ -581,7 +569,8 @@ end Zeitgesteuert;
           test = 1;
         end if;
         annotation(
-          Icon(graphics = {Rectangle(origin = {0, -8}, fillColor = {208, 208, 208}, fillPattern = FillPattern.Solid, extent = {{-100, 20}, {100, -22}}), Rectangle(origin = {-15, 154}, fillColor = {85, 85, 85}, fillPattern = FillPattern.Vertical, extent = {{-5, -54}, {35, -254}}), Polygon(origin = {32, 70}, fillColor = {200, 0, 0}, fillPattern = FillPattern.Solid, points = {{-10, 30}, {-10, -50}, {8, -50}, {8, 18}, {-10, 30}}), Polygon(origin = {-32, 70}, fillColor = {200, 0, 0}, fillPattern = FillPattern.Solid, points = {{10, 30}, {10, -50}, {-8, -50}, {-8, 18}, {10, 30}})}));
+          Icon(graphics = {Rectangle(origin = {0, -8}, fillColor = {208, 208, 208}, fillPattern = FillPattern.Solid, extent = {{-100, 20}, {100, -22}}), Rectangle(origin = {-15, 154}, fillColor = {85, 85, 85}, fillPattern = FillPattern.Vertical, extent = {{-5, -54}, {35, -254}}), Polygon(origin = {32, 70}, fillColor = {200, 0, 0}, fillPattern = FillPattern.Solid, points = {{-10, 30}, {-10, -50}, {8, -50}, {8, 18}, {-10, 30}}), Polygon(origin = {-32, 70}, fillColor = {200, 0, 0}, fillPattern = FillPattern.Solid, points = {{10, 30}, {10, -50}, {-8, -50}, {-8, 18}, {10, 30}})}),
+  Documentation(info = "<html><head></head><body><span style=\"font-size: 12px;\"><b>Die Bremse&nbsp;</b>dient zum Halten der Position der Masse, wenn das System nicht bestromt wird. Gesteuertt wird die Bremse über den Port <b>BoolIn1</b>.</span><div>Dieser erhält ein Signal durch eine Quelle bei der sich die in den Gesamtmodellen um eine Spannungsquelle handelt.&nbsp;</div><div>Gibt die Quelle keine Spannung ab wird der Bremse ein true-Signal gesendet und das System wird gebremst.<br><div><br></div><div><span style=\"font-size: 12px;\">Es muss darauf geachtet werden, dass der Port m_w1 mit der EIngangswelle und m_w2 mit der Ausgangswelle verbunden ist.&nbsp;</span><div style=\"font-size: 12px;\"><br></div><div style=\"font-size: 12px;\">Folgende Parameter stehen zur Auswahl:&nbsp;</div><div style=\"font-size: 12px;\"><br></div><div style=\"font-size: 12px;\"><b>Bremskonstatnte: </b>Mit dieser Konstanten wird die Dämpferkonstante definiert. Das Bremsmoment ergibt sich aus der Multiplikation der Bremskonstanten mit der Ableitung des<b>&nbsp;&nbsp;</b>Ausgangwinkel m_w2.&nbsp;</div></div></div></body></html>"));
       end Bremse;
     annotation(
         Icon(graphics = {Rectangle(origin = {-35, -17}, fillColor = {186, 186, 186}, fillPattern = FillPattern.Horizontal, lineThickness = 1, extent = {{-65, 117}, {135, -61}}), Polygon(origin = {0, -89}, fillPattern = FillPattern.Solid, points = {{-92, -11}, {92, -11}, {64, 11}, {-64, 11}, {-62, 11}, {-92, -11}}), Rectangle(origin = {-17, 53}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-22, 18}, {22, -18}}), Text(origin = {-17, 54}, lineColor = {255, 30, 33}, extent = {{-13, -6}, {13, 6}}, textString = "ABB")}, coordinateSystem(initialScale = 0.1)),
@@ -778,7 +767,7 @@ end Zeitgesteuert;
   Flaschenzug.Modelle.Seilwinden.Seilwinde seilwinde1 annotation(
         Placement(visible = true, transformation(origin = {38, -48}, extent = {{-12, -12}, {12, 12}}, rotation = 0)));
   Flaschenzug.Modelle.Spannungsquellen.Zeitgesteuert zeitgesteuert1 annotation(
-        Placement(visible = true, transformation(origin = {-74, -6}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Placement(visible = true, transformation(origin = {-76, -6}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Flaschenzug.Modelle.Sonderkomponenten.Boolesche_Senke boolesche_Senke1 annotation(
         Placement(visible = true, transformation(origin = {24, 36}, extent = {{12, -12}, {-12, 12}}, rotation = 0)));
     equation
@@ -790,10 +779,10 @@ end Zeitgesteuert;
         Line(points = {{73, 43}, {74, 43}, {74, 54}}));
       connect(flaschenzug_Modell1.f_s2, seilwinde1.f_s) annotation(
         Line(points = {{47, 10}, {44, 10}, {44, -34}, {46, -34}}));
-      connect(zeitgesteuert1.boolOut1, bremse1.boolIn1) annotation(
-        Line(points = {{-86, 0}, {-98, 0}, {-98, -26}, {-60, -26}, {-60, -42}, {-46, -42}, {-46, -42}}));
-      connect(motor1.u_i, zeitgesteuert1.u_i) annotation(
-        Line(points = {{-84, -48}, {-100, -48}, {-100, -22}, {-52, -22}, {-52, -6}, {-62, -6}, {-62, -6}}));
+  connect(zeitgesteuert1.boolOut1, bremse1.boolIn1) annotation(
+        Line(points = {{-89, 0}, {-98, 0}, {-98, -26}, {-60, -26}, {-60, -42}, {-46, -42}}));
+  connect(motor1.u_i, zeitgesteuert1.u_i) annotation(
+        Line(points = {{-84, -48}, {-100, -48}, {-100, -22}, {-52, -22}, {-52, -6}, {-64, -6}}));
       connect(getriebe1.m_w, seilwinde1.m_w) annotation(
         Line(points = {{10, -52}, {22, -52}, {22, -48}, {24, -48}}));
       connect(bremse1.m_w2, getriebe1.m_w1) annotation(
