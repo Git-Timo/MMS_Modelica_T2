@@ -36,18 +36,20 @@ package Flaschenzug
 model Zeitgesteuert
   
   //Paramter
-  parameter Real U(unit "V") = 36;
-  parameter Real t(unit "s") = 1;
-  parameter Real t1 = 3 "Zeit Masse anheben";
-  parameter Real t2 = 6 "Zeit Masse halten";
-  parameter Real t3 = 7.5 "Zeit Masse senken";
+  parameter Real U(unit "V") = 36 "[V] Spannung beim anheben";
+  parameter Real t1(unit "s") = 3 "[s] Masse anheben bis Zeitpunkt";
+  parameter Real t2(unit "s") = 6 "[s] Masse halten bis Zeitpunkt";
+  parameter Real t3(unit "s") = 7.5 "[s] Masse senken bis Zeitpunkt";
   parameter Boolean KonstanteSpannung = false annotation(
     Dialog(group = "Betriebsarten"));
-  
+  parameter Real U_A(unit "V") = 12 "[V] Spannung zum Senken ab Zeitpunkt t2";   
   
   //Variablen
   Real t10; 
   Real I(unit "A");
+  
+  //Konstanten
+  constant Real t(unit "s") = 1;
   
   
   //Ports
@@ -73,7 +75,7 @@ equation
       I = u_i.I;
       boolOut1 = true;
     elseif t10 > t2 and t10 <= t3 then
-      12 = -u_i.U;
+      U_A = -u_i.U;
       I = u_i.I;
       boolOut1 = false;
     else
@@ -85,7 +87,7 @@ equation
   annotation(
     Diagram,
     Icon(graphics = {Ellipse(origin = {4, 26}, fillPattern = FillPattern.Solid, extent = {{-20, -2}, {-52, -34}}, endAngle = 360), Ellipse(origin = {-56, 61}, lineThickness = 1, extent = {{-22, 19}, {128, -127}}, endAngle = 360), Ellipse(origin = {66, 26}, fillPattern = FillPattern.Solid, extent = {{-20, -2}, {-52, -34}}, endAngle = 360), Rectangle(origin = {-10, 10}, lineThickness = 1, extent = {{-90, 90}, {110, -110}})}, coordinateSystem(initialScale = 0.1)),
-    Documentation(info = "<html><head></head><body><b>Spannungsquelle Zeitverlauf:</b><div><br></div><div>Mit diesem Spannungsmodell kann die Spannung über die Zeit verändert werden.&nbsp;</div><div>Damit lassen sich <b>Hebezyklen realisieren</b> (Heben, Halten Senken, Halten)</div><div><br></div><div>Dabei kann dieses Modell bei dem Beispiel: \"Flaschenzug_Heben_Senken\" frei parametriert werden.</div><div><br></div><div><b>t1</b> -&gt; entspricht der Hebezeit, also wie lange die Masse nach oben beschleunigt werden soll.&nbsp;</div><div><b>t2</b> -&gt; entspricht dem Zeitpunkt wie lange die Masse gehalten werden soll.</div><div><b>t3</b> -&gt; entspricht dem Zeitpunkt bis wann die Masse abgelassen werden soll. Anschließend wird die Masse auf dieser Höhe gehalten.</div><div><b>t </b>-&gt; Faktor mit dem t1, t2 und t3 multipliziert wird, um schnell doppelt so lange Zeiten simulieren zu können.&nbsp;</div><div><br></div><div>Der Nutzer kann mit diesem Modell auch eine <b>konstante Spannung </b>simulieren. Dafür in der Visualisierung das Dropdown der \"Konstanten Spannung\" auf tru schalten.</div></body></html>"));
+    Documentation(info = "<html><head></head><body><b>Spannungsquelle Zeitverlauf:</b><div><br></div><div>Mit diesem Spannungsmodell kann die Spannung über die Zeit verändert werden.&nbsp;</div><div>Damit lassen sich <b>Hebezyklen realisieren</b> (Heben, Halten Senken, Halten)</div><div><br></div><div>Dabei kann dieses Modell bei dem Beispiel: \"Flaschenzug_Heben_Senken\" frei parametriert werden.</div><div><br></div><div><b>t1</b> -&gt; entspricht der Hebezeit, also wie lange die Masse nach oben beschleunigt werden soll.&nbsp;</div><div><b>t2</b> -&gt; entspricht dem Zeitpunkt wie lange die Masse gehalten werden soll.</div><div><b>t3</b> -&gt; entspricht dem Zeitpunkt bis wann die Masse abgelassen werden soll. Anschließend wird die Masse auf dieser Höhe gehalten.</div><div><br></div><div><b>U_A&nbsp;</b>-&gt; Spannung die zum Ablassen der Masse eingestellt wird.</div><div><br></div><div>Der Nutzer kann mit diesem Modell auch eine <b>konstante Spannung </b>simulieren. Dafür in der Visualisierung das Dropdown der \"Konstanten Spannung\" auf tru schalten.</div></body></html>"));
 end Zeitgesteuert;
 
       model Konstantspannung
@@ -770,7 +772,7 @@ end Zeitgesteuert;
       Flaschenzug.Modelle.Antriebskomponenten.Bremse bremse1 annotation(
         Placement(visible = true, transformation(origin = {-40, -48}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
       Flaschenzug.Modelle.Massen.Masse masse1 annotation(
-        Placement(visible = true, transformation(origin = {76, -36}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Placement(visible = true, transformation(origin = {74, -32}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
       Flaschenzug.Modelle.Flaschenzuege.Flaschenzug_Modell flaschenzug_Modell1(Zugwinkel(displayUnit = "rad"))  annotation(
         Placement(visible = true, transformation(origin = {73, 17}, extent = {{-23, -23}, {23, 23}}, rotation = 0)));
   Flaschenzug.Modelle.Seilwinden.Seilwinde seilwinde1 annotation(
@@ -783,7 +785,7 @@ end Zeitgesteuert;
       connect(boolesche_Senke1.boolIn1, flaschenzug_Modell1.boolOut1) annotation(
         Line(points = {{39, 36}, {70, 36}}));
       connect(flaschenzug_Modell1.f_s, masse1.f_s) annotation(
-        Line(points = {{73, -9}, {73, -18}, {76, -18}, {76, -26}}));
+        Line(points = {{73, -9}, {73, -22}, {74, -22}}));
       connect(flaschenzug_Modell1.f_s1, decke1.f_s1) annotation(
         Line(points = {{73, 43}, {74, 43}, {74, 54}}));
       connect(flaschenzug_Modell1.f_s2, seilwinde1.f_s) annotation(
@@ -864,7 +866,7 @@ end Zeitgesteuert;
           Placement(visible = true, transformation(origin = {-4, 14}, extent = {{-24, -24}, {24, 24}}, rotation = 0)));
   Flaschenzug.Modelle.Massen.Bierkasten bierkasten(m = 100)  annotation(
           Placement(visible = true, transformation(origin = {-2, -40}, extent = {{-12, -12}, {12, 12}}, rotation = 0)));
-  Modelle.Massen.Masse masse annotation(
+  Modelle.Massen.Masse masse(m = 40)  annotation(
           Placement(visible = true, transformation(origin = {-54, -20}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
       equation
   connect(flaschenzug_Modell.f_s1, decke.f_s1) annotation(
