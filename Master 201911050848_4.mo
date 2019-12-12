@@ -378,13 +378,13 @@ end Zeitgesteuert;
 //Einfluss der Massenträgheit der unteren Flasche aud die Gesamtkraft
         Fges = f_s.F - Flaschengewicht_unten * g - Flaschengewicht_unten * der(v);
 //an der unteren Flasche wirkende Kraft
-        f_s2.F = Fges / (n+1);
+        f_s2.F = Fges / (n + 1);
 //Gesch. der unteren Flasche
         v = der(f_s.s);
 //Winkelumrechnung
         Zwinkel = Zugwinkel * (180 / Pi);
 //Pos der unteren Flasche
-        -f_s.s = (-f_s1.s) + s + f_s2.s / (n+1);
+        -f_s.s = (-f_s1.s) + s + f_s2.s / (n + 1);
 //Kraft an oberer Flasche
         f_s1.F = f_s.F + cos(Zwinkel) * f_s2.F - Flaschengewicht_unten * g + Flaschengewicht_oben * g;
         annotation(
@@ -689,9 +689,9 @@ end Zeitgesteuert;
         Placement(visible = true, transformation(origin = {-73, -11}, extent = {{-13, -13}, {13, 13}}, rotation = 0)));
     equation
       connect(bremse1.boolIn1, gesteuert1.boolOut1) annotation(
-        Line(points = {{-46, -42}, {-56, -42}, {-56, -34}, {-36, -34}, {-36, 8}, {-110, 8}, {-110, -2}, {-90, -2}, {-90, -2}}));
+        Line(points = {{-46, -42}, {-56, -42}, {-56, -34}, {-36, -34}, {-36, 8}, {-96, 8}, {-96, -2}, {-90, -2}}));
       connect(flaschenzug_Modell1.boolOut1, gesteuert1.boolIn1) annotation(
-        Line(points = {{72, 36}, {-122, 36}, {-122, -12}, {-90, -12}, {-90, -10}}));
+        Line(points = {{72, 36}, {-100, 36}, {-100, -12}, {-90, -12}, {-90, -10}}));
       connect(motor1.u_i, gesteuert1.u_i) annotation(
         Line(points = {{-84, -48}, {-96, -48}, {-96, -32}, {-44, -32}, {-44, -10}, {-56, -10}, {-56, -12}}));
       connect(getriebe1.m_w, seilwinde1.m_w) annotation(
