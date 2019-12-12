@@ -36,12 +36,11 @@ package Flaschenzug
 model Zeitgesteuert
   //Paramter
   parameter Real U(unit "V") = 48 "[V] Spannung beim anheben";
-  parameter Real t1(unit "s") = 3 "[s] Masse anheben bis Zeitpunkt";
-  parameter Real t2(unit "s") = 6 "[s] Masse halten bis Zeitpunkt";
-  parameter Real t3(unit "s") = 7.5 "[s] Masse senken bis Zeitpunkt";
-  parameter Boolean KonstanteSpannung = false annotation(
-    Dialog(group = "Betriebsarten"));
-  parameter Real U_A(unit "V") = 12 "[V] Spannung zum Senken ab Zeitpunkt t2";   
+  parameter Real t1(unit "s") = 6 "[s] Masse anheben bis Zeitpunkt";
+  parameter Real t2(unit "s") = 10 "[s] Masse halten bis Zeitpunkt";
+  parameter Real t3(unit "s") = 11 "[s] Masse senken bis Zeitpunkt";
+  Boolean KonstanteSpannung = false;
+  parameter Real U_A(unit "V") = 36 "[V] Spannung zum Senken ab Zeitpunkt t2";   
 //Variablen
   Real t10; 
   Real I(unit "A");
@@ -70,7 +69,7 @@ equation
       I = u_i.I;
       boolOut1 = true;
     elseif t10 > t2 and t10 <= t3 then
-      U_A = -u_i.U;
+      -U_A = -u_i.U;
       I = u_i.I;
       boolOut1 = false;
     else
@@ -89,13 +88,14 @@ end Zeitgesteuert;
         //Parameter
         parameter Real U(unit "V") = 48 annotation(
           Dialog(group = "Elektrisch"));
-        parameter Real t(unit "s") = 1 annotation(
-          Dialog(group = "Betriebsarten"));
+        
         parameter Boolean KonstanteSpannung = false annotation(
           Dialog(group = "Betriebsarten"));
         //Variablen
         Real I(unit "A");
         Real t1;
+        //Konstanten
+        constant Real t = 1;
           //Port
         Flaschenzug.Ports.U_i u_i annotation(
           Placement(visible = true, transformation(origin = {100, -2}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {124, -2}, extent = {{-24, -24}, {24, 24}}, rotation = 0)));
@@ -770,7 +770,7 @@ end Zeitgesteuert;
         Placement(visible = true, transformation(origin = {73, 17}, extent = {{-23, -23}, {23, 23}}, rotation = 0)));
   Flaschenzug.Modelle.Seilwinden.Seilwinde seilwinde1 annotation(
         Placement(visible = true, transformation(origin = {38, -48}, extent = {{-12, -12}, {12, 12}}, rotation = 0)));
-  Flaschenzug.Modelle.Spannungsquellen.Zeitgesteuert zeitgesteuert1 annotation(
+  Flaschenzug.Modelle.Spannungsquellen.Zeitgesteuert zeitgesteuert1(U_A = 36, t1 = 6, t2 = 10, t3 = 11)  annotation(
         Placement(visible = true, transformation(origin = {-76, -6}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Flaschenzug.Modelle.Sonderkomponenten.Boolesche_Senke boolesche_Senke1 annotation(
         Placement(visible = true, transformation(origin = {24, 36}, extent = {{12, -12}, {-12, 12}}, rotation = 0)));
