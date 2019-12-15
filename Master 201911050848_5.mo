@@ -4,7 +4,8 @@ package Flaschenzug
       flow Modelica.SIunits.Torque M;
       Modelica.SIunits.Angle w;
       annotation(
-        Icon(graphics = {Rectangle(origin = {-67, 86}, fillColor = {255, 85, 127}, fillPattern = FillPattern.Solid, extent = {{-33, 14}, {167, -186}}), Text(origin = {-49, 49}, extent = {{-9, 7}, {107, -97}}, textString = "M_w")}, coordinateSystem(initialScale = 0.1)));
+        Icon(graphics = {Rectangle(origin = {-67, 86}, fillColor = {255, 85, 127}, fillPattern = FillPattern.Solid, extent = {{-33, 14}, {167, -186}}), Text(origin = {-49, 49}, extent = {{-9, 7}, {107, -97}}, textString = "M_w")}, coordinateSystem(initialScale = 0.1)),
+  Documentation(info = "<html><head></head><body><font size=\"4\">Flussvariable: Moment <b>M</b> in Nm</font><div><font size=\"4\">Potenzialvariable: Winkelgeschwindigkeit <b>w</b> in rad/s</font></div></body></html>"));
     end M_w;
 
     connector F_s
@@ -12,14 +13,16 @@ package Flaschenzug
       flow Modelica.SIunits.Force F;
       annotation(
         Icon(graphics = {Rectangle(origin = {-71, 90}, fillColor = {255, 193, 46}, fillPattern = FillPattern.Solid, extent = {{-29, 10}, {171, -190}}), Text(origin = {-109, 76}, extent = {{-9, 6}, {233, -132}}, textString = "F_s")}, coordinateSystem(initialScale = 0.1)),
-        Diagram(coordinateSystem(initialScale = 0.1)));
+        Diagram(coordinateSystem(initialScale = 0.1)),
+  Documentation(info = "<html><head></head><body><font size=\"4\">Flussvariable: Kraft <b>F</b>&nbsp;in N</font><div><font size=\"4\">Potenzialvariable: Länge&nbsp;<b>s</b>&nbsp;in m</font></div></body></html>"));
     end F_s;
 
     connector U_i
       Real U;
       flow Real I;
       annotation(
-        Icon(graphics = {Rectangle(fillColor = {255, 85, 127}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Text(origin = {-2, 8}, extent = {{-70, 50}, {70, -50}}, textString = "U_i"), Rectangle(fillColor = {170, 0, 255}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Text(origin = {-7, 4}, extent = {{-69, 38}, {69, -38}}, textString = "U_i")}, coordinateSystem(initialScale = 0.1)));
+        Icon(graphics = {Rectangle(fillColor = {255, 85, 127}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Text(origin = {-2, 8}, extent = {{-70, 50}, {70, -50}}, textString = "U_i"), Rectangle(fillColor = {170, 0, 255}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Text(origin = {-7, 4}, extent = {{-69, 38}, {69, -38}}, textString = "U_i")}, coordinateSystem(initialScale = 0.1)),
+  Documentation(info = "<html><head></head><body><font size=\"4\">Flussvariable: Strom <b>I</b>&nbsp;in Ampere</font><div style=\"font-size: 12px;\"><font size=\"4\">Potenzialvariable: Spannung <b>U</b>&nbsp;in Volt</font></div></body></html>"));
     end U_i;
 
     connector BoolIn = input Boolean "'Boolscher Input' as connector" annotation(
@@ -81,7 +84,7 @@ equation
   annotation(
     Diagram,
     Icon(graphics = {Ellipse(origin = {4, 26}, fillPattern = FillPattern.Solid, extent = {{-20, -2}, {-52, -34}}, endAngle = 360), Ellipse(origin = {-56, 61}, lineThickness = 1, extent = {{-22, 19}, {128, -127}}, endAngle = 360), Ellipse(origin = {66, 26}, fillPattern = FillPattern.Solid, extent = {{-20, -2}, {-52, -34}}, endAngle = 360), Rectangle(origin = {-10, 10}, lineThickness = 1, extent = {{-90, 90}, {110, -110}})}, coordinateSystem(initialScale = 0.1)),
-    Documentation(info = "<html><head></head><body><b>Spannungsquelle Zeitverlauf:</b><div><br></div><div>Mit diesem Spannungsmodell kann die Spannung über die Zeit verändert werden.&nbsp;</div><div>Damit lassen sich <b>Hebezyklen realisieren</b> (Heben, Halten Senken, Halten)</div><div><br></div><div>Dabei kann dieses Modell bei dem Beispiel: \"Flaschenzug_Heben_Senken\" frei parametriert werden.</div><div><br></div><div><span style=\"font-size: 12px;\">Folgende&nbsp;</span><b style=\"font-size: 12px;\">Parameter</b><span style=\"font-size: 12px;\">&nbsp;stehen zur Eingabe bereit:</span></div><div><span style=\"font-size: 12px;\"><br></span></div><div><b>t1</b> -&gt; entspricht der Hebezeit, also wie lange die Masse nach oben beschleunigt werden soll.&nbsp;</div><div><b>t2</b> -&gt; entspricht dem Zeitpunkt wie lange die Masse gehalten werden soll.</div><div><b>t3</b> -&gt; entspricht dem Zeitpunkt bis wann die Masse abgelassen werden soll. Anschließend wird die Masse auf dieser Höhe gehalten.</div><div><br></div><div><b>U_A&nbsp;</b>-&gt; Spannung die zum Ablassen der Masse eingestellt wird.</div><div><br></div><div><div style=\"font-size: 12px;\"><b>U</b>&nbsp;die Spannung für den betrieb des Motors. Kann negativ und positiv gewählt werden (Drehrichtung). Ein positiver Wert erzeugt eine positive Drehrichtung. Dabei ist zu beachten, dass der Motor genung Spannung erhält, um die gewünschte Leistung abgeben zu können.</div></div><div><br></div><div><br></div><div><br></div></body></html>"));
+    Documentation(info = "<html><head></head><body><b>Spannungsquelle Zeitverlauf:</b><div><br></div><div>Mit diesem Spannungsmodell kann die Spannung über die Zeit verändert werden.&nbsp;</div><div>Damit lassen sich <b>Hebezyklen realisieren</b> (Heben, Halten Senken, Halten)</div><div><br></div><div>Dabei kann dieses Modell bei dem Beispiel: \"Flaschenzug_Heben_Senken\" frei parametriert werden.</div><div><br></div><div><span style=\"font-size: 12px;\">Folgende&nbsp;</span><b style=\"font-size: 12px;\">Parameter</b><span style=\"font-size: 12px;\">&nbsp;stehen zur Eingabe bereit:</span></div><div><span style=\"font-size: 12px;\"><br></span></div><div><b>t1</b> -&gt; entspricht der Hebezeit wie lange die Masse nach oben beschleunigt werden soll.&nbsp;</div><div><b>t2</b> -&gt; entspricht dem Zeitpunkt wie lange die Masse gehalten werden soll.</div><div><b>t3</b> -&gt; entspricht dem Zeitpunkt bis wann die Masse abgelassen werden soll. Anschließend wird die Masse auf dieser Höhe gehalten.</div><div><br></div><div><b>U_A&nbsp;</b>-&gt; Spannung die zum Ablassen der Masse eingestellt wird.</div><div><br></div><div><div style=\"font-size: 12px;\"><b>U</b>&nbsp;ist die Spannung für den Betrieb des Motors. Sie kann negativ oder positiv gewählt werden (Drehrichtung). Ein positiver Wert erzeugt eine positive Drehrichtung. Dabei ist zu beachten, dass der Motor genung Spannung erhält, um die gewünschte Leistung abgeben zu können</div></div><div><br></div><div><br></div><div><br></div></body></html>"));
 end Zeitgesteuert;
 
       model Konstantspannung
@@ -123,7 +126,7 @@ end Zeitgesteuert;
         annotation(
           Diagram,
           Icon(graphics = {Ellipse(origin = {4, 26}, fillPattern = FillPattern.Solid, extent = {{-20, -2}, {-52, -34}}, endAngle = 360), Ellipse(origin = {-56, 61}, lineThickness = 1, extent = {{-22, 19}, {128, -127}}, endAngle = 360), Ellipse(origin = {66, 26}, fillPattern = FillPattern.Solid, extent = {{-20, -2}, {-52, -34}}, endAngle = 360), Rectangle(origin = {-10, 10}, lineThickness = 1, extent = {{-90, 90}, {110, -110}})}, coordinateSystem(initialScale = 0.1)),
-          Documentation(info = "<html><head></head><body><b style=\"font-size: 12px;\">Spannungsquelle_ohne_Sensorik:</b><div style=\"font-size: 12px;\"><br></div><div style=\"font-size: 12px;\"><br></div><div style=\"font-size: 12px;\">Diese Spannungsquelle beinhaltet keine Sensorik (keine Boolean Ein- oder Ausgänge).&nbsp;</div><div style=\"font-size: 12px;\">Diese wird in der Bibliothek zur Verfügung gestellt, um einfache Modelle (z.B. einen Motortest) zu simulieren.&nbsp;</div><div style=\"font-size: 12px;\"><br></div><div style=\"font-size: 12px;\"><br></div><div style=\"font-size: 12px;\">Folgende&nbsp;<b>Parameter</b>&nbsp;stehen zur Eingabe bereit:</div><div style=\"font-size: 12px;\"><b><br></b></div><div style=\"font-size: 12px;\"><b>U</b>&nbsp;die Spannung für den betrieb des Motors. Kann negativ und positiv gewählt werden (Drehrichtung). Ein positiver Wert erzeugt eine positive Drehrichtung. Dabei ist zu beachten, dass der Motor genung Spannung erhält, um die gewünschte Leistung abgeben zu können.</div><div style=\"font-size: 12px;\"><br></div></body></html>"));
+          Documentation(info = "<html><head></head><body><b style=\"font-size: 12px;\">Spannungsquelle_ohne_Sensorik:</b><div style=\"font-size: 12px;\"><br></div><div style=\"font-size: 12px;\"><br></div><div style=\"font-size: 12px;\">Diese Spannungsquelle beinhaltet keine Sensorik (keine Boolean Ein- oder Ausgänge).&nbsp;</div><div style=\"font-size: 12px;\">Diese wird in der Bibliothek zur Verfügung gestellt, um einfache Modelle (z.B. einen Motortest) zu simulieren.&nbsp;</div><div style=\"font-size: 12px;\"><br></div><div style=\"font-size: 12px;\"><br></div><div style=\"font-size: 12px;\">Folgende&nbsp;<b>Parameter</b>&nbsp;stehen zur Eingabe bereit:</div><div style=\"font-size: 12px;\"><b><br></b></div><div style=\"font-size: 12px;\"><b>U</b>&nbsp;ist die Spannung für den Betrieb des Motors. Sie kann negativ oder positiv gewählt werden (Drehrichtung). Ein positiver Wert erzeugt eine positive Drehrichtung. Dabei ist zu beachten, dass der Motor genung Spannung erhält, um die gewünschte Leistung abgeben zu können.</div><div style=\"font-size: 12px;\"><br></div></body></html>"));
       end Konstantspannung;
 
       model Gesteuert
@@ -158,7 +161,7 @@ end Zeitgesteuert;
         annotation(
           Diagram,
           Icon(graphics = {Ellipse(origin = {4, 26}, fillPattern = FillPattern.Solid, extent = {{-20, -2}, {-52, -34}}, endAngle = 360), Ellipse(origin = {-56, 61}, lineThickness = 1, extent = {{-22, 19}, {128, -127}}, endAngle = 360), Ellipse(origin = {66, 26}, fillPattern = FillPattern.Solid, extent = {{-20, -2}, {-52, -34}}, endAngle = 360), Rectangle(origin = {-10, 10}, lineThickness = 1, extent = {{-90, 90}, {110, -110}})}, coordinateSystem(initialScale = 0.1)),
-          Documentation(info = "<html><head></head><body><b>Spannungsquelle:</b><div><b><br></b></div><div>Spannungsquelle gesteuert durch Sensorsignal.</div><div><br></div><div>Drei IF-Fälle:</div><div><br></div><div><b>1.</b> Ist die Spannung 0 wird keine Spannung ausgegeben. boolOut1 = 1 und betätigt damit Bremse.</div><div><b>2.</b> Ist boolIn1 = 1 bedeutet das, dass der Flaschenzug auf Block und damit an der Decke angekommen ist.</div><div>&nbsp; &nbsp; Damit Schaltet boolOut1 auf 1 und die Bremse wird betätigt.</div><div><b>3. </b>Tritt Fall eins und zwei nicht ein so gibt die Spannungsquelle eine Spannung an den Motor weiter.</div><div><br></div><div><span style=\"font-size: 12px;\">Folgende&nbsp;</span><b style=\"font-size: 12px;\">Parameter</b><span style=\"font-size: 12px;\">&nbsp;stehen zur Eingabe bereit:</span></div><div><span style=\"font-size: 12px;\"><br></span></div><div><b style=\"font-size: 12px;\">U</b><span style=\"font-size: 12px;\">&nbsp;die Spannung für den betrieb des Motors. Kann negativ und positiv gewählt werden (Drehrichtung). Ein positiver Wert erzeugt eine positive Drehrichtung. Dabei ist zu beachten, dass der Motor genung Spannung erhält, um die gewünschte Leistung abgeben zu können.</span></div><div><br><div><br></div><div><br></div></div></body></html>"));
+          Documentation(info = "<html><head></head><body><b>Spannungsquelle:</b><div><b><br></b></div><div>Die Spannungsquelle ist durch ein Sensorsignal gesteuert.</div><div><br></div><div>Die nachfolgenden drei IF-Bedingungen werden abgefragt :</div><div><br></div><div><b>1.</b> Ist die Spannung = 0V wird keine Spannung ausgegeben.&nbsp;</div><div>&nbsp; &nbsp; Der Port boolOut1 = 1 und betätigt damit die Bremse.</div><div><b>2.</b> Ist der Port boolIn1 = 1 bedeutet das, dass der Flaschenzug auf Block gefahren ist und damit an der Decke angekommen ist.</div><div>&nbsp; &nbsp; Somit Schaltet boolOut1 auf 1 und die Bremse wird betätigt.</div><div><b>3. </b>Tritt Fall eins und zwei nicht ein, so legt die Spannungsquelle eine Spannung an den Motor an</div><div><br></div><div><span style=\"font-size: 12px;\">Folgende&nbsp;</span><b style=\"font-size: 12px;\">Parameter</b><span style=\"font-size: 12px;\">&nbsp;stehen zur Eingabe bereit:</span></div><div><span style=\"font-size: 12px;\"><br></span></div><div><b style=\"font-size: 12px;\">U</b><span style=\"font-size: 12px;\">&nbsp;ist die Spannung für den betrieb des Motors. Sie kann negativ oder positiv gewählt werden (Drehrichtung). Ein positiver Wert erzeugt eine positive Drehrichtung. Dabei ist zu beachten, dass der Motor genung Spannung erhält, um die gewünschte Leistung abgeben zu können.</span></div><div><br><div><br></div><div><br></div></div></body></html>"));
       end Gesteuert;
       annotation(
         Icon(graphics = {Polygon(fillPattern = FillPattern.Solid, points = {{0, 100}, {-100, -100}, {100, -100}, {100, -100}, {0, 100}}), Polygon(origin = {-1, -2}, fillColor = {255, 255, 0}, fillPattern = FillPattern.Solid, points = {{1, 92}, {-91, -94}, {93, -94}, {1, 92}}), Polygon(origin = {-4, -24}, fillPattern = FillPattern.Solid, points = {{0, 64}, {-36, -20}, {8, 6}, {-10, -52}, {-2, -54}, {22, 22}, {-16, 0}, {24, 58}, {0, 64}, {0, 64}}), Polygon(origin = {-7, -77}, fillPattern = FillPattern.Solid, points = {{-13, 9}, {13, 3}, {-5, -9}, {-13, 9}})}));
@@ -2096,7 +2099,7 @@ Hysterese versehen (siehe Konstanten).</div><div><p class=\"MsoNormal\"><o:p></o
       Flaschenzug.Modelle.Antriebskomponenten.Getriebe getriebe1 annotation(
         Placement(visible = true, transformation(origin = {8, 44}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
       Flaschenzug.Modelle.Antriebskomponenten.Motor motor1 annotation(
-        Placement(visible = true, transformation(origin = {-66, 44}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Placement(visible = true, transformation(origin = {-66, 44}, extent = {{-10, -10}, {10, 10}}, rotation = 180)));
       Modelle.Antriebskomponenten.Bremse bremse1 annotation(
         Placement(visible = true, transformation(origin = {-24, 44}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
       Modelle.Massen.Bierkasten bierkasten1 annotation(
@@ -2106,6 +2109,10 @@ Hysterese versehen (siehe Konstanten).</div><div><p class=\"MsoNormal\"><o:p></o
   Flaschenzug.Modelle.Spannungsquellen.Gesteuert gesteuert1 annotation(
         Placement(visible = true, transformation(origin = {-66, -4}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
     equation
+  connect(motor1.m_w, bremse1.m_w1) annotation(
+        Line(points = {{-78, 42.5}, {-36, 42.5}, {-36, 44}}));
+  connect(gesteuert1.u_i, motor1.u_i) annotation(
+        Line(points = {{-54, -4}, {-42, -4}, {-42, 14}, {-88, 14}, {-88, 44}, {-58.5, 44}, {-58.5, 43}}));
   connect(gesteuert1.boolIn1, flaschenzug_Modell_b1.boolOut1) annotation(
         Line(points = {{-78, -4}, {-100, -4}, {-100, -54}, {82, -54}, {82, -54}, {96, -54}, {96, 30}, {78, 30}, {78, 28}}));
   connect(seilwinde_Decke1.f_s, flaschenzug_Modell_b1.f_s2) annotation(
@@ -2116,12 +2123,8 @@ Hysterese versehen (siehe Konstanten).</div><div><p class=\"MsoNormal\"><o:p></o
         Line(points = {{76, -30}, {74, -30}, {74, -18}, {76, -18}}));
       connect(bremse1.boolIn1, gesteuert1.boolOut1) annotation(
         Line(points = {{-30, 50}, {-44, 50}, {-44, 20}, {-36, 20}, {-36, -16}, {-94, -16}, {-94, 2}, {-78, 2}, {-78, 2}}));
-      connect(gesteuert1.u_i, motor1.u_i) annotation(
-        Line(points = {{-54, -4}, {-42, -4}, {-42, 14}, {-88, 14}, {-88, 44}, {-74, 44}, {-74, 46}}));
   connect(getriebe1.m_w, seilwinde_Decke1.m_w) annotation(
         Line(points = {{20, 41}, {24, 41}, {24, 44}, {28, 44}}));
-      connect(motor1.m_w, bremse1.m_w1) annotation(
-        Line(points = {{-56, 46}, {-36, 46}, {-36, 44}, {-36, 44}}));
   connect(bremse1.m_w2, getriebe1.m_w1) annotation(
         Line(points = {{-12, 44}, {-4, 44}, {-4, 48}}));
       annotation(
