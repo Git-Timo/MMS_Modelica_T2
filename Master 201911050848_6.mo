@@ -5,7 +5,7 @@ package Flaschenzug
       Modelica.SIunits.Angle w;
       annotation(
         Icon(graphics = {Rectangle(origin = {-67, 86}, fillColor = {255, 85, 127}, fillPattern = FillPattern.Solid, extent = {{-33, 14}, {167, -186}}), Text(origin = {-49, 49}, extent = {{-9, 7}, {107, -97}}, textString = "M_w")}, coordinateSystem(initialScale = 0.1)),
-  Documentation(info = "<html><head></head><body><font size=\"4\">Flussvariable: Moment <b>M</b> in Nm</font><div><font size=\"4\">Potenzialvariable: Winkelgeschwindigkeit <b>w</b> in rad/s</font></div></body></html>"));
+  Documentation(info = "<html><head></head><body><font size=\"4\">Fluss</font><span style=\"font-size: large;\">größe</span><font size=\"4\">: Moment <b>M</b> in Nm</font><div><font size=\"4\">Potenzialgröße: Winkelgeschwindigkeit <b>w</b> in rad</font></div></body></html>"));
     end M_w;
 
     connector F_s
@@ -14,7 +14,7 @@ package Flaschenzug
       annotation(
         Icon(graphics = {Rectangle(origin = {-71, 90}, fillColor = {255, 193, 46}, fillPattern = FillPattern.Solid, extent = {{-29, 10}, {171, -190}}), Text(origin = {-109, 76}, extent = {{-9, 6}, {233, -132}}, textString = "F_s")}, coordinateSystem(initialScale = 0.1)),
         Diagram(coordinateSystem(initialScale = 0.1)),
-  Documentation(info = "<html><head></head><body><font size=\"4\">Flussvariable: Kraft <b>F</b>&nbsp;in N</font><div><font size=\"4\">Potenzialvariable: Länge&nbsp;<b>s</b>&nbsp;in m</font></div></body></html>"));
+  Documentation(info = "<html><head></head><body><font size=\"4\">Fluss</font><span style=\"font-size: large;\">größe</span><font size=\"4\">: Kraft <b>F</b>&nbsp;in N</font><div><font size=\"4\">Potenzial</font><span style=\"font-size: large;\">größe</span><font size=\"4\">: Länge&nbsp;<b>s</b>&nbsp;in m</font></div></body></html>"));
     end F_s;
 
     connector U_i
@@ -22,7 +22,7 @@ package Flaschenzug
       flow Real I;
       annotation(
         Icon(graphics = {Rectangle(fillColor = {255, 85, 127}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Text(origin = {-2, 8}, extent = {{-70, 50}, {70, -50}}, textString = "U_i"), Rectangle(fillColor = {170, 0, 255}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Text(origin = {-7, 4}, extent = {{-69, 38}, {69, -38}}, textString = "U_i")}, coordinateSystem(initialScale = 0.1)),
-  Documentation(info = "<html><head></head><body><font size=\"4\">Flussvariable: Strom <b>I</b>&nbsp;in Ampere</font><div style=\"font-size: 12px;\"><font size=\"4\">Potenzialvariable: Spannung <b>U</b>&nbsp;in Volt</font></div></body></html>"));
+  Documentation(info = "<html><head></head><body><font size=\"4\">Fluss</font><span style=\"font-size: large;\">größe</span><font size=\"4\">: Strom <b>I</b>&nbsp;in Ampere</font><div style=\"font-size: 12px;\"><font size=\"4\">Potenzial</font><span style=\"font-size: large;\">größe</span><font size=\"4\">: Spannung <b>U</b>&nbsp;in Volt</font></div></body></html>"));
     end U_i;
 
     connector BoolIn = input Boolean "'Boolscher Input' as connector" annotation(
@@ -161,7 +161,7 @@ end Zeitgesteuert;
         annotation(
           Diagram,
           Icon(graphics = {Ellipse(origin = {4, 26}, fillPattern = FillPattern.Solid, extent = {{-20, -2}, {-52, -34}}, endAngle = 360), Ellipse(origin = {-56, 61}, lineThickness = 1, extent = {{-22, 19}, {128, -127}}, endAngle = 360), Ellipse(origin = {66, 26}, fillPattern = FillPattern.Solid, extent = {{-20, -2}, {-52, -34}}, endAngle = 360), Rectangle(origin = {-10, 10}, lineThickness = 1, extent = {{-90, 90}, {110, -110}})}, coordinateSystem(initialScale = 0.1)),
-          Documentation(info = "<html><head></head><body><b>Spannungsquelle gesteuert:</b><div><b><br></b></div><div>Die Spannungsquelle ist durch ein Sensorsignal gesteuert.</div><div><br></div><div>Die nachfolgenden drei IF-Bedingungen werden abgefragt :</div><div><br></div><div><b>1.</b> Ist die Spannung = 0V wird keine Spannung ausgegeben.&nbsp;</div><div>&nbsp; &nbsp; Der Port boolOut1 = 1 und betätigt damit die Bremse.</div><div><b>2.</b> Ist der Port boolIn1 = 1 bedeutet, dass der Flaschenzug auf Block gefahren ist und damit an der Decke angekommen ist.</div><div>&nbsp; &nbsp; Somit schaltet boolOut1 auf 1 und die Bremse wird betätigt.</div><div><b>3. </b>Tritt Fall eins und zwei nicht ein, so legt die Spannungsquelle eine Spannung an den Motor an</div><div><br></div><div><span style=\"font-size: 12px;\">Folgende&nbsp;</span><b style=\"font-size: 12px;\">Parameter</b><span style=\"font-size: 12px;\">&nbsp;stehen zur Eingabe bereit:</span></div><div><span style=\"font-size: 12px;\"><br></span></div><div><b style=\"font-size: 12px;\">U</b><span style=\"font-size: 12px;\">&nbsp;ist die Spannung für den Betrieb des Motors. Sie kann negativ oder positiv gewählt werden (Drehrichtung). Ein positiver Wert erzeugt eine positive Drehrichtung. Dabei ist zu beachten, dass der Motor genügend Spannung erhält, um die gewünschte Leistung abgeben zu können.</span></div><div><br><div><br></div><div><br></div></div></body></html>"));
+          Documentation(info = "<html><head></head><body><b>Spannungsquelle gesteuert:</b><div><b><br></b></div><div>Die Spannungsquelle ist durch ein Sensorsignal gesteuert.</div><div><br></div><div>Die nachfolgenden drei IF-Bedingungen werden abgefragt :</div><div><br></div><div><b>1.</b> Ist die Spannung = 0V deffiniert, wird keine Spannung ausgegeben.&nbsp;</div><div>&nbsp; &nbsp; Der Port boolOut1 = 1 und betätigt damit die Bremse.</div><div><b>2.</b> Ist der Port boolIn1 = 1 bedeutet, dass der Flaschenzug auf Block gefahren ist und damit an der Decke angekommen ist.</div><div>&nbsp; &nbsp; Somit schaltet boolOut1 auf 1 und die Bremse wird betätigt.</div><div><b>3. </b>Tritt Fall eins und zwei nicht ein, so legt die Spannungsquelle eine Spannung an den Motor an</div><div><br></div><div><span style=\"font-size: 12px;\">Folgende&nbsp;</span><b style=\"font-size: 12px;\">Parameter</b><span style=\"font-size: 12px;\">&nbsp;stehen zur Eingabe bereit:</span></div><div><span style=\"font-size: 12px;\"><br></span></div><div><b style=\"font-size: 12px;\">U</b><span style=\"font-size: 12px;\">&nbsp;ist die Spannung für den Betrieb des Motors. Sie kann negativ oder positiv gewählt werden (Drehrichtung). Ein positiver Wert erzeugt eine positive Drehrichtung. Dabei ist zu beachten, dass der Motor genügend Spannung erhält, um die gewünschte Leistung abgeben zu können.</span></div><div><br><div><br></div><div><br></div></div></body></html>"));
       end Gesteuert;
       annotation(
         Icon(graphics = {Polygon(fillPattern = FillPattern.Solid, points = {{0, 100}, {-100, -100}, {100, -100}, {100, -100}, {0, 100}}), Polygon(origin = {-1, -2}, fillColor = {255, 255, 0}, fillPattern = FillPattern.Solid, points = {{1, 92}, {-91, -94}, {93, -94}, {1, 92}}), Polygon(origin = {-4, -24}, fillPattern = FillPattern.Solid, points = {{0, 64}, {-36, -20}, {8, 6}, {-10, -52}, {-2, -54}, {22, 22}, {-16, 0}, {24, 58}, {0, 64}, {0, 64}}), Polygon(origin = {-7, -77}, fillPattern = FillPattern.Solid, points = {{-13, 9}, {13, 3}, {-5, -9}, {-13, 9}})}));
@@ -195,7 +195,7 @@ end Zeitgesteuert;
         Flaschenzug.Ports.M_w m_w annotation(
           Placement(visible = true, transformation(origin = {-134, 14}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-119, 1}, extent = {{-19, -19}, {19, 19}}, rotation = 0)));
       equation
-  if v - 1 >= 1 and Durchmesserkommulation == true then
+  if v - 1 >= 1 and Durchmesserkomulation == true then
 //Berechnung des Windendurchmessers als lineare Funktion
           d_Winde = Durchmesser + s * d;
           dmax = Durchmesser + (o - 1) * d * 2;
@@ -220,10 +220,10 @@ end Zeitgesteuert;
         annotation(
           choices(choice(redeclare lib2.Resistor Load(a = {2}) "..."), choice(redeclare Capacitor Load(L = 3) "...")),
           Icon(graphics = {Rectangle(origin = {-44, 25}, fillColor = {208, 208, 208}, fillPattern = FillPattern.Solid, lineThickness = 1, extent = {{-56, 15}, {144, -65}}), Line(origin = {42.7034, 3.51}, points = {{18, 97}, {18, -45}}, color = {255, 85, 0}, thickness = 1), Line(origin = {-17.8189, 3.16671}, points = {{-22, 39}, {18, -45}}, color = {255, 85, 0}, thickness = 1), Line(origin = {1.89746, 1.88313}, points = {{-22, 39}, {18, -45}}, color = {255, 85, 0}, thickness = 1), Line(origin = {21.9273, 3.10701}, points = {{-22, 39}, {18, -45}}, color = {255, 85, 0}, thickness = 1), Rectangle(origin = {-92, -10}, fillPattern = FillPattern.Solid, extent = {{-9, 70}, {9, -70}}), Rectangle(origin = {92, -10}, fillPattern = FillPattern.Solid, extent = {{-9, 70}, {9, -70}}), Rectangle(origin = {-13, -61}, rotation = -90, fillPattern = FillPattern.Solid, extent = {{-9, 114}, {41, -88}})}, coordinateSystem(initialScale = 0.1)),
-  Documentation(info = "<html><head></head><body><b>Die Seilwinde</b>&nbsp;dient zur Umwandlung einer Drehbewegung in eine translatorische Bewegung. Durch die Bidirektionalität kann auch eine translatorische Bewegung in eine rotatorische Bewegung umgewandelt werden.&nbsp;<div><br></div><div>Das Modell besitzt zwei Ports: Ein für translatorische Bewegung (f_s) und einen für rotatorische Bewegung (m_w).<br><div><br></div><div>Folgende <b>Parameter</b> stehen zur Eingabe bereit:</div><div><br></div><div><b>Durchmesser: </b>Dieser Parameter beschreibt in der Einheit Meter den Durchmesser der Seiltrommel.</div><div><b>d</b>: Beschreibt den Durchmesser des Seiles in Metern. Da in der Bibliothek die Seildehnung nicht betrachtet wird, ist der Durchmesser des Seiles lastunabhängig und wird als konstant angenommen.</div><div><b>b</b>: Die Breite der Winde in Metern. Unter Berücksichtigung von d wird mit dieser Angabe in der Betriebsart Durchmesserkommulation berechnet, wieviele Umdrehungen das Seil einlagig auf die Seilrolle passt.</div><div><b>Lagerwiderstand: </b>Angabe des Lagerwiderstandes der Seilrolle in Newtonmeter. Damit kann ein Verlust des Antriebmomentes simuliert werden.&nbsp;</div><div><b>m</b>: Die Masse der Seilrolle in Kilogramm. Mit dieser Angabe wird die Trägheit der Seilrolle berechnet. Dabei wird angenommen, dass es sich um einen Vollzylinder handelt. Ein etwaiges Gewicht des Seiles wird in dieser Berechnung nicht betrachtet.&nbsp;</div><div><b>Durchmesserkommulation</b>: Eingabe eines Wertes im booleschen Format. Bei der Eingabe des Wertes \"False\", wird ein konstanter Windendurchmesser angenommen. Wird der Parameter auf \"True\" gesetzt wird in der Simulation berücksichtigt, dass der Durchmesser der Seiltrommel im Betrieb mit zunehmend aufgewickeltem Seil wächst. Dies hat direkte Auswirkungen auf die ausgegebene Seilposition und das Antriebsoment. Dabei ist zu beachten, dass in dieser Betriebsart die Position und das erforderliche Antriebsmoment nicht exakt, sondern aproximiert ausgegeben wird.&nbsp;<span style=\"font-family: 'MS Shell Dlg 2', serif;\">Bei einer
+  Documentation(info = "<html><head></head><body><b>Die Seilwinde</b>&nbsp;dient zur Umwandlung einer Drehbewegung in eine translatorische Bewegung. Durch die Bidirektionalität kann auch eine translatorische Bewegung in eine rotatorische Bewegung umgewandelt werden.&nbsp;<div><br></div><div>Das Modell besitzt zwei Ports: Ein für translatorische Bewegung (f_s) und einen für rotatorische Bewegung (m_w).<br><div><br></div><div>Folgende <b>Parameter</b> stehen zur Eingabe bereit:</div><div><br></div><div><b>Durchmesser: </b>Dieser Parameter beschreibt in der Einheit Meter den Durchmesser der Seiltrommel.</div><div><b>d</b>: Beschreibt den Durchmesser des Seiles in Metern. Da in der Bibliothek die Seildehnung nicht betrachtet wird, ist der Durchmesser des Seiles lastunabhängig und wird als konstant angenommen.</div><div><b>b</b>: Die Breite der Winde in Metern. Unter Berücksichtigung von d wird mit dieser Angabe in der Betriebsart Durchmesserkomulation berechnet, wieviele Umdrehungen das Seil einlagig auf die Seilrolle passt.</div><div><b>Lagerwiderstand: </b>Angabe des Lagerwiderstandes der Seilrolle in Newtonmeter. Damit kann ein Verlust des Antriebmomentes simuliert werden.&nbsp;</div><div><b>m</b>: Die Masse der Seilrolle in Kilogramm. Mit dieser Angabe wird die Trägheit der Seilrolle berechnet. Dabei wird angenommen, dass es sich um einen Vollzylinder handelt. Ein etwaiges Gewicht des Seiles wird in dieser Berechnung nicht betrachtet.&nbsp;</div><div><b>Durchmesserkomulation</b>: Eingabe eines Wertes im booleschen Format. Bei der Eingabe des Wertes \"False\", wird ein konstanter Windendurchmesser angenommen. Wird der Parameter auf \"True\" gesetzt wird in der Simulation berücksichtigt, dass der Durchmesser der Seiltrommel im Betrieb mit zunehmend aufgewickeltem Seil wächst. Dies hat direkte Auswirkungen auf die ausgegebene Seilposition und das Antriebsoment. Dabei ist zu beachten, dass in dieser Betriebsart die Position und das erforderliche Antriebsmoment nicht exakt, sondern aproximiert ausgegeben wird.&nbsp;<span style=\"font-family: 'MS Shell Dlg 2', serif;\">Bei einer
 exakten Ausgabe würde das erforderliche Antriebsmoment mit den Lagen der
 Seiltrommel wachsen. Die Geschwindigkeit der Seilposition würde bei jeder neuen
-Seillage sprunghaft ansteigen. In der Betriebsart \"Durchmesserkommulation\"
+Seillage sprunghaft ansteigen. In der Betriebsart \"Durchmesserkomulation\"
 wächst die Seilgeschwindigkeit und das erforderliche Antriebsmoment ab der
 zweiten Seillage kontinuierlich.</span></div>
 
@@ -860,28 +860,28 @@ zweiten Seillage kontinuierlich.</span></div>
 <style>
  /* Style Definitions */
  table.MsoNormalTable
-	{mso-style-name:\"Normale Tabelle\";
-	mso-tstyle-rowband-size:0;
-	mso-tstyle-colband-size:0;
-	mso-style-noshow:yes;
-	mso-style-priority:99;
-	mso-style-parent:\"\";
-	mso-padding-alt:0cm 5.4pt 0cm 5.4pt;
-	mso-para-margin-top:0cm;
-	mso-para-margin-right:0cm;
-	mso-para-margin-bottom:8.0pt;
-	mso-para-margin-left:0cm;
-	line-height:107%;
-	mso-pagination:widow-orphan;
-	font-size:11.0pt;
-	font-family:\"Calibri\",sans-serif;
-	mso-ascii-font-family:Calibri;
-	mso-ascii-theme-font:minor-latin;
-	mso-hansi-font-family:Calibri;
-	mso-hansi-theme-font:minor-latin;
-	mso-bidi-font-family:\"Times New Roman\";
-	mso-bidi-theme-font:minor-bidi;
-	mso-fareast-language:EN-US;}
+ {mso-style-name:\"Normale Tabelle\";
+ mso-tstyle-rowband-size:0;
+ mso-tstyle-colband-size:0;
+ mso-style-noshow:yes;
+ mso-style-priority:99;
+ mso-style-parent:\"\";
+ mso-padding-alt:0cm 5.4pt 0cm 5.4pt;
+ mso-para-margin-top:0cm;
+ mso-para-margin-right:0cm;
+ mso-para-margin-bottom:8.0pt;
+ mso-para-margin-left:0cm;
+ line-height:107%;
+ mso-pagination:widow-orphan;
+ font-size:11.0pt;
+ font-family:\"Calibri\",sans-serif;
+ mso-ascii-font-family:Calibri;
+ mso-ascii-theme-font:minor-latin;
+ mso-hansi-font-family:Calibri;
+ mso-hansi-theme-font:minor-latin;
+ mso-bidi-font-family:\"Times New Roman\";
+ mso-bidi-theme-font:minor-bidi;
+ mso-fareast-language:EN-US;}
 </style>
 <![endif]-->
 
@@ -893,13 +893,13 @@ zweiten Seillage kontinuierlich.</span></div>
 
 <p style=\"margin:0cm;margin-bottom:.0001pt\"><span style=\"font-family: 'MS Shell Dlg 2', serif;\">Wird die Masse
 heruntergelassen, wird immer auch in der Betriebsart
-\"Durchmesserkommulation\", ein konstanter Trommeldurchmesser
-angenommen. Das heißt, dass die Durchmesserkommulation nur beachtet wird, wenn
+\"Durchmesserkomulation\", ein konstanter Trommeldurchmesser
+angenommen. Das heißt, dass die Durchmesserkomulation nur beachtet wird, wenn
 das Seil aufgewickelt wird.<font size=\"4\"><o:p></o:p></font></span></p>
 
 <!--EndFragment-->
 
-<!--EndFragment--><div>&nbsp;<div><div><br></div><div><b>Hinweis:</b> Die Parameter in der Gruppe Geometrie werden nur in der Betriebsart mit aktivierter Durchmesserkommulation benötigt. Ist diese Betriebsart nicht aktiviert, werden die eingetragenen Werte nicht beachtet, sodass sie keinerlei Einfluss auf die Simulation haben.&nbsp;</div></div></div></div></body></html>"));
+<!--EndFragment--><div>&nbsp;<div><div><br></div><div><b>Hinweis:</b> Die Parameter in der Gruppe Geometrie werden nur in der Betriebsart mit aktivierter Durchmesserkomulation benötigt. Ist diese Betriebsart nicht aktiviert, werden die eingetragenen Werte nicht beachtet, sodass sie keinerlei Einfluss auf die Simulation haben.&nbsp;</div></div></div></div></body></html>"));
       end Seilwinde;
 
       model Seilwinde_Decke
@@ -914,7 +914,7 @@ das Seil aufgewickelt wird.<font size=\"4\"><o:p></o:p></font></span></p>
           Dialog(group = "Geometrie"));
         parameter Modelica.SIunits.Mass m = 10 "Masse der Seilwinde excl. Seil" annotation(
           Dialog(group = "Trägheit und Verlust"));
-        parameter Boolean Durchmesserkommulation = false annotation(
+        parameter Boolean Durchmesserkomulation = false annotation(
           Dialog(group = "Betriebsarten"));
         //Konstanten
         constant Real Pi = 2 * Modelica.Math.asin(1.0);
@@ -935,7 +935,7 @@ das Seil aufgewickelt wird.<font size=\"4\"><o:p></o:p></font></span></p>
           dmax = Durchmesser + (o - 1) * d * 2;
           s = (-m_w.w / (2 * Pi)) / (b / d) - 1;
         else
-//keine Durchmesseraproximation
+//keine Durchmesserapproximation
           d_Winde = Durchmesser;
           dmax = Durchmesser;
           s = 0;
@@ -954,7 +954,7 @@ das Seil aufgewickelt wird.<font size=\"4\"><o:p></o:p></font></span></p>
         annotation(
           choices(choice(redeclare lib2.Resistor Load(a = {2}) "..."), choice(redeclare Capacitor Load(L = 3) "...")),
           Icon(graphics = {Rectangle(origin = {-44, 25}, fillColor = {208, 208, 208}, fillPattern = FillPattern.Solid, lineThickness = 1, extent = {{-56, 15}, {144, -65}}), Line(origin = {38.3208, -57.8465}, points = {{18, 97}, {18, -45}}, color = {255, 85, 0}, thickness = 1), Line(origin = {-17.8189, 3.16671}, points = {{-22, 39}, {18, -45}}, color = {255, 85, 0}, thickness = 1), Line(origin = {1.89746, 1.88313}, points = {{-22, 39}, {18, -45}}, color = {255, 85, 0}, thickness = 1), Line(origin = {21.9273, 3.10701}, points = {{-22, 39}, {18, -45}}, color = {255, 85, 0}, thickness = 1), Rectangle(origin = {-92, 10}, fillPattern = FillPattern.Solid, extent = {{-9, 70}, {9, -70}}), Rectangle(origin = {92, 8}, fillPattern = FillPattern.Solid, extent = {{-9, 70}, {9, -70}}), Rectangle(origin = {-13, 91}, rotation = -90, fillPattern = FillPattern.Solid, extent = {{-9, 114}, {41, -88}})}, coordinateSystem(initialScale = 0.1)),
-  Documentation(info = "<html><head></head><body><b>Die Seilwinde</b>&nbsp;dient zur Umwandlung einer Drehbewegung in eine translatorische Bewegung. Durch die Bidirektionalität kann auch eine translatorische Bewegung in eine rotatorische Bewegung umgewandelt werden.&nbsp;<div><br></div><div>Das Modell besitzt zwei Ports: Ein für translatorische Bewegung (f_s) und einen für rotatorische Bewegung (m_w).<br><div><br></div><div>Folgende&nbsp;<b>Parameter</b>&nbsp;stehen zur Eingabe bereit:</div><div><br></div><div><b>Durchmesser:&nbsp;</b>Dieser Parameter beschreibt in der Einheit Meter den Durchmesser der Seiltrommel.</div><div><b>d</b>: Beschreibt den Durchmesser des Seiles in Metern. Da in der Bibliothek die Seildehnung nicht betrachtet wird, ist der Durchmesser des Seiles lastunabhängig und wird als konstant angenommen.</div><div><b>b</b>: Die Breite der Winde in Metern. Unter Berücksichtigung von d wird mit dieser Angabe in der Betriebsart Durchmesserkommulation berechnet, wieviele Umdrehungen das Seil einlagig auf die Seilrolle passt.</div><div><b>Lagerwiderstand:&nbsp;</b>Angabe des Lagerwiderstandes der Seilrolle in Newtonmeter. Damit kann ein Verlust des Antriebmomentes simuliert werden.&nbsp;</div><div><b>m</b>: Die Masse der Seilrolle in Kilogramm. Mit dieser Angabe wird die Trägkhit der Seilrolle berechnet. Dabei wird angenommen, dass es sich um einen Vollzylinder handelt. Ein etwaiges Gewicht des Seiles wird in dieser Berechnung nicht beachtet.&nbsp;</div><div><b>Durchmesserkommulation</b>: Eingabe eines Wertes im booleschen Format. Bei der Eingabe des Wetes \"False\", wird ein konstanter Windendurchmesser angenommen. Wird der Parameter auf \"True\" gesetzt wird in der Simulation berücksichtigt, dass der Durchmesser der Seiltrommel im Betrieb mit zunehmend aufgewickeltem Seil wächst. Das hat direkte Auswirkungen auf die ausgegebene Seilposition. Dabei ist zu beachten, dass in dieser Betriebsart die Position nicht exakt, sondern aproximiert ausgegeben wird.&nbsp;&nbsp;<span style=\"font-family: 'MS Shell Dlg 2', serif;\">Bei einer exakten Ausgabe würde das erforderliche Antriebsmoment mit den Lagen der Seiltrommel wachsen. Die Geschwindigkeit der Seilposition würde bei jeder neuen Seillage sprunghaft ansteigen.&nbsp;</span><span style=\"font-family: 'MS Shell Dlg 2', serif;\"><b><u>&nbsp;</u></b>In der Betriebsart \"Durchmesserkommulation\" wächst die Seilgeschwindigkeit und das erforderliche Antriebsmoment ab der zweiten Seillage kontinuierlich.</span></div><p style=\"margin: 0cm 0cm 0.0001pt;\"><span style=\"font-family: 'MS Shell Dlg 2', serif;\">Wird die Masse heruntergelassen, wird immer auch in der Betriebsart \"Druchmesserkommulation\", ein konstanter Trommeldurchmesser angenommen. Das heißt, dass die Durchmesserkommulation nur beachtet wird, wenn das Seil aufgewickelt wird.</span></p><div>&nbsp;<div><div><br></div><div><b>Hinweis:</b>&nbsp;Die Parameter in der Gruppe Geometrie werden nur in der Betriebsart mit aktivierter Durchmesserkommulation benötigt. Ist diese Betriebsart nicht aktiviert, werden die eingetragenen Werte nicht beachtet, sodass sie keinerlei Einfluss auf die Simulation haben.&nbsp;</div></div></div></div></body></html>"));
+  Documentation(info = "<html><head></head><body><b>Die Seilwinde</b>&nbsp;dient zur Umwandlung einer Drehbewegung in eine translatorische Bewegung. Durch die Bidirektionalität kann auch eine translatorische Bewegung in eine rotatorische Bewegung umgewandelt werden.&nbsp;<div><br></div><div>Das Modell besitzt zwei Ports: Ein für translatorische Bewegung (f_s) und einen für rotatorische Bewegung (m_w).<br><div><br></div><div>Folgende&nbsp;<b>Parameter</b>&nbsp;stehen zur Eingabe bereit:</div><div><br></div><div><b>Durchmesser:&nbsp;</b>Dieser Parameter beschreibt in der Einheit Meter den Durchmesser der Seiltrommel.</div><div><b>d</b>: Beschreibt den Durchmesser des Seiles in Metern. Da in der Bibliothek die Seildehnung nicht betrachtet wird, ist der Durchmesser des Seiles lastunabhängig und wird als konstant angenommen.</div><div><b>b</b>: Die Breite der Winde in Metern. Unter Berücksichtigung von d wird mit dieser Angabe in der Betriebsart Durchmesserkomulation berechnet, wieviele Umdrehungen das Seil einlagig auf die Seilrolle passt.</div><div><b>Lagerwiderstand:&nbsp;</b>Angabe des Lagerwiderstandes der Seilrolle in Newtonmeter. Damit kann ein Verlust des Antriebmomentes simuliert werden.&nbsp;</div><div><b>m</b>: Die Masse der Seilrolle in Kilogramm. Mit dieser Angabe wird die Trägkhit der Seilrolle berechnet. Dabei wird angenommen, dass es sich um einen Vollzylinder handelt. Ein etwaiges Gewicht des Seiles wird in dieser Berechnung nicht beachtet.&nbsp;</div><div><b>Durchmesserkomulation</b>: Eingabe eines Wertes im booleschen Format. Bei der Eingabe des Wetes \"False\", wird ein konstanter Windendurchmesser angenommen. Wird der Parameter auf \"True\" gesetzt wird in der Simulation berücksichtigt, dass der Durchmesser der Seiltrommel im Betrieb mit zunehmend aufgewickeltem Seil wächst. Das hat direkte Auswirkungen auf die ausgegebene Seilposition. Dabei ist zu beachten, dass in dieser Betriebsart die Position nicht exakt, sondern aproximiert ausgegeben wird.&nbsp;&nbsp;<span style=\"font-family: 'MS Shell Dlg 2', serif;\">Bei einer exakten Ausgabe würde das erforderliche Antriebsmoment mit den Lagen der Seiltrommel wachsen. Die Geschwindigkeit der Seilposition würde bei jeder neuen Seillage sprunghaft ansteigen.&nbsp;</span><span style=\"font-family: 'MS Shell Dlg 2', serif;\"><b><u>&nbsp;</u></b>In der Betriebsart \"Durchmesserkomulation\" wächst die Seilgeschwindigkeit und das erforderliche Antriebsmoment ab der zweiten Seillage kontinuierlich.</span></div><p style=\"margin: 0cm 0cm 0.0001pt;\"><span style=\"font-family: 'MS Shell Dlg 2', serif;\">Wird die Masse heruntergelassen, wird immer auch in der Betriebsart \"Druchmesserkomulation\", ein konstanter Trommeldurchmesser angenommen. Das heißt, dass die Durchmesserkomulation nur beachtet wird, wenn das Seil aufgewickelt wird.</span></p><div>&nbsp;<div><div><br></div><div><b>Hinweis:</b>&nbsp;Die Parameter in der Gruppe Geometrie werden nur in der Betriebsart mit aktivierter Durchmesserkomulation benötigt. Ist diese Betriebsart nicht aktiviert, werden die eingetragenen Werte nicht beachtet, sodass sie keinerlei Einfluss auf die Simulation haben.&nbsp;</div></div></div></div></body></html>"));
       end Seilwinde_Decke;
   annotation(
         Icon(graphics = {Rectangle(origin = {-1, -1}, fillColor = {140, 140, 140}, fillPattern = FillPattern.Solid, extent = {{-99, 41}, {101, -41}}), Line(origin = {-25.7439, -1.2561}, points = {{-22, 41}, {22, -41}, {22, -41}}, color = {213, 0, 0}, thickness = 3), Line(origin = {-2.42683, -0.475612}, points = {{-22, 41}, {22, -41}, {22, -41}}, color = {213, 0, 0}, thickness = 3), Line(origin = {23.4512, -0.463417}, points = {{-22, 41}, {22, -41}, {22, -41}}, color = {213, 0, 0}, thickness = 3), Line(origin = {36.2439, -0.731709}, points = {{20, 75}, {22, -41}, {22, -41}}, color = {213, 0, 0}, thickness = 3)}),
