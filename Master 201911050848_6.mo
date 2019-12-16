@@ -180,7 +180,7 @@ end Zeitgesteuert;
           Dialog(group = "Geometrie"));
         parameter Modelica.SIunits.Mass m = 10 "Masse der Seilwinde excl. Seil" annotation(
           Dialog(group = "Trägheit und Verlust"));
-        parameter Boolean Durchmesserkommulation = false annotation(
+        parameter Boolean Durchmesserkomulation = false annotation(
           Dialog(group = "Betriebsarten"));
         //Konstanten
         constant Real Pi = 2 * Modelica.Math.asin(1.0);
@@ -929,7 +929,7 @@ das Seil aufgewickelt wird.<font size=\"4\"><o:p></o:p></font></span></p>
         Flaschenzug.Ports.M_w m_w annotation(
           Placement(visible = true, transformation(origin = {-134, 14}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-119, 1}, extent = {{-19, -19}, {19, 19}}, rotation = 0)));
       equation
-  if v - 1 >= 1 and Durchmesserkommulation == true then
+  if v - 1 >= 1 and Durchmesserkomulation == true then
 //Berechnung des Windendurchmessers als lineare Funktion
           d_Winde = Durchmesser + s * d;
           dmax = Durchmesser + (o - 1) * d * 2;
