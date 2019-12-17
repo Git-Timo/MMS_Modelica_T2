@@ -972,9 +972,9 @@ das Seil aufgewickelt wird.<font size=\"4\"><o:p></o:p></font></span></p>
           Dialog(group = "Elektrisch"));
         parameter Modelica.SIunits.Angle Zugwinkel = 45 "Zugwinkel" annotation(
           Dialog(group = "Geometrie"));
-        parameter Modelica.SIunits.Mass Flaschengewicht_unten = 2 "[kg]" annotation(
+        parameter Modelica.SIunits.Mass Flaschengewicht_unten = 2 annotation(
           Dialog(group = "Flaschengewicht"));
-        parameter Modelica.SIunits.Mass Flaschengewicht_oben = 2 "[kg]" annotation(
+        parameter Modelica.SIunits.Mass Flaschengewicht_oben = 2 annotation(
           Dialog(group = "Flaschengewicht"));
         //Konstante
         Modelica.SIunits.Acceleration g = Modelica.Constants.g_n;
@@ -1707,9 +1707,9 @@ Hysterese versehen (siehe Konstanten).<o:p></o:p></p>
           Dialog(group = "Elektrisch"));
         parameter Modelica.SIunits.Angle Zugwinkel = 45 "Zugwinkel" annotation(
           Dialog(group = "Geometrie"));
-        parameter Modelica.SIunits.Mass Flaschengewicht_unten = 2 "[kg]" annotation(
+        parameter Modelica.SIunits.Mass Flaschengewicht_unten = 2 annotation(
           Dialog(group = "Flaschengewicht"));
-        parameter Modelica.SIunits.Mass Flaschengewicht_oben = 2 "[kg]" annotation(
+        parameter Modelica.SIunits.Mass Flaschengewicht_oben = 2 annotation(
           Dialog(group = "Flaschengewicht"));
         //Konstante
         Modelica.SIunits.Acceleration g = Modelica.Constants.g_n;
@@ -1922,7 +1922,7 @@ Hysterese versehen (siehe Konstanten).</div><div><p class=\"MsoNormal\"><o:p></o
 
       model Bremse
         //Parameter
-        parameter Real b = 10000 annotation(
+        parameter Real b = 10000 "Nms"annotation(
           Dialog(group = "Bremskonstante"));
         //Variablen
         Real t = 1;
