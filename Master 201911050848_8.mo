@@ -38,7 +38,7 @@ package Flaschenzug
 
 model Zeitgesteuert
   //Paramter
-  parameter Modelica.SIunits.Voltage U = 48 "Spannung beim anheben";
+  parameter Modelica.SIunits.Voltage U = 48 "Spannung beim Anheben";
   parameter Modelica.SIunits.Time t1= 6 "Masse anheben bis Zeitpunkt";
   parameter Modelica.SIunits.Time t2 = 10 "Masse halten bis Zeitpunkt";
   parameter Modelica.SIunits.Time t3 = 11 "Masse senken bis Zeitpunkt";
@@ -99,7 +99,7 @@ end Zeitgesteuert;
         Real t1;
         //Konstanten
         constant Real t = 1;
-          //Port
+        //Port
         Flaschenzug.Ports.U_i u_i annotation(
           Placement(visible = true, transformation(origin = {100, -2}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {124, -2}, extent = {{-24, -24}, {24, 24}}, rotation = 0)));
       equation
@@ -1005,7 +1005,7 @@ das Seil aufgewickelt wird.<font size=\"4\"><o:p></o:p></font></span></p>
         else
           boolOut1 = false;
         end if;
-//Einfluss der Massenträgheit der unteren Flasche aud die Gesamtkraft
+//Einfluss der Massenträgheit der unteren Flasche und die Gesamtkraft
         Fges = f_s.F - Flaschengewicht_unten * g - Flaschengewicht_unten * der(v) - Flaschengewicht_oben * der(v_oben);
 //an der unteren Flasche wirkende Kraft
         f_s2.F = Fges / n;
@@ -1015,7 +1015,7 @@ das Seil aufgewickelt wird.<font size=\"4\"><o:p></o:p></font></span></p>
         v = der(f_s.s);
 //Winkelumrechnung
         Zwinkel = Zugwinkel * (180 / Pi);
-//Pos der unteren Flasche
+//Pos. der unteren Flasche
         -f_s.s = (-f_s1.s) + s + f_s2.s / n;
 //Kraft an oberer Flasche
         f_s1.F = f_s.F + cos(Zwinkel) * f_s2.F - Flaschengewicht_unten * g + Flaschengewicht_oben * g;
@@ -1750,7 +1750,7 @@ Hysterese versehen (siehe Konstanten).<o:p></o:p></p>
         v = der(f_s.s);
 //Winkelumrechnung
         Zwinkel = Zugwinkel * (180 / Pi);
-//Pos der unteren Flasche
+//Pos. der unteren Flasche
         -f_s.s = (-f_s1.s) + s + f_s2.s / (n + 1);
 //Kraft an oberer Flasche
         f_s1.F = f_s.F + cos(Zwinkel) * f_s2.F - Flaschengewicht_unten * g + Flaschengewicht_oben * g;
@@ -2087,7 +2087,7 @@ Hysterese versehen (siehe Konstanten).</div><div><p class=\"MsoNormal\"><o:p></o
       annotation(
         Diagram(graphics = {Rectangle(origin = {0, -56}, fillPattern = FillPattern.Solid, extent = {{-100, -44}, {100, -4}})}, coordinateSystem(initialScale = 0.1)),
         Icon(graphics = {Polygon(origin = {30, 80}, lineColor = {63, 188, 44}, fillColor = {88, 195, 64}, fillPattern = FillPattern.Solid, points = {{70, -82}, {-30, 20}, {-30, -20}, {-30, -178}, {70, -82}}), Rectangle(origin = {-70, 41}, lineColor = {53, 202, 46}, fillColor = {55, 173, 65}, fillPattern = FillPattern.Solid, extent = {{-30, 9}, {70, -89}})}, coordinateSystem(initialScale = 0.1)),
-  Documentation(info = "<html><head></head><body>Der Gesamtaufbau <b>Flaschenzug_Boden</b><i> </i>stellt eine Hubarbeit dar, bei welcher die Antriebskomponenten auf dem Boden stehen. Die Masse wird über einen Flaschenzug angehoben. Ist der Flaschenzug komplett zusammengefahren, so gibt er am boolschen Ausgang (blau) ein true aus, welches die Spannungsquelle abschaltet. Das Signal wird durch die Spannungsquelle hindurch, an die Bremse weitergegeben. Diese bekommt das Signal und schließt, sodass die Masse bei Spannungsfreiheit nicht nach unten absacken kann. &nbsp;<div><br></div><div>Die einzelnen Modelle sind alle parametrierbar <b>(Infos: siehe Modell-Readme in der Bibliothek)</b>.<br><div><br></div><div>Empfehlung Simulationszeit für eingestellte Parameter: <b>20&nbsp;s</b></div></div><div><br></div><div>Bei der Auswertung der Simulation muss bei dem zurückgelegten Weg des Flaschenzugports f_s und f_s2 der Offset beachtet werden. Dieser beträgt den Wert des Startwertes (Position der Masse zum Zeitpunkt 0).&nbsp;</div><div>Beispiel: Startwert 2 m = Offset 2 m, f_s.s = 5 -2 = 3m f_s2.s = -9 m damit stimmt die Rollenanzahl n = 3.</div></body></html>"));
+  Documentation(info = "<html><head></head><body>Der Gesamtaufbau <b>Flaschenzug_Boden</b><i> </i>stellt eine Hubarbeit dar, bei welcher die Antriebskomponenten auf dem Boden stehen. Die Masse wird über einen Flaschenzug angehoben. Ist der Flaschenzug komplett zusammengefahren, so gibt er am booleschen Ausgang (blau) ein true-Signal aus, welches die Spannungsquelle abschaltet. Das Signal wird durch die Spannungsquelle hindurch, an die Bremse weitergegeben. Diese bekommt das Signal und schließt, sodass die Masse bei Spannungsfreiheit nicht nach unten absacken kann. &nbsp;<div><br></div><div>Die einzelnen Modelle sind alle parametrierbar <b>(Infos: siehe Modell-Readme in der Bibliothek)</b>.<br><div><br></div><div>Empfehlung Simulationszeit für eingestellte Parameter: <b>20&nbsp;s</b></div></div><div><br></div><div>Bei der Auswertung der Simulation muss bei dem zurückgelegten Weg des Flaschenzugports f_s und f_s2 der Offset beachtet werden. Dieser beträgt den Wert des Startwertes (Position der Masse zum Zeitpunkt 0).&nbsp;</div><div>Beispiel: Startwert 2 m = Offset 2 m, f_s.s = 5 -2 = 3m f_s2.s = -9 m damit stimmt die Rollenanzahl n = 3.</div></body></html>"));
   
     end Flaschenzug_Boden;
   
@@ -2130,7 +2130,7 @@ Hysterese versehen (siehe Konstanten).</div><div><p class=\"MsoNormal\"><o:p></o
       annotation(
         Diagram(graphics = {Rectangle(origin = {0, -2}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Rectangle(origin = {0, -56}, fillPattern = FillPattern.Solid, extent = {{-100, -44}, {100, -4}}), Rectangle(origin = {-26, 55}, fillPattern = FillPattern.Solid, extent = {{76, -1}, {-74, 1}})}, coordinateSystem(initialScale = 0.1)),
         Icon(graphics = {Polygon(origin = {30, 80}, lineColor = {63, 188, 44}, fillColor = {88, 195, 64}, fillPattern = FillPattern.Solid, points = {{70, -82}, {-30, 20}, {-30, -20}, {-30, -178}, {70, -82}}), Rectangle(origin = {-70, 41}, lineColor = {53, 202, 46}, fillColor = {55, 173, 65}, fillPattern = FillPattern.Solid, extent = {{-30, 9}, {70, -89}})}, coordinateSystem(initialScale = 0.1)),
-  Documentation(info = "<html><head></head><body>Der Gesamtaufbau&nbsp;<b>Flaschenzug_Decke</b><i>&nbsp;</i>stellt eine Hubarbeit dar, bei welcher die Antriebskomponenten an der Decke angebracht sind. Die Masse wird über einen Flaschenzug angehoben. Ist der Flaschenzug komplett zusammengefahren, so gibt er am boolschen Ausgang (balu) ein true aus, welches die Spannungsquelle abschält. Das Signal wird durch die Spannungsquelle hindurch, an die Bremse weitergegeben. Diese bekommt das Signal und schließt, sodass die Masse bei Spannungsfreiheit nicht nach unten absacken kann. &nbsp;<div>Im Gegensaztz zum Modell Flaschenzug_Boden kann hier bei diesem Modell bei selber Parametrierung nicht die selbe Last bei gleichbleibender Leistungsaufnahme des Motors angehoben werden. Das resultiert aus der nach oben gerichteten Zugrichtung (siehe Flaschenzu_Modell_b). &nbsp;</div><div><br></div><div><span style=\"font-size: 12px;\">Die einzelnen Modelle sind alle parametrierbar&nbsp;</span><b style=\"font-size: 12px;\">(Infos: siehe Modell-Readme in der Bibliothek)</b><span style=\"font-size: 12px;\">.</span></div><div><br></div><div>Empfehlung Simulationszeit für eingestellte Parameter:&nbsp;<b>20&nbsp;s</b></div><div><b><br></b></div><div><div style=\"font-size: 12px;\">Bei der Auswertung der Simulation muss bei dem zurückgelegten Weg des Flaschenzugports f_s und f_s2 der Offset beachtet werden. Dieser beträgt den Wert des Startwertes (Position der Masse zum Zeitpunkt 0).&nbsp;</div><div style=\"font-size: 12px;\">Beispiel: Startwert 2 m = Offset 2 m, f_s.s = 5 -2 = 3m f_s2.s = -9 m damit stimmt die Rollenanzahl n = 3.</div></div></body></html>"));
+  Documentation(info = "<html><head></head><body>Der Gesamtaufbau&nbsp;<b>Flaschenzug_Decke</b><i>&nbsp;</i>stellt eine Hubarbeit dar, bei welcher die Antriebskomponenten an der Decke angebracht sind. Die Masse wird über einen Flaschenzug angehoben. Ist der Flaschenzug komplett zusammengefahren, so gibt er am booleschen Ausgang (blau) ein true-Signal aus, welches die Spannungsquelle abschaltet. Das Signal wird durch die Spannungsquelle hindurch, an die Bremse weitergegeben. Diese bekommt das Signal und schließt, sodass die Masse bei Spannungsfreiheit nicht nach unten abfallen kann. &nbsp;<div>Im Gegensatz zum Modell Flaschenzug_Boden kann bei diesem Modell bei selber Parametrierung nicht dieselbe Last bei gleichbleibender Leistungsaufnahme des Motors angehoben werden. Dies resultiert aus der nach oben gerichteten Zugrichtung (siehe Flaschenzug_Modell_b). &nbsp;</div><div><br></div><div><span style=\"font-size: 12px;\">Die einzelnen Modelle sind alle parametrierbar&nbsp;</span><b style=\"font-size: 12px;\">(Infos: siehe Modell-Readme in der Bibliothek)</b><span style=\"font-size: 12px;\">.</span></div><div><br></div><div>Empfehlung Simulationszeit für eingestellte Parameter:&nbsp;<b>20&nbsp;s</b></div><div><b><br></b></div><div><div style=\"font-size: 12px;\">Bei der Auswertung der Simulation muss bei dem zurückgelegten Weg des Flaschenzugports f_s und f_s2 der Offset beachtet werden. Dieser beträgt den Wert des Startwertes (Position der Masse zum Zeitpunkt 0).&nbsp;</div><div style=\"font-size: 12px;\">Beispiel: Startwert 2 m = Offset 2 m, f_s.s = 5 -2 = 3m f_s2.s = -9 m damit stimmt die Rollenanzahl n = 3.</div></div></body></html>"));
     end Flaschenzug_Decke;
   
     model Flaschenzug_Boden_Heben_Senken
@@ -2174,7 +2174,7 @@ Hysterese versehen (siehe Konstanten).</div><div><p class=\"MsoNormal\"><o:p></o
       annotation(
         Diagram(graphics = {Rectangle(origin = {0, -56}, fillPattern = FillPattern.Solid, extent = {{-100, -44}, {100, -4}})}, coordinateSystem(initialScale = 0.1)),
         Icon(graphics = {Polygon(origin = {30, 80}, lineColor = {63, 188, 44}, fillColor = {88, 195, 64}, fillPattern = FillPattern.Solid, points = {{70, -82}, {-30, 20}, {-30, -20}, {-30, -178}, {70, -82}}), Rectangle(origin = {-70, 41}, lineColor = {53, 202, 46}, fillColor = {55, 173, 65}, fillPattern = FillPattern.Solid, extent = {{-30, 9}, {70, -89}})}, coordinateSystem(initialScale = 0.1)),
-  Documentation(info = "<html><head></head><body>Das Gesamtmodell <i>Flaschenzug_Boden_Heben_Senken </i>ist wie die Benennung andeutet vom Modell Flaschenzug_Boden abgeleitet. Der Unterschied besteht in der Spannungsquelle. &nbsp;Diese ist Zeitgesteuert, und so parametriert, dass die Masse bis 6s hochgezogen, dann bis 10s gehalten, und anschleißend bis Sekunde 11 heruntergelassen wird. Dananch wird die Masse wieder auf der Position gehalten.<div><br></div><div><span style=\"font-size: 12px;\">Die einzelnen Modelle sind alle parametrierbar&nbsp;</span><b style=\"font-size: 12px;\">(Infos: siehe Modell-Readme in der Bibliothek)</b><span style=\"font-size: 12px;\">.</span><div><br></div><div>Empfehlung Simulationszeit für eingestellte Parameter:&nbsp;<b>20&nbsp;s</b></div></div></body></html>"));
+  Documentation(info = "<html><head></head><body>Das Gesamtmodell <i>Flaschenzug_Boden_Heben_Senken </i>ist wie die Benennung andeutet vom Modell Flaschenzug_Boden abgeleitet. Der Unterschied besteht in der Spannungsquelle. &nbsp;Diese ist zeitgesteuert, und so parametriert, dass die Masse bis 6s hochgezogen, dann bis 10s gehalten, und anschließend bis Sekunde 11 heruntergelassen wird. Danach wird die Masse wieder auf der Position gehalten.<div><br></div><div><span style=\"font-size: 12px;\">Die einzelnen Modelle sind alle parametrierbar&nbsp;</span><b style=\"font-size: 12px;\">(Infos: siehe Modell-Readme in der Bibliothek)</b><span style=\"font-size: 12px;\">.</span><div><br></div><div>Empfehlung Simulationszeit für eingestellte Parameter:&nbsp;<b>20&nbsp;s</b></div></div></body></html>"));
     end Flaschenzug_Boden_Heben_Senken;
 
     package Sonderbeispiele
@@ -2201,7 +2201,7 @@ Hysterese versehen (siehe Konstanten).</div><div><p class=\"MsoNormal\"><o:p></o
         annotation(
           Diagram(graphics = {Rectangle(origin = {0, 104}, fillPattern = FillPattern.Solid, extent = {{-100, -44}, {100, -4}})}, coordinateSystem(initialScale = 0.1)),
           Icon(graphics = {Polygon(origin = {30, 80}, lineColor = {63, 188, 44}, fillColor = {88, 195, 64}, fillPattern = FillPattern.Solid, points = {{70, -82}, {-30, 20}, {-30, -20}, {-30, -178}, {70, -82}}), Rectangle(origin = {-70, 41}, lineColor = {53, 202, 46}, fillColor = {55, 173, 65}, fillPattern = FillPattern.Solid, extent = {{-30, 9}, {70, -89}})}, coordinateSystem(initialScale = 0.1)),
-  Documentation(info = "<html><head></head><body>Dieser Aufbau zeigt ein Hebevorgang ohne Flaschenzug, um den direkten Vergleich zu haben, zwichen der Verwendeung (s. Modell Flaschenzug_Decke) und Verzicht eines Flaschenzugs. Die hier bewegbare Masse ist kleiner als bei der Verwendung eines Flaschenzugs.<div><br></div><div><span style=\"font-size: 12px;\">Die einzelnen Modelle sind alle parametrierbar&nbsp;</span><b style=\"font-size: 12px;\">(Infos: siehe Modell-Readme in der Bibliothek)</b><span style=\"font-size: 12px;\">.</span></div></body></html>"));
+  Documentation(info = "<html><head></head><body>Dieser Aufbau zeigt einen Hebevorgang ohne Flaschenzug, um den direkten Vergleich zu haben, zwischen der Verwendung (s. Modell Flaschenzug_Decke) und Verzicht eines Flaschenzugs. Die bewegbare Masse ist kleiner als bei der Verwendung eines Flaschenzugs.<div><br></div><div><span style=\"font-size: 12px;\">Die einzelnen Modelle sind alle parametrierbar&nbsp;</span><b style=\"font-size: 12px;\">(Infos: siehe Modell-Readme in der Bibliothek)</b><span style=\"font-size: 12px;\">.</span></div></body></html>"));
       end Motor_Getriebe_Seilwinde;
 
       model Test_Sonderkomponenten
@@ -2227,7 +2227,7 @@ Hysterese versehen (siehe Konstanten).</div><div><p class=\"MsoNormal\"><o:p></o
         annotation(
           Diagram(coordinateSystem(initialScale = 0.1)),
           Icon(graphics = {Polygon(origin = {30, 80}, lineColor = {63, 188, 44}, fillColor = {88, 195, 64}, fillPattern = FillPattern.Solid, points = {{70, -82}, {-30, 20}, {-30, -20}, {-30, -178}, {70, -82}}), Rectangle(origin = {-70, 41}, lineColor = {53, 202, 46}, fillColor = {55, 173, 65}, fillPattern = FillPattern.Solid, extent = {{-30, 9}, {70, -89}})}, coordinateSystem(initialScale = 0.1)),
-  Documentation(info = "<html><head></head><body><span style=\"font-size: 12px;\">Der <b>Motorprüfstand</b>&nbsp;dient zum Demonstrieren aller Sonderkomponenten: Lastmoment, boolesche Quelle und Senke.&nbsp;</span><div>Die boolesche Quelle ist so eingestellt, dass sie nach 5 Sekunden von <i>true</i> auf <i>false</i> springt. Dadurch schaltet die Spannungsquelle ab. Das Lastmoment gibt über die gesamte Zeit ein Moment auf die Welle. Zu Beginn beschleunigt der Motor desshalb langsamer als ohne Last, nach 5 Sekunden geht der Motor in dem generatorischen Betrieb über.</div><div>Das Beispiel zeigt die boolesche Senke, die technisch nicht benötigt wird, jedoch den sonst offenen booleschen Ausgang der Spannungsquelle optisch schön aufnimmt.&nbsp;</div><div><br></div><div><span style=\"font-size: 12px;\">Die einzelnen Modelle sind alle parametrierbar&nbsp;</span><b style=\"font-size: 12px;\">(Infos: siehe Modell-Readme in der Bibliothek)</b><span style=\"font-size: 12px;\">.</span></div></body></html>"));
+  Documentation(info = "<html><head></head><body><span style=\"font-size: 12px;\">Der <b>Motorprüfstand</b>&nbsp;dient zum Demonstrieren aller Sonderkomponenten: Lastmoment, boolesche Quelle und Senke.&nbsp;</span><div>Die boolesche Quelle ist so eingestellt, dass sie nach 5 Sekunden von <i>true</i> auf <i>false</i> springt. Dadurch schaltet die Spannungsquelle ab. Das Lastmoment gibt über die gesamte Zeit ein Moment an die Welle ab. Zu Beginn beschleunigt der Motor deshalb langsamer als ohne Last, nach 5 Sekunden geht der Motor in den generatorischen Betrieb über.</div><div>Das Beispiel zeigt die boolesche Senke, die technisch nicht benötigt wird, jedoch den sonst offenen booleschen Ausgang der Spannungsquelle optisch schön aufnimmt.&nbsp;</div><div><br></div><div><span style=\"font-size: 12px;\">Die einzelnen Modelle sind alle parametrierbar&nbsp;</span><b style=\"font-size: 12px;\">(Infos: siehe Modell-Readme in der Bibliothek)</b><span style=\"font-size: 12px;\">.</span></div></body></html>"));
       end Test_Sonderkomponenten;
 
       model Test_Flaschenzug
@@ -2263,7 +2263,7 @@ Hysterese versehen (siehe Konstanten).</div><div><p class=\"MsoNormal\"><o:p></o
       annotation(
           Diagram(graphics = {Rectangle(origin = {-2, -56}, fillPattern = FillPattern.Solid, extent = {{-100, -44}, {100, -4}})}, coordinateSystem(initialScale = 0.1)),
           Icon(graphics = {Polygon(origin = {30, 80}, lineColor = {63, 188, 44}, fillColor = {88, 195, 64}, fillPattern = FillPattern.Solid, points = {{70, -82}, {-30, 20}, {-30, -20}, {-30, -178}, {70, -82}}), Rectangle(origin = {-70, 41}, lineColor = {53, 202, 46}, fillColor = {55, 173, 65}, fillPattern = FillPattern.Solid, extent = {{-30, 9}, {70, -89}})}, coordinateSystem(initialScale = 0.1)),
-  Documentation(info = "<html><head></head><body>Dieses Modell ist zum Testen des Flaschenzugs entworfen worden. Die 40kg schwere Masse zieht den 100kg schweren Bierkasten in der Simulation nach oben. Der Flaschenzug hat ene Übersetzung von 3.&nbsp;<div>Eine boolesche Senke ist nicht notwendig.</div><div><br></div><div><span style=\"font-size: 12px;\">Die einzelnen Modelle sind alle parametrierbar&nbsp;</span><b style=\"font-size: 12px;\">(Infos: siehe Modell-Readme in der Bibliothek)</b><span style=\"font-size: 12px;\">.</span></div></body></html>"));
+  Documentation(info = "<html><head></head><body>Dieses Modell ist zum Testen des Flaschenzugs entworfen. Die 40kg schwere Masse zieht den 100kg schweren Bierkasten in der Simulation nach oben. Der Flaschenzug hat eine Übersetzung von 3.&nbsp;<div>Eine boolesche Senke ist nicht notwendig.</div><div><br></div><div><span style=\"font-size: 12px;\">Die einzelnen Modelle sind alle parametrierbar&nbsp;</span><b style=\"font-size: 12px;\">(Infos: siehe Modell-Readme in der Bibliothek)</b><span style=\"font-size: 12px;\">.</span></div></body></html>"));
       end Test_Flaschenzug;
       annotation(
         Diagram(graphics = {Rectangle(origin = {0, -56}, fillPattern = FillPattern.Solid, extent = {{-100, -44}, {100, -4}})}, coordinateSystem(initialScale = 0.1)),
