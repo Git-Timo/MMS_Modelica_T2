@@ -1829,19 +1829,19 @@ Hysterese versehen (siehe Konstanten).</div><div><p class=\"MsoNormal\"><o:p></o
           Placement(visible = true, transformation(origin = {100, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {124, 15}, extent = {{-24, -24}, {24, 24}}, rotation = 0)));
         constant Real Pi = Modelica.Constants.pi;
         // Bürstenspannungsabfall
-        parameter Real Ub(unit = "V") = 0.4 annotation(
+        parameter Modelica.SIunits.Voltage Ub = 0.4 annotation(
           Dialog(group = "Motorparameter"));
         // Ankerwiderstand
-        parameter Real Ra(unit = "Ohm") = 0.608 annotation(
+        parameter Modelica.SIunits.Resistance Ra = 0.608 annotation(
           Dialog(group = "Motorparameter"));
         // Ankerinduktivität
-        parameter Real La(unit = "H") = 0.000423 annotation(
+        parameter Modelica.SIunits.Inductance La = 0.000423 annotation(
           Dialog(group = "Motorparameter"));
         // Gesamtes Massenträgheitsmoment
-        parameter Real Jtot(unit = "kg.m2") = 0.018 annotation(
+        parameter Modelica.SIunits.MomentOfInertia Jtot = 0.018 annotation(
           Dialog(group = "Motorparameter"));
         // Drehmomentkonstante
-        parameter Real kt(unit = "N.m/A") = 0.091534 annotation(
+        parameter Modelica.SIunits.ElectricalTorqueConstant kt = 0.091534 annotation(
           Dialog(group = "Motorparameter"));
         // Reibungskonstante
         parameter Real cf(unit = "N.m.s") = 0.000000 annotation(
@@ -1922,7 +1922,7 @@ Hysterese versehen (siehe Konstanten).</div><div><p class=\"MsoNormal\"><o:p></o
 
       model Bremse
         //Parameter
-        parameter Real b = 10000 "Nms"annotation(
+        parameter Modelica.SIunits.RotationalDampingConstant b = 10000 annotation(
           Dialog(group = "Bremskonstante"));
         //Variablen
         Real t = 1;
